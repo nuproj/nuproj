@@ -196,7 +196,7 @@ namespace NuProj.Tasks
             if (FrameworkReferences == null || FrameworkReferences.Length == 0)
                 return null;
 
-            var references = from r in References
+            var references = from r in FrameworkReferences
                              select new
                              {
                                  AssemblyName = r.ItemSpec,
