@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--
+      DEFAULTS
+
+      Those can be overriden.
+  -->
+
+  <PropertyGroup>
+    <OutDir Condition=" '$(OutDir)' == ''" >$(MSBuildProjectDirectory)\bin\</OutDir>
+    <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(MSBuildProjectDirectory)\obj\</IntermediateOutputPath>
+    <NuGetToolPath Condition=" '$(NuGetToolPath)' == '' ">$(MSBuildThisFileDirectory)</NuGetToolPath>
+    <NuGetToolExe Condition=" '$(NuGetToolExe)' == '' ">NuGet.exe</NuGetToolExe>
+    <NuSpecPath Condition=" '$(NuSpecPath)' == '' ">$(IntermediateOutputPath)$(Id).nuspec</NuSpecPath>
+  </PropertyGroup>
+
+  <!--
+      MSBuildAllProjects is used to keep track of all projects the build depends on.
+      We make all targets depending on it to make sure everything rebuilds.
+  -->
+
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="Exists('$(MSBuildProjectFullPath)')">$(MSBuildAllProjects);$(MSBuildProjectFullPath)</MSBuildAllProjects>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <!--
+      CUSTOM TASKS
+  -->
+
+  <UsingTask TaskName="GenerateNuSpec" AssemblyFile="$(NuProjTasksPath)" />
+  <UsingTask TaskName="NuGetPack" AssemblyFile="$(NuProjTasksPath)" />
+
+  <!--
+      CONVERT ITEMS
+  -->
+
+  <Target Name="ConvertItems">
+    <CreateItem Include="@(Library)"
+                AdditionalMetadata="TargetPath=lib\%(Library.TargetFramework)">
+      <Output TaskParameter="Include"
+              ItemName="File"/>
+    </CreateItem>
+    <CreateItem Include="@(Content)"
+                AdditionalMetadata="TargetPath=content\%(Content.TargetPath)">
+      <Output TaskParameter="Include"
+              ItemName="File"/>
+    </CreateItem>
+  </Target>
+
+  <!--
+      GENERATE NU SPEC
+  -->
+
+  <Target Name="GenerateNuSpec"
+          Inputs="$(MSBuildAllProjects)"
+          Outputs="$(NuSpecPath)"
+          DependsOnTargets="ConvertItems">
+    <GenerateNuSpec OutputFileName="$(NuSpecPath)"
+                    Id="$(Id)"
+                    Version="$(Version)"
+                    Title="$(Title)"
+                    Authors="$(Authors)"
+                    Owners="$(Owners)"
+                    Description="$(Description)"
+                    ReleaseNotes="$(ReleaseNotes)"
+                    Summary="$(Summary)"
+                    Language="$(Language)"
+                    ProjectUrl="$(ProjectUrl)"
+                    IconUrl="$(IconUrl)"
+                    LicenseUrl="$(LicenseUrl)"
+                    Copyright="$(Copyright)"
+                    RequireLicenseAcceptance="$(RequireLicenseAcceptance)"
+                    Tags="$(Tags)"
+                    Dependencies="@(Dependency)"
+                    References="@(Reference)"
+                    FrameworkReferences="@(FrameworkReference)"
+                    Files="@(File)"/>
+  </Target>
+
+  <!--
+      CREATE PACKAGE
+  -->
+
+  <Target Name="CreatePackage"
+          Inputs="$(MSBuildAllProjects);
+                  $(NuSpecPath);
+                  @(File)"
+          Outputs="$(OutDir)$(Id).$(Version).nupkg"
+          DependsOnTargets="GenerateNuSpec">
+    <MakeDir Directories="$(OutDir)"
+             Condition="!Exists('$(OutDir)')" />
+    <NuGetPack OutputDirectory="$(OutDir)"
+               ToolPath="$(NuGetToolPath)"
+               ToolExe="$(NuGetToolExe)"
+               NuSpecPath="$(NuSpecPath)"/>
+  </Target>
+
+  <!--
+      STANDARD BUILD TARGETS
+  -->
+
+  <Target Name="Clean">
+    <RemoveDir Directories="$(OutDir)" Condition="Exists('$(OutDir)')" />
+    <RemoveDir Directories="$(IntermediateOutputPath)" Condition="Exists('$(IntermediateOutputPath)')"  />
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="CreatePackage" />
+
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+
+</Project>

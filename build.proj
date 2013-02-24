@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <ProjectDir>$(MSBuildThisFileDirectory)</ProjectDir>
+    <SourceDir>$(ProjectDir)src\</SourceDir>
+    <LibDir>$(ProjectDir)lib\</LibDir>
+    <ToolsDir>$(ProjectDir)tools\</ToolsDir>
+  </PropertyGroup>
+
+  <!--
+      DEFAULT SETTINGS
+      Those can be customized from the outside.
+    -->
+
+  <PropertyGroup>
+    <OutDir Condition="'$(OutDir)' == ''">$(ProjectDir)bin\</OutDir>
+    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+    <Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
+    <BuildInParallel Condition="'$(BuildInParallel)' == ''">True</BuildInParallel>
+  </PropertyGroup>
+
+  <!--
+       FORWARDING
+       The properties below handle forwarding of properties to the
+       underlying MSBuild projects.
+    -->
+
+  <PropertyGroup>
+    <ProjectProperties>
+      Configuration=$(Configuration);
+      Platform=$(Platform);
+      OutDir=$(OutDir);
+    </ProjectProperties>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SolutionFiles Include="$(SourceDir)*.sln" />
+  </ItemGroup>
+
+  <Target Name="Clean">
+    <MSBuild Projects="@(SolutionFiles)"
+             BuildInParallel="$(BuildInParallel)"
+             Targets="Clean"
+             Properties="$(ProjectProperties)" />
+  </Target>
+
+  <Target Name="Build">
+    <MSBuild Projects="@(SolutionFiles)"
+             BuildInParallel="$(BuildInParallel)"
+             Targets="Build"
+             Properties="$(ProjectProperties)" />
+  </Target>
+
+  <Target Name="Rebuild">
+    <MSBuild Projects="@(SolutionFiles)"
+             BuildInParallel="$(BuildInParallel)"
+             Targets="Rebuild"
+             Properties="$(ProjectProperties)" />
+  </Target>
+
+</Project>
