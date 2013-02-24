@@ -10,9 +10,11 @@
   <PropertyGroup>
     <OutDir Condition=" '$(OutDir)' == ''" >$(MSBuildProjectDirectory)\bin\</OutDir>
     <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(MSBuildProjectDirectory)\obj\</IntermediateOutputPath>
+    <NuSpecPath Condition=" '$(NuSpecPath)' == '' ">$(IntermediateOutputPath)$(Id).nuspec</NuSpecPath>
+
     <NuGetToolPath Condition=" '$(NuGetToolPath)' == '' ">$(MSBuildThisFileDirectory)</NuGetToolPath>
     <NuGetToolExe Condition=" '$(NuGetToolExe)' == '' ">NuGet.exe</NuGetToolExe>
-    <NuSpecPath Condition=" '$(NuSpecPath)' == '' ">$(IntermediateOutputPath)$(Id).nuspec</NuSpecPath>
+    <NuProjTasksPath Condition=" '$(NuProjTasksPath)' == '' ">$(NuGetToolPath)\NuProj.Tasks.dll</NuProjTasksPath>
   </PropertyGroup>
 
   <!--
