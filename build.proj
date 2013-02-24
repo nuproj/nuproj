@@ -15,6 +15,7 @@
 
   <PropertyGroup>
     <OutDir Condition="'$(OutDir)' == ''">$(ProjectDir)bin\</OutDir>
+    <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(ProjectDir)obj\</IntermediateOutputPath>
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
     <Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
     <BuildInParallel Condition="'$(BuildInParallel)' == ''">True</BuildInParallel>
@@ -31,6 +32,7 @@
       Configuration=$(Configuration);
       Platform=$(Platform);
       OutDir=$(OutDir);
+      IntermediateOutputPath=$(IntermediateOutputPath);
     </ProjectProperties>
   </PropertyGroup>
 
