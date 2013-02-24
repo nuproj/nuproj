@@ -12,9 +12,9 @@
     <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(MSBuildProjectDirectory)\obj\</IntermediateOutputPath>
     <NuSpecPath Condition=" '$(NuSpecPath)' == '' ">$(IntermediateOutputPath)$(Id).nuspec</NuSpecPath>
 
+    <NuProjTasksPath Condition=" '$(NuProjTasksPath)' == '' ">$(MSBuildThisFileDirectory)NuProj.Tasks.dll</NuProjTasksPath>
     <NuGetToolPath Condition=" '$(NuGetToolPath)' == '' ">$(MSBuildThisFileDirectory)</NuGetToolPath>
     <NuGetToolExe Condition=" '$(NuGetToolExe)' == '' ">NuGet.exe</NuGetToolExe>
-    <NuProjTasksPath Condition=" '$(NuProjTasksPath)' == '' ">$(NuGetToolPath)\NuProj.Tasks.dll</NuProjTasksPath>
   </PropertyGroup>
 
   <!--
