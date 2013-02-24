@@ -47,7 +47,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\NuProj.Targets\NuProj.targets">
-      <Link>NuProj.targets</Link>
+      <Link>Additional\NuProj.targets</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Templates\NuGetPackage.nuproj">
+      <Link>Additional\NuGetPackage.nuproj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Templates\NuGetPackage2008.vsdir">
+      <Link>Additional\NuGetPackage2008.vsdir</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Templates\NuGetPackage2010.vsdir">
+      <Link>Additional\NuGetPackage2010.vsdir</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Templates\NuGetPackage2012.vsdir">
+      <Link>Additional\NuGetPackage2012.vsdir</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

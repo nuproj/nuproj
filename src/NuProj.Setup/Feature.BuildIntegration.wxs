@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <Feature Id="MSBuildIntegration"
+             Title="MSBuild Integration"
+             AllowAdvertise="no"
+             Absent="disallow"
+             Level="1">
+      <ComponentGroupRef Id="MSBuildIntegration" />
+    </Feature>
+    <ComponentGroup Id="MSBuildIntegration" Directory="INSTALLDIR">
+      <Component>
+        <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuGet.exe" />
+      </Component>
+      <Component>
+        <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuProj.targets" />
+      </Component>
+      <Component>
+        <File Source="$(var.NuProj.Tasks.TargetDir)NuProj.Tasks.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

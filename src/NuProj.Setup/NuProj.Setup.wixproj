@@ -23,7 +23,11 @@
     <SuppressSpecificWarnings>1076</SuppressSpecificWarnings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Feature.BuildIntegration.wxs" />
+    <Compile Include="Feature.Templates.VS2008.wxs" />
+    <Compile Include="Feature.Templates.VS2010.wxs" />
     <Compile Include="Product.wxs" />
+    <Compile Include="Feature.Templates.VS2012.wxs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NuProj.Tasks\NuProj.Tasks.csproj">
@@ -42,6 +46,10 @@
     <Content Include="Resources\License.rtf" />
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="WixVSExtension">
+      <HintPath>$(WixExtDir)\WixVSExtension.dll</HintPath>
+      <Name>WixVSExtension</Name>
+    </WixExtension>
     <WixExtension Include="WixUIExtension">
       <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
       <Name>WixUIExtension</Name>

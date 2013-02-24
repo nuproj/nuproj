@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <PropertyRef Id="VS2010_ROOT_FOLDER" />
+
+    <Feature Id="Templates_VS2010"
+             Title="VS2010 Templates"
+             AllowAdvertise="no"
+             Level="0">
+      <Condition Level="1">VS2010_ROOT_FOLDER</Condition>
+      <ComponentGroupRef Id="Templates_VS2010" />
+    </Feature>
+
+    <DirectoryRef Id="TARGETDIR">
+      <Directory Id="VS2010_ROOT_FOLDER">
+        <Directory Id="VS2010_Common7" Name="Common7">
+          <Directory Id="VS2010_IDE" Name="IDE">
+            <Directory Id="VS2010_NewFileItems" Name="NewFileItems" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+
+    <ComponentGroup Id="Templates_VS2010" Directory="VS2010_NewFileItems">
+      <Component Id="VS2010_NuGetPackage.nuproj"
+                 Guid="82705B20-CA55-4ECB-B258-FF55256E7E00">
+        <File Id="VS2010_NuGetPackage.nuproj"
+              Name="NuGetPackage2010.nuproj"
+              Source="$(var.NuProj.Tasks.TargetDir)Additional\NuGetPackage.nuproj" />
+      </Component>
+      <Component Id="VS2010_NuGetPackage.vsdir"
+                 Guid="FBD4D4F6-F434-491A-8103-25E9880A4B00">
+        <File Id="VS2010_NuGetPackage.vsdir"
+              Name="NuGetPackage2010.vsdir"
+              Source="$(var.NuProj.Tasks.TargetDir)Additional\NuGetPackage2010.vsdir" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

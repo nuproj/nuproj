@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <Id>HelloWorld</Id>
+    <Version>1.0.0</Version>
+    <Title>HelloWorld</Title>
+    <Authors>The World</Authors>
+    <Owners>$(Authors)</Owners>
+    <Description>Hello World</Description>
+    <!-- Optional information:
+    <ReleaseNotes></ReleaseNotes>
+    <Summary>Hello World</Summary>
+    <ProjectUrl>http://example.com</ProjectUrl>
+    <LicenseUrl>http://example.com/license</LicenseUrl>
+    <Copyright>Copyright (c)</Copyright>
+    <RequireLicenseAcceptance>False</RequireLicenseAcceptance>
+    <Tags>HelloWorld</Tags>
+    -->
+  </PropertyGroup>
+
+  <!-- References, FrameworkAssemblies -->
+
+  <!-- Package dependencies -->
+  <!--  
+        In order to declare package dependencies, use a snippet like the following.
+        <TargetFramework> is optional and can be used to indicate the package is
+        only required when being referenced from a project that targets the given
+        platform.
+
+  <ItemGroup>
+    <Dependency Include="RouteMagic">
+      <Version>1.1.6</Version>
+      <TargetFramework>net40</TargetFramework>
+    </Dependency>
+  </ItemGroup>
+  -->
+
+  <ItemGroup>
+    <Library Include="$(BasePath)HelloWorld.dll">
+      <TargetFramework>net40</TargetFramework>
+    </Library>
+  </ItemGroup>
+
+  <!-- Content, File -->
+
+  <PropertyGroup>
+    <NuProjTargetsPath Condition=" '$(NuProjTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\NuProj\NuProj.targets</NuProjTargetsPath>
+    <NuProjTargetsPath Condition=" '$(NuProjTargetsPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\NuProj.targets</NuProjTargetsPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjTargetsPath)" />
+
+</Project>

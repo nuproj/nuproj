@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <PropertyRef Id="VS2012_ROOT_FOLDER" />
+
+    <Feature Id="Templates_VS2012"
+             Title="VS2012 Templates"
+             AllowAdvertise="no"
+             Level="0">
+      <Condition Level="1">VS2012_ROOT_FOLDER</Condition>
+      <ComponentGroupRef Id="Templates_VS2012" />
+    </Feature>
+
+    <DirectoryRef Id="TARGETDIR">
+      <Directory Id="VS2012_ROOT_FOLDER">
+        <Directory Id="VS2012_Common7" Name="Common7">
+          <Directory Id="VS2012_IDE" Name="IDE">
+            <Directory Id="VS2012_NewFileItems" Name="NewFileItems" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+
+    <ComponentGroup Id="Templates_VS2012" Directory="VS2012_NewFileItems">
+      <Component Id="VS2012_NuGetPackage.nuproj"
+                 Guid="42B80174-FE4C-4B8D-A872-D9D5C181FCE7">
+        <File Id="VS2012_NuGetPackage.nuproj"
+              Name="NuGetPackage2012.nuproj"
+              Source="$(var.NuProj.Tasks.TargetDir)Additional\NuGetPackage.nuproj" />
+      </Component>
+      <Component Id="VS2012_NuGetPackage.vsdir"
+                 Guid="8003F22C-C760-42EC-BA89-6BCD91EF740A">
+        <File Id="VS2012_NuGetPackage.vsdir"
+              Name="NuGetPackage2012.vsdir"
+              Source="$(var.NuProj.Tasks.TargetDir)Additional\NuGetPackage2012.vsdir" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

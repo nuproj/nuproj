@@ -22,11 +22,18 @@
 
     <MediaTemplate EmbedCab="yes" />
 
-    <Feature Id="ProductFeature"
-             Title="$(var.ProductName)"
-             Level="1">
-      <ComponentGroupRef Id="ProductComponents" />
-    </Feature>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="MSBuild" Name="MSBuild">
+          <Directory Id="INSTALLDIR" Name="$(var.ProductName)" />
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <FeatureRef Id="MSBuildIntegration" />
+    <FeatureRef Id="Templates_VS2008" />
+    <FeatureRef Id="Templates_VS2010" />
+    <FeatureRef Id="Templates_VS2012" />
 
     <WixVariable Id="WixUILicenseRtf"
                  Value="Resources\License.rtf" />
@@ -36,27 +43,4 @@
     </UI>
   </Product>
 
-  <Fragment>
-    <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
-        <Directory Id="MSBuild" Name="MSBuild">
-          <Directory Id="INSTALLDIR" Name="$(var.ProductName)" />
-        </Directory>
-      </Directory>
-    </Directory>
-  </Fragment>
-
-  <Fragment>
-    <ComponentGroup Id="ProductComponents" Directory="INSTALLDIR">
-      <Component>
-        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.exe" />
-      </Component>
-      <Component>
-        <File Source="$(var.NuProj.Tasks.TargetDir)NuProj.targets" />
-      </Component>
-      <Component>
-        <File Source="$(var.NuProj.Tasks.TargetDir)NuProj.Tasks.dll" />
-      </Component>
-    </ComponentGroup>
-  </Fragment>
 </Wix>

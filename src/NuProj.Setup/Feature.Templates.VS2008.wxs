@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <PropertyRef Id="VS90_ROOT_FOLDER" />
+
+    <Feature Id="Templates_VS2008"
+             Title="VS2008 Templates"
+             AllowAdvertise="no"
+             Level="0">
+      <Condition Level="1">VS90_ROOT_FOLDER</Condition>
+      <ComponentGroupRef Id="Templates_VS2008" />
+    </Feature>
+
+    <DirectoryRef Id="TARGETDIR">
+      <Directory Id="VS90_ROOT_FOLDER">
+        <Directory Id="VS2008_Common7" Name="Common7">
+          <Directory Id="VS2008_IDE" Name="IDE">
+            <Directory Id="VS2008_NewFileItems" Name="NewFileItems" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+
+    <ComponentGroup Id="Templates_VS2008" Directory="VS2008_NewFileItems">
+      <Component Id="VS2008_NuGetPackage.nuproj"
+                 Guid="F07D0EF9-1695-479B-AFEE-E91ED60AC245">
+        <File Id="VS2008_NuGetPackage.nuproj"
+              Name="NuGetPackage2008.nuproj"
+              Source="$(var.NuProj.Tasks.TargetDir)Additional\NuGetPackage.nuproj" />
+      </Component>
+      <Component Id="VS2008_NuGetPackage.vsdir"
+                 Guid="CD715132-A11F-4C7B-B6F7-A5ADC0F6F161">
+        <File Id="VS2008_NuGetPackage.vsdir"
+              Name="NuGetPackage2008.vsdir"
+              Source="$(var.NuProj.Tasks.TargetDir)Additional\NuGetPackage2008.vsdir" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
