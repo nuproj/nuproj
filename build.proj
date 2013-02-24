@@ -28,6 +28,7 @@
     -->
 
   <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <ProjectProperties>
       Configuration=$(Configuration);
       Platform=$(Platform);
@@ -37,25 +38,38 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <SolutionFiles Include="$(SourceDir)*.sln" />
+    <ProjectFiles Include="$(SourceDir)*.sln" />
   </ItemGroup>
 
-  <Target Name="Clean">
-    <MSBuild Projects="@(SolutionFiles)"
+  <Target Name="RecordProjects">
+      <PropertyGroup>
+        <_MSBuildAllProjects>$(MSBuildAllProjects);@(ProjectFiles)</_MSBuildAllProjects>
+        <ProjectProperties>
+          $(ProjectProperties);
+          MSBuildAllProjects=$(_MSBuildAllProjects)
+        </ProjectProperties>
+      </PropertyGroup>
+  </Target>
+
+  <Target Name="Clean"
+          DependsOnTargets="RecordProjects">
+    <MSBuild Projects="@(ProjectFiles)"
              BuildInParallel="$(BuildInParallel)"
              Properties="$(ProjectProperties)"
              Targets="Clean" />
   </Target>
 
-  <Target Name="Build">
-    <MSBuild Projects="@(SolutionFiles)"
+  <Target Name="Build"
+          DependsOnTargets="RecordProjects">
+    <MSBuild Projects="@(ProjectFiles)"
              BuildInParallel="$(BuildInParallel)"
              Properties="$(ProjectProperties)"
              Targets="Build" />
   </Target>
 
-  <Target Name="Rebuild">
-    <MSBuild Projects="@(SolutionFiles)"
+  <Target Name="Rebuild"
+          DependsOnTargets="RecordProjects">
+    <MSBuild Projects="@(ProjectFiles)"
              BuildInParallel="$(BuildInParallel)"
              Properties="$(ProjectProperties)"
              Targets="Rebuild" />
