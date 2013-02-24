@@ -43,22 +43,22 @@
   <Target Name="Clean">
     <MSBuild Projects="@(SolutionFiles)"
              BuildInParallel="$(BuildInParallel)"
-             Targets="Clean"
-             Properties="$(ProjectProperties)" />
+             Properties="$(ProjectProperties)"
+             Targets="Clean" />
   </Target>
 
   <Target Name="Build">
     <MSBuild Projects="@(SolutionFiles)"
              BuildInParallel="$(BuildInParallel)"
-             Targets="Build"
-             Properties="$(ProjectProperties)" />
+             Properties="$(ProjectProperties)"
+             Targets="Build" />
   </Target>
 
   <Target Name="Rebuild">
     <MSBuild Projects="@(SolutionFiles)"
              BuildInParallel="$(BuildInParallel)"
-             Targets="Rebuild"
-             Properties="$(ProjectProperties)" />
+             Properties="$(ProjectProperties)"
+             Targets="Rebuild" />
   </Target>
 
 </Project>
