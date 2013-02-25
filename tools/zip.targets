@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <OutputPath>$(OutDir)$(OutputName)</OutputPath>
+    <BuildTasksPath>$(OutDir)raw\NuProj.Build.dll</BuildTasksPath>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <UsingTask TaskName="Zip" AssemblyFile="$(BuildTasksPath)" />
+
+  <Target Name="Clean">
+    <Delete Files="$(OutputPath)" />
+  </Target>
+
+  <Target Name="Build"
+          Inputs="$(MSBuildAllProjects);
+                  @(File)"
+          Outputs="$(OutputPath)">
+    <MakeDir Directories="$(OutDir)"
+             Condition="!Exists('$(OutDir)')" />
+    <Zip ZipFileName="$(OutputPath)"
+         Files="@(File)" />
+  </Target>
+
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+
+</Project>

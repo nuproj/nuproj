@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="build.props" />
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <ProjectProperties>
+    </ProjectProperties>
+    <BuildInParallel>False</BuildInParallel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectFiles Include="$(ToolsDir)binaries.proj" />
+    <ProjectFiles Include="$(ToolsDir)release.proj" />
+  </ItemGroup>
+
+  <Target Name="RecordProjects">
+      <PropertyGroup>
+        <_MSBuildAllProjects>$(MSBuildAllProjects);@(ProjectFiles)</_MSBuildAllProjects>
+        <ProjectProperties>
+          $(ProjectProperties);
+          MSBuildAllProjects=$(_MSBuildAllProjects)
+        </ProjectProperties>
+      </PropertyGroup>
+  </Target>
+
+  <Target Name="Clean"
+          DependsOnTargets="RecordProjects">
+    <MSBuild Projects="@(ProjectFiles)"
+             BuildInParallel="$(BuildInParallel)"
+             Properties="$(ProjectProperties)"
+             Targets="Clean" />
+  </Target>
+
+  <Target Name="Build"
+          DependsOnTargets="RecordProjects">
+    <MSBuild Projects="@(ProjectFiles)"
+             BuildInParallel="$(BuildInParallel)"
+             Properties="$(ProjectProperties)"
+             Targets="Build" />
+  </Target>
+
+  <Target Name="Rebuild"
+          DependsOnTargets="RecordProjects">
+    <MSBuild Projects="@(ProjectFiles)"
+             BuildInParallel="$(BuildInParallel)"
+             Properties="$(ProjectProperties)"
+             Targets="Rebuild" />
+  </Target>
+
+</Project>
