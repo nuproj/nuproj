@@ -48,8 +48,21 @@
   <UsingTask TaskName="NuGetPack" AssemblyFile="$(NuProjTasksPath)" />
 
   <!--
-      CONVERT ITEMS
-  -->
+    ===================================================================================================================
+    ConvertItems
+    ===================================================================================================================
+
+    This target is converting specialized items groups into the general <File> item group that indicates what should
+    be packaged.
+
+    INPUTS:
+        @(Library)                  Library items to be packaged
+        @(Content)                  Content items to be packaged
+
+    OUTPUTS:
+        @(File)                     The <File> elements to be packaged.
+
+    =================================================================================================================== -->
 
   <Target Name="ConvertItems">
     <CreateItem Include="@(Library)"
@@ -65,8 +78,37 @@
   </Target>
 
   <!--
-      GENERATE NU SPEC
-  -->
+    ===================================================================================================================
+    GenerateNuSpec
+    ===================================================================================================================
+
+    This target is creates the .nuspec file that is used to create the NuGet package (.nupkg).
+
+    INPUTS:
+        $(NuSpecPath)                  The path where the NuSpec should be written to.
+
+        $(Id),
+        $(Version),
+        $(Title),
+        $(Authors),
+        $(Owners),
+        $(Description),
+        $(ReleaseNotes),
+        $(Summary),
+        $(Language),
+        $(ProjectUrl),
+        $(IconUrl),
+        $(LicenseUrl),
+        $(Copyright),
+        $(RequireLicenseAcceptance),
+        $(Tags)                        General properties of the NuSpec
+
+        @(Dependency)                  (Optional) The NuGet package dependencies
+        @(FrameworkReference)          (Optional) Framework assembly references
+        @(Reference)                   (Optional) The assembly references
+        @(File)                        (Optional) The files to be packaged
+
+    =================================================================================================================== -->
 
   <Target Name="GenerateNuSpec"
           Inputs="$(MSBuildAllProjects)"
@@ -95,8 +137,19 @@
   </Target>
 
   <!--
-      CREATE PACKAGE
-  -->
+    ===================================================================================================================
+    CreatePackage
+    ===================================================================================================================
+
+    This target creates the NuGet pacakge from a .nuspec file
+
+    INPUTS:
+        $(NuSpecPath)                  The path to the NuSpec file.
+        $(OutDir)                      The path to the directory where the .nupkg should be created
+        $(NuGetToolPath)               The path of the directory that contains to NuGet.exe
+        $(NuGetToolExe)                The name of NuGet.exe
+
+    =================================================================================================================== -->
 
   <Target Name="CreatePackage"
           Inputs="$(MSBuildAllProjects);
@@ -113,8 +166,13 @@
   </Target>
 
   <!--
-      STANDARD BUILD TARGETS
-  -->
+    ===================================================================================================================
+    Clean, Build, Rebuild
+    ===================================================================================================================
+
+    These are the standard targets to clean, build and rebuild a NuGet package.
+
+    =================================================================================================================== -->
 
   <Target Name="Clean">
     <ItemGroup>
