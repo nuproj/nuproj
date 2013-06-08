@@ -20,14 +20,14 @@
   </PropertyGroup>
 
   <!--
-      OUPUT PATH
+      OUTPUT PATH
 
-      This property isn't passed to NuGet.exe - it's implicit. However, we need to know the ouput path
+      This property isn't passed to NuGet.exe - it's implicit. However, we need to know the output path
       at several occasions (e.g. incremental build or clean up) so we want a central spot to capture it.
   -->
 
   <PropertyGroup>
-    <NuGetOuputPath>$(OutDir)$(Id).$(Version).nupkg</NuGetOuputPath>
+    <NuGetOutputPath>$(OutDir)$(Id).$(Version).nupkg</NuGetOutputPath>
   </PropertyGroup>
 
   <!--
@@ -102,7 +102,7 @@
           Inputs="$(MSBuildAllProjects);
                   $(NuSpecPath);
                   @(File)"
-          Outputs="$(NuGetOuputPath)"
+          Outputs="$(NuGetOutputPath)"
           DependsOnTargets="GenerateNuSpec">
     <MakeDir Directories="$(OutDir)"
              Condition="!Exists('$(OutDir)')" />
@@ -119,7 +119,7 @@
   <Target Name="Clean">
     <ItemGroup>
       <_ToBeDeleted Include="$(NuSpecPath)" />
-      <_ToBeDeleted Include="$(NuGetOuputPath)" />
+      <_ToBeDeleted Include="$(NuGetOutputPath)" />
     </ItemGroup>
     <Delete Files="@(_ToBeDeleted)" />
   </Target>
