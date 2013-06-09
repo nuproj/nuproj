@@ -65,8 +65,12 @@
     =================================================================================================================== -->
 
     <Target Name="ExpandProjectReferences">
+      <ItemGroup>
+          <_NonNuProjProjectReference Include="@(ProjectReference)"
+                                      Condition="'%(ProjectReference.Extension)' != '.nuproj'" />
+      </ItemGroup>
 
-      <MSBuild Projects="@(ProjectReference)"
+      <MSBuild Projects="@(_NonNuProjProjectReference)"
                Targets="GetOutputAndTargetFrameworkInformation">
         <Output TaskParameter="TargetOutputs"
                 ItemName="_Output" />
@@ -146,7 +150,7 @@
   <Target Name="GenerateNuSpec"
           Inputs="$(MSBuildAllProjects)"
           Outputs="$(NuSpecPath)"
-          DependsOnTargets="ConvertItems">
+          DependsOnTargets="GetPackageDependencies;GetPackageFiles">
     <GenerateNuSpec OutputFileName="$(NuSpecPath)"
                     Id="$(Id)"
                     Version="$(Version)"
@@ -166,7 +170,7 @@
                     Dependencies="@(Dependency)"
                     References="@(Reference)"
                     FrameworkReferences="@(FrameworkReference)"
-                    Files="@(File)"/>
+                    Files="@(PackageFile)"/>
   </Target>
 
   <!--
@@ -197,6 +201,124 @@
                ToolPath="$(NuGetToolPath)"
                ToolExe="$(NuGetToolExe)"
                NuSpecPath="$(NuSpecPath)"/>
+  </Target>
+
+  <!--
+    ===================================================================================================================
+    GetPackageFiles
+    ===================================================================================================================
+
+    Gets the set of files that will be included in this package. This set will no include any files that are already
+    provided by our NuGet dependencies.
+
+    OUTPUTS:
+        @(PackageFile)                        The files that will be included in this package.
+
+    =================================================================================================================== -->
+
+  <Target Name="GetPackageFiles"
+          Returns="@(PackageFile)"
+          DependsOnTargets="GetFiles;GetFileDependencies">
+
+      <ItemGroup>
+        <_FileTargetPath Include="@(File->'%(FileName)%(Extension)')">
+            <OriginalItemSpec>%(File.Identity)</OriginalItemSpec>
+        </_FileTargetPath>
+        <_FileDependencyTargetPath Include="@(FileDependency->'%(FileName)%(Extension)')" />
+        <_FileTargetPath Remove="@(_FileDependencyTargetPath)" />
+        <PackageFile Remove="@(PackageFile)" />
+        <PackageFile Include="@(_FileTargetPath->'%(OriginalItemSpec)')" />
+      </ItemGroup>
+
+  </Target>
+
+  <!--
+    ===================================================================================================================
+    GetFiles
+    ===================================================================================================================
+
+    Gets the set of candidate files to be packaged. This set will also contain any files that are already provided by
+    our NuGet dependencies.
+
+    OUTPUTS:
+        @(File)                        The files that are being packaged
+
+    =================================================================================================================== -->
+
+  <Target Name="GetFiles"
+          Returns="@(File)"
+          DependsOnTargets="ConvertItems" />
+
+  <!--
+    ===================================================================================================================
+    GetFileDependencies
+    ===================================================================================================================
+
+    Returns the files coming from the transitive closure of all NuGet dependencies from this package.
+
+    OUTPUTS:
+        @(FileDependency)               Files coming from dependencies
+
+    =================================================================================================================== -->
+
+  <Target Name="GetFileDependencies"
+          Returns="@(FileDependency)">
+      <ItemGroup>
+          <_NuProjProjectReference Include="@(ProjectReference)"
+                                   Condition="'%(ProjectReference.Extension)' == '.nuproj'" />
+      </ItemGroup>
+      <MSBuild Projects="@(_NuProjProjectReference)"
+               Targets="GetPackageFiles">
+        <Output TaskParameter="TargetOutputs"
+                ItemName="FileDependency" />
+      </MSBuild>
+  </Target>
+
+  <!--
+    ===================================================================================================================
+    GetPackageDependencies
+    ===================================================================================================================
+
+    Get the direct package dependencies of this package. It doesn't include dependencies of dependencies.
+
+    OUTPUTS:
+        @(Dependency)               The NuGet dependencies of this package.
+
+    =================================================================================================================== -->
+
+  <Target Name="GetPackageDependencies"
+          Returns="@(Dependency)">
+      <ItemGroup>
+          <_NuProjProjectReference Include="@(ProjectReference)"
+                                   Condition="'%(ProjectReference.Extension)' == '.nuproj'" />
+      </ItemGroup>
+      <MSBuild Projects="@(_NuProjProjectReference)"
+               Targets="GetPackageIdentity">
+        <Output TaskParameter="TargetOutputs"
+                ItemName="Dependency" />
+      </MSBuild>
+  </Target>
+
+  <!--
+    ===================================================================================================================
+    GetPackageIdentity
+    ===================================================================================================================
+
+    Returns an item whose identity is the $(Id). The version is included in custom metadata item Version. This format
+    is identitcal to the one used to describe package dependencies.
+
+    OUTPUTS:
+        $(_PackageIdentity)               The Id and Version of this package
+
+    =================================================================================================================== -->
+
+  <Target Name="GetPackageIdentity"
+          Returns="@(_PackageIdentity)">
+    <ItemGroup>
+      <_PackageIdentity Include="$(Id)">
+        <Version>$(Version)</Version>
+      </_PackageIdentity>
+    </ItemGroup>
   </Target>
 
   <!--

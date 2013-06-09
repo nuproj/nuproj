@@ -23,7 +23,7 @@ namespace NuProj.Tasks
         {
             var seenPackagePaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             Libraries = (from item in OutputsWithTargetFrameworkInformation.Select(ConvertToLibrary)
-                         let packagePath = item.GetMetadata("PackagePath")
+                         let packagePath = item.GetMetadata("TargetPath")
                          where seenPackagePaths.Add(packagePath)
                          select item).ToArray();
 
@@ -37,7 +37,7 @@ namespace NuProj.Tasks
             var frameworkString = VersionUtility.GetShortFrameworkName(frameworkName);
             var metadata = output.CloneCustomMetadata();
             metadata["TargetFramework"] = frameworkString;
-            metadata["PackagePath"] = Path.Combine(frameworkString, Path.GetFileName(fileName));
+            metadata["TargetPath"] = Path.Combine(frameworkString, Path.GetFileName(fileName));
             return new TaskItem(fileName, metadata);
         }
     }
