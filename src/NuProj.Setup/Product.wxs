@@ -26,6 +26,11 @@
       <Directory Id="ProgramFilesFolder">
         <Directory Id="MSBuild" Name="MSBuild">
           <Directory Id="INSTALLDIR" Name="$(var.ProductName)" />
+          <Directory Id="Global.MSBuild.40" Name="4.0">
+            <Directory Id="Global.MSBuild.40.Microsoft.Common.Targets" Name="Microsoft.Common.Targets">
+              <Directory Id="Global.MSBuild.40.Microsoft.Common.Targets.ImportAfter" Name="ImportAfter" />
+            </Directory>
+          </Directory>
         </Directory>
       </Directory>
     </Directory>

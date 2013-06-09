@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectFiles Include="$(ToolsDir)restore.proj" />
     <ProjectFiles Include="$(ToolsDir)binaries.proj" />
     <ProjectFiles Include="$(ToolsDir)release.proj" />
   </ItemGroup>

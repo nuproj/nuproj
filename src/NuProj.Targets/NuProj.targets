@@ -45,10 +45,41 @@
       CUSTOM TASKS
   -->
 
-  <UsingTask TaskName="GenerateNuSpec" AssemblyFile="$(NuProjTasksPath)" />
-  <UsingTask TaskName="NuGetPack" AssemblyFile="$(NuProjTasksPath)" />
+  <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="GenerateNuSpec" />
+  <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="NuGetPack" />
+  <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="AssignTargetFramework" />
 
   <!--
+    ===================================================================================================================
+    ExpandProjectReferences
+    ===================================================================================================================
+
+    This target will get the build outputs of the project references
+
+    INPUTS:
+        @(ProjectReference)         The project references
+
+    OUTPUTS:
+        @(Library)                  The library Files to be packaged
+
+    =================================================================================================================== -->
+
+    <Target Name="ExpandProjectReferences">
+
+      <MSBuild Projects="@(ProjectReference)"
+               Targets="GetOutputAndTargetFrameworkInformation">
+        <Output TaskParameter="TargetOutputs"
+                ItemName="_Output" />
+      </MSBuild>
+
+      <AssignTargetFramework OutputsWithTargetFrameworkInformation="@(_Output)">
+        <Output TaskParameter="Libraries"
+                ItemName="Library" />
+      </AssignTargetFramework>
+
+    </Target>
+
+    <!--
     ===================================================================================================================
     ConvertItems
     ===================================================================================================================
@@ -65,7 +96,8 @@
 
     =================================================================================================================== -->
 
-  <Target Name="ConvertItems">
+  <Target Name="ConvertItems"
+          DependsOnTargets="ExpandProjectReferences">
     <CreateItem Include="@(Library)"
                 AdditionalMetadata="TargetPath=lib\%(Library.TargetFramework)">
       <Output TaskParameter="Include"
@@ -177,6 +209,8 @@
     =================================================================================================================== -->
 
   <Target Name="Clean">
+    <MSBuild Projects="@(ProjectReference)"
+             Targets="Clean" />
     <ItemGroup>
       <_ToBeDeleted Include="$(NuSpecPath)" />
       <_ToBeDeleted Include="$(NuGetOutputPath)" />

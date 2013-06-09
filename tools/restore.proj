@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="build.props" />
+
+  <PropertyGroup>
+    <OutDir Condition="'$(OutDir)' == ''">$(ProjectDir)bin\</OutDir>
+    <PackagesDir>$(MSBuildThisFileDirectory)..\src\packages\</PackagesDir>
+    <NuGetToolPath>$(OutDir)raw\NuGet.exe</NuGetToolPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Package Include="$(MSBuildThisFileDirectory)..\src\*\packages.config" />
+  </ItemGroup>
+
+  <UsingTask TaskName="DownloadFile" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Address ParameterType="System.String" Required="true"/>
+      <FileName ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+           var directory = System.IO.Path.GetDirectoryName(FileName);
+           System.IO.Directory.CreateDirectory(directory);
+           new System.Net.WebClient().DownloadFile(Address, FileName);
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="Clean">
+    <ItemGroup>
+      <_PackageFiles Include="$(PackagesDir)**\*.*"
+                     Exclude="$(PackagesDir)repositories.config" />
+    </ItemGroup>
+    <Delete Files="@(_PackageFiles)" />
+  </Target>
+
+  <Target Name="Build">
+    <DownloadFile Condition="!Exists($(NuGetToolPath))"
+                  Address="http://nuget.org/nuget.exe"
+                  FileName="$(NuGetToolPath)" />
+    <Exec Command="$(NuGetToolPath) install &quot;%(Package.FullPath)&quot; -o &quot;$(PackagesDir)\&quot;" />
+  </Target>
+
+  <Target Name="Rebuild"
+          DependsOnTargets="Clean;Build" />
+
+</Project>

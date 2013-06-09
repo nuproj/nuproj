@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <File Include="$(BasePath)NuProj.Tasks.dll" />
-    <File Include="$(BasePath)Additional\NuGet.exe" />
+    <File Include="$(BasePath)NuGet.exe" />
     <File Include="$(BasePath)Additional\NuProj.targets" />
   </ItemGroup>
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="GetOutputAndTargetFrameworkInformation"
+          DependsOnTargets="Build"
+          Returns="@(OutputWithTargetFrameworkInformation)">
+    <ItemGroup>
+      <_DroppedBinaries Include="%(FileWrites.FullPath)"
+                        Condition="'%(FileWrites.RelativeDir)' != '$(IntermediateOutputPath)' AND ('%(FileWrites.Extension)' == '.dll' OR '%(FileWrites.Extension)' == '.pdb' OR '%(FileWrites.Extension)' == '.xml')" />
+    </ItemGroup>
+    <ItemGroup>
+      <OutputWithTargetFrameworkInformation Include="@(_DroppedBinaries)">
+        <TargetFrameworkMoniker>$(TargetFrameworkMoniker)</TargetFrameworkMoniker>
+        <PlatformTarget>$(PlatformTarget)</PlatformTarget>
+      </OutputWithTargetFrameworkInformation>
+    </ItemGroup>
+  </Target>
+
+</Project>

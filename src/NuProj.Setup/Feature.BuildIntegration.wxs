@@ -7,16 +7,28 @@
              Absent="disallow"
              Level="1">
       <ComponentGroupRef Id="MSBuildIntegration" />
+      <ComponentGroupRef Id="MSBuildCommonExtensions" />
     </Feature>
     <ComponentGroup Id="MSBuildIntegration" Directory="INSTALLDIR">
       <Component>
-        <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuGet.exe" />
+        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.exe" />
       </Component>
       <Component>
         <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuProj.targets" />
       </Component>
       <Component>
         <File Source="$(var.NuProj.Tasks.TargetDir)NuProj.Tasks.dll" />
+      </Component>
+      <Component>
+        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.Core.dll" />
+      </Component>
+      <Component>
+        <File Source="$(var.NuProj.Tasks.TargetDir)Microsoft.Web.XmlTransform.dll" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="MSBuildCommonExtensions" Directory="Global.MSBuild.40.Microsoft.Common.Targets.ImportAfter">
+      <Component>
+        <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuProj.Extensions.targets" />
       </Component>
     </ComponentGroup>
   </Fragment>
