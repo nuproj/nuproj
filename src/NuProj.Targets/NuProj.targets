@@ -13,6 +13,7 @@
     <OutDir Condition=" '$(OutDir)' == ''" >$(MSBuildProjectDirectory)\bin\</OutDir>
     <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(MSBuildProjectDirectory)\obj\</IntermediateOutputPath>
     <NuSpecPath Condition=" '$(NuSpecPath)' == '' ">$(IntermediateOutputPath)$(Id).nuspec</NuSpecPath>
+    <GenerateSymbolPackage Condition=" '$(GenerateSymbolPackage)' == '' ">True</GenerateSymbolPackage>
 
     <NuProjTasksPath Condition=" '$(NuProjTasksPath)' == '' ">$(MSBuildThisFileDirectory)NuProj.Tasks.dll</NuProjTasksPath>
     <NuGetToolPath Condition=" '$(NuGetToolPath)' == '' ">$(MSBuildThisFileDirectory)</NuGetToolPath>
@@ -160,6 +161,7 @@
     <MakeDir Directories="$(OutDir)"
              Condition="!Exists('$(OutDir)')" />
     <NuGetPack OutputDirectory="$(OutDir)"
+               Symbols="$(GenerateSymbolPackage)"
                ToolPath="$(NuGetToolPath)"
                ToolExe="$(NuGetToolExe)"
                NuSpecPath="$(NuSpecPath)"/>
