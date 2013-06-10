@@ -4,12 +4,31 @@
   <Target Name="GetOutputAndTargetFrameworkInformation"
           DependsOnTargets="Build"
           Returns="@(OutputWithTargetFrameworkInformation)">
+
+    <MSBuild Projects="@(_MSBuildProjectReferenceExistent)"
+             Targets="GetOutputAndTargetFrameworkInformation"
+             BuildInParallel="$(BuildInParallel)"
+             Properties="%(_MSBuildProjectReferenceExistent.SetConfiguration); %(_MSBuildProjectReferenceExistent.SetPlatform)"
+             ContinueOnError="!$(BuildingProject)"
+             RemoveProperties="%(_MSBuildProjectReferenceExistent.GlobalPropertiesToRemove)">
+
+      <Output TaskParameter="TargetOutputs"
+              ItemName="_AllOutputFromDependencies" />
+
+    </MSBuild>
+
     <ItemGroup>
-      <_DroppedBinaries Include="%(FileWrites.FullPath)"
-                        Condition="'%(FileWrites.RelativeDir)' != '$(IntermediateOutputPath)' AND ('%(FileWrites.Extension)' == '.dll' OR '%(FileWrites.Extension)' == '.pdb' OR '%(FileWrites.Extension)' == '.xml')" />
+      <_InputFiles Include="@(FileWrites->'%(FullPath)');
+                            @(ReferencePath->'%(FullPath)');
+                            @(_AllOutputFromDependencies)" />
+      <_CandidateFiles Include="@(_InputFiles->'$(TargetDir)%(FileName)%(Extension)')"
+                       Condition="'%(_InputFiles.Extension)' == '.dll' OR '%(_InputFiles.Extension)' == '.pdb' OR '%(_InputFiles.Extension)' == '.xml'" />
+      <_AllOutput Include="@(_CandidateFiles->Distinct())"
+                  Condition="Exists('%(_CandidateFiles.Identity)')" />
     </ItemGroup>
+
     <ItemGroup>
-      <OutputWithTargetFrameworkInformation Include="@(_DroppedBinaries)">
+      <OutputWithTargetFrameworkInformation Include="@(_AllOutput)">
         <TargetFrameworkMoniker>$(TargetFrameworkMoniker)</TargetFrameworkMoniker>
         <PlatformTarget>$(PlatformTarget)</PlatformTarget>
       </OutputWithTargetFrameworkInformation>
