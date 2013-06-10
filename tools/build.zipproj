@@ -9,8 +9,11 @@
 
   <ItemGroup>
     <File Include="$(BasePath)NuProj.Tasks.dll" />
+    <File Include="$(BasePath)NuGet.Core.dll" />
+    <File Include="$(BasePath)Microsoft.Web.XmlTransform.dll" />
     <File Include="$(BasePath)NuGet.exe" />
     <File Include="$(BasePath)Additional\NuProj.targets" />
+    <File Include="$(BasePath)Additional\NuProj.Extensions.targets" />
   </ItemGroup>
 
   <Import Project="$(ToolsDir)zip.targets" />

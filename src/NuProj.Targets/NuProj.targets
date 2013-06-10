@@ -16,7 +16,7 @@
     <GenerateSymbolPackage Condition=" '$(GenerateSymbolPackage)' == '' ">True</GenerateSymbolPackage>
 
     <NuProjTasksPath Condition=" '$(NuProjTasksPath)' == '' ">$(MSBuildThisFileDirectory)NuProj.Tasks.dll</NuProjTasksPath>
-    <NuGetToolPath Condition=" '$(NuGetToolPath)' == '' ">$(MSBuildThisFileDirectory)</NuGetToolPath>
+    <NuProjToolPath Condition=" '$(NuProjToolPath)' == '' ">$(MSBuildThisFileDirectory)</NuProjToolPath>
     <NuGetToolExe Condition=" '$(NuGetToolExe)' == '' ">NuGet.exe</NuGetToolExe>
   </PropertyGroup>
 
@@ -184,7 +184,7 @@
     INPUTS:
         $(NuSpecPath)                  The path to the NuSpec file.
         $(OutDir)                      The path to the directory where the .nupkg should be created
-        $(NuGetToolPath)               The path of the directory that contains to NuGet.exe
+        $(NuProjToolPath)              The path of the directory that contains to NuGet.exe
         $(NuGetToolExe)                The name of NuGet.exe
 
     =================================================================================================================== -->
@@ -199,7 +199,7 @@
              Condition="!Exists('$(OutDir)')" />
     <NuGetPack OutputDirectory="$(OutDir)"
                Symbols="$(GenerateSymbolPackage)"
-               ToolPath="$(NuGetToolPath)"
+               ToolPath="$(NuProjToolPath)"
                ToolExe="$(NuGetToolExe)"
                NuSpecPath="$(NuSpecPath)"/>
   </Target>
