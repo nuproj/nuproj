@@ -48,6 +48,7 @@
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="GenerateNuSpec" />
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="NuGetPack" />
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="AssignTargetFramework" />
+  <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="ReadPackagesConfig" />
 
   <!--
     ===================================================================================================================
@@ -221,11 +222,21 @@
           DependsOnTargets="GetFiles;GetFileDependencies">
 
       <ItemGroup>
+        <!-- 
+            We create a new item group where the identity is the simple file name
+            so that we can filter out the dependencies.
+        -->
         <_FileTargetPath Include="@(File->'%(FileName)%(Extension)')">
             <OriginalItemSpec>%(File.Identity)</OriginalItemSpec>
         </_FileTargetPath>
+        <!-- 
+            Now we can remove all files from _FileTargetPath that come from dependencies.
+        -->
         <_FileDependencyTargetPath Include="@(FileDependency->'%(FileName)%(Extension)')" />
         <_FileTargetPath Remove="@(_FileDependencyTargetPath)" />
+        <!-- 
+            In order to produce the final list we have to restore the original item spec.
+        -->
         <PackageFile Remove="@(PackageFile)" />
         <PackageFile Include="@(_FileTargetPath->'%(OriginalItemSpec)')" />
       </ItemGroup>
@@ -262,7 +273,28 @@
     =================================================================================================================== -->
 
   <Target Name="GetFileDependencies"
+          DependsOnTargets="GetNuProjFileDependencies;GetNuGetFileDependencies"
           Returns="@(FileDependency)">
+      <ItemGroup>
+          <FileDependency Include="@(NuProjFileDependency)" />
+          <FileDependency Include="@(NuGetFileDependency)" />
+      </ItemGroup>
+  </Target>
+
+  <!--
+    ===================================================================================================================
+    GetNuProjFileDependencies
+    ===================================================================================================================
+
+    Returns the files coming from the transitive closure of all NuGet dependencies from this package.
+
+    OUTPUTS:
+        @(FileDependency)               Files coming from dependencies
+
+    =================================================================================================================== -->
+
+  <Target Name="GetNuProjFileDependencies"
+          Returns="@(NuProjFileDependency)">
       <ItemGroup>
           <_NuProjProjectReference Include="@(ProjectReference)"
                                    Condition="'%(ProjectReference.Extension)' == '.nuproj'" />
@@ -270,8 +302,29 @@
       <MSBuild Projects="@(_NuProjProjectReference)"
                Targets="GetPackageFiles">
         <Output TaskParameter="TargetOutputs"
-                ItemName="FileDependency" />
+                ItemName="NuProjFileDependency" />
       </MSBuild>
+  </Target>
+
+  <!--
+    ===================================================================================================================
+    GetNuGetFileDependencies
+    ===================================================================================================================
+
+    Returns the files coming from the transitive closure of all NuGet dependencies from this package.
+
+    OUTPUTS:
+        @(NuGetFileDependency)               Files coming from dependencies
+
+    =================================================================================================================== -->
+
+  <Target Name="GetNuGetFileDependencies"
+          DependsOnTargets="GetNuGetPackageDependencies"
+          Returns="@(NuGetFileDependency)">
+      <ItemGroup>
+        <NuGetFileDependency Include="%(NuGetDependency.PackageDirectoryPath)\**\*"
+                             Condition="'%(NuGetDependency.PackageDirectoryPath)' != ''" />
+      </ItemGroup>
   </Target>
 
   <!--
@@ -287,7 +340,28 @@
     =================================================================================================================== -->
 
   <Target Name="GetPackageDependencies"
+          DependsOnTargets="GetNuProjPackageDependencies;GetNuGetPackageDependencies"
           Returns="@(Dependency)">
+    <ItemGroup>
+      <Dependency Include="@(NuProjDependency)" />
+      <Dependency Include="@(NuGetDependency)" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    ===================================================================================================================
+    GetNuProjPackageDependencies
+    ===================================================================================================================
+
+    Get the direct package dependencies that come from other .nuproj files.
+
+    OUTPUTS:
+        @(NuProjDependency)               The NuGet dependencies of this package.
+
+    =================================================================================================================== -->
+
+  <Target Name="GetNuProjPackageDependencies"
+          Returns="@(NuProjDependency)">
       <ItemGroup>
           <_NuProjProjectReference Include="@(ProjectReference)"
                                    Condition="'%(ProjectReference.Extension)' == '.nuproj'" />
@@ -295,8 +369,34 @@
       <MSBuild Projects="@(_NuProjProjectReference)"
                Targets="GetPackageIdentity">
         <Output TaskParameter="TargetOutputs"
-                ItemName="Dependency" />
+                ItemName="NuProjDependency" />
       </MSBuild>
+  </Target>
+
+  <!--
+    ===================================================================================================================
+    GetNuGetPackageDependencies
+    ===================================================================================================================
+
+    Get the direct package dependencies that come from regular, i.e. non-.nuproj NuGet dependencies.
+
+    OUTPUTS:
+        @(NuGetDependency)               The NuGet dependencies of this package.
+
+    =================================================================================================================== -->
+
+  <Target Name="GetNuGetPackageDependencies"
+          Returns="@(NuGetDependency)">
+      <ItemGroup>
+          <_PackagesConfig Include="@(ProjectReference->'%(RootDir)%(Directory)packages.config')" />
+          <_PackagesConfig Remove="@(_PackagesConfig)"
+                           Condition="!Exists(%(_PackagesConfig.Identity))" />
+      </ItemGroup>
+      <ReadPackagesConfig PackagesConfigPath="%(_PackagesConfig.Identity)"
+                          Condition="'%(_PackagesConfig.Identity)' != ''">
+        <Output TaskParameter="Packages"
+                ItemName="NuGetDependency" />
+      </ReadPackagesConfig>
   </Target>
 
   <!--
