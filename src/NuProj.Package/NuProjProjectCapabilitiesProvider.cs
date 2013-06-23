@@ -32,7 +32,7 @@ namespace NuProj.ProjectSystem
         /// <value>A sequence, possibly empty but never null.</value>
         public Task<IEnumerable<string>> GetCapabilitiesAsync()
         {
-            return Task.FromResult<IEnumerable<string>>(new[] { CapabilityName, "CPS" });
+            return Task.FromResult<IEnumerable<string>>(new[] { CapabilityName, "ReferencesFolder", "CPS" });
         }
     }
 }

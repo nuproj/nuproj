@@ -49,6 +49,12 @@
         <File Source="$(var.SolutionDir)NuProj.Package\Rules\ProjectItemsSchema.xaml" />
       </Component>
       <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\ProjectReference.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\ResolvedProjectReference.xaml" />
+      </Component>
+      <Component>
         <File Source="$(var.SolutionDir)NuProj.Package\Rules\scc.xaml" />
       </Component>
     </ComponentGroup>

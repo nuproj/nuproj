@@ -26,14 +26,14 @@ namespace NuProj.ProjectSystem
             {
                 tree = tree.SetIcon(Resources.ProjectIcon);
             }
-            else if (tree.Capabilities.Contains(ProjectTreeCapabilities.ReferencesFolder))
-            {
-                if (tree.Children.Count == 0)
-                {
-                    IProjectTree node = this.TreeFactory.Value.NewTree("CustomProjectTest", icon: null, expandedIcon: null, visible: true, capabilities: new string[] { ProjectTreeCapabilities.AlwaysCopyable });
-                    tree = tree.Add(node).Parent;
-                }
-            }
+            //else if (tree.Capabilities.Contains(ProjectTreeCapabilities.Reference))
+            //{
+            //    if (tree.Children.Count == 0)
+            //    {
+            //        IProjectTree node = this.TreeFactory.Value.NewTree("CustomProjectTest", icon: null, expandedIcon: null, visible: true, capabilities: new string[] { ProjectTreeCapabilities.AlwaysCopyable });
+            //        tree = tree.Add(node).Parent;
+            //    }
+            //}
 
             return tree.Root;
         }

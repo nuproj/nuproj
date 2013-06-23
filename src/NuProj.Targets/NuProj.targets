@@ -25,9 +25,17 @@
                                  $(NuProjRulesDir)\content.xaml">
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\ResolvedProjectReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\ProjectReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <ProjectCapability Include="ProjectReferences" />
   </ItemGroup>
 
-  <PropertyGroup>
+  <PropertyGroup> 
     <AvailablePlatforms>Any CPU,x86,x64,ARM</AvailablePlatforms>
   </PropertyGroup>
 
@@ -130,6 +138,29 @@
                                         Condition="'%(ProjectReference.Extension)' != '.nuproj'" />
         </ItemGroup>
     </Target>
+
+  <!--
+    ===================================================================================================================
+    ResolveProjectReferencesDesignTime
+    ===================================================================================================================
+
+    This target is called by Visual Studio to get the project references
+
+    OUTPUTS:
+        @(_ResolvedProjectReference)         The resolved project references
+
+    =================================================================================================================== -->
+
+  <Target Name="ResolveProjectReferencesDesignTime"
+          Returns="@(_ResolvedProjectReference)">
+    <ItemGroup>
+      <_ResolvedProjectReference Include="@(ProjectReference->'%(FullPath)')"
+                                 Condition="Exists('%(FullPath)')">
+        <OriginalItemSpec>%(Identity)</OriginalItemSpec>
+        <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+      </_ResolvedProjectReference>
+    </ItemGroup>
+  </Target>
 
   <!--
     ===================================================================================================================

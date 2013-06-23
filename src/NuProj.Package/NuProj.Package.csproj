@@ -136,6 +136,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ValidProjectReferenceChecker.cs" />
     <Compile Include="MyConfiguredProject.cs" />
     <Compile Include="MyUnconfiguredProject.cs" />
     <Compile Include="NewProjectInitializer.cs" />
@@ -218,6 +219,18 @@
   </ItemGroup>
   <ItemGroup>
     <XamlPropertyRule Include="Rules\scc.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="Rules\ProjectReference.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="Rules\ResolvedProjectReference.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
