@@ -3,6 +3,26 @@
 
   <Import Project="$(CustomBeforeNuProjTargets)" Condition="'$(CustomBeforeNuProjTargets)' != '' and Exists('$(CustomBeforeNuProjTargets)')"/>
 
+  <PropertyGroup>
+    <NuProjRulesDir>$(MSBuildThisFileDirectory)Rules\</NuProjRulesDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\general.xaml">
+      <Context>Project;File</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\general.browseobject.xaml">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\folder.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <AvailablePlatforms>Any CPU,x86,x64,ARM</AvailablePlatforms>
+  </PropertyGroup>
+
   <!--
       NUSPEC PATH
   -->

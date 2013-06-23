@@ -7,8 +7,9 @@
              Absent="disallow"
              Level="1">
       <ComponentGroupRef Id="MSBuildIntegration" />
+      <ComponentGroupRef Id="Rules" />
     </Feature>
-    <ComponentGroup Id="MSBuildIntegration" Directory="INSTALLDIR">
+    <ComponentGroup Id="MSBuildIntegration" Directory="NuProj">
       <Component>
         <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.exe" />
       </Component>
@@ -26,6 +27,17 @@
       </Component>
       <Component>
         <File Source="$(var.NuProj.Tasks.TargetDir)Microsoft.Web.XmlTransform.dll" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="Rules" Directory="Rules">
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\folder.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\general.browseobject.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\general.xaml" />
       </Component>
     </ComponentGroup>
   </Fragment>

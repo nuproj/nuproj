@@ -25,7 +25,9 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="MSBuild" Name="MSBuild">
-          <Directory Id="INSTALLDIR" Name="$(var.ProductName)" />
+          <Directory Id="NuProj" Name="$(var.ProductName)">
+            <Directory Id="Rules" Name="Rules" />
+          </Directory>
         </Directory>
       </Directory>
     </Directory>
