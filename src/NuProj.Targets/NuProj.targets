@@ -11,6 +11,9 @@
     <PropertyPageSchema Include="$(NuProjRulesDir)\ProjectItemsSchema.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\scc.xaml;">
+      <Context>Invisible</Context>
+    </PropertyPageSchema>
     <PropertyPageSchema Include="$(NuProjRulesDir)\general.xaml">
       <Context>Project;File</Context>
     </PropertyPageSchema>

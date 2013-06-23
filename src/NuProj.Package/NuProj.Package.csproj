@@ -215,6 +215,12 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
   </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="Rules\scc.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>
