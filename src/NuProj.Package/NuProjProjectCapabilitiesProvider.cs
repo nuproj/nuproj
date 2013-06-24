@@ -1,16 +1,17 @@
-﻿using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
+
 namespace NuProj.ProjectSystem
 {
     [Export(typeof(IProjectCapabilitiesProvider))]
-    [SupportsFileExtension("." + NuProjPackagePackage.ProjectExtension )]
+    [SupportsFileExtension("." + NuProjPackage.ProjectExtension )]
     internal class CustomProjectCapabilitiesProvider : IProjectCapabilitiesProvider
     {
         /// <summary>

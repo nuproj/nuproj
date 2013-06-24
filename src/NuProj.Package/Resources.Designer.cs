@@ -59,5 +59,15 @@ namespace NuProj.ProjectSystem {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ProjectIcon {
+            get {
+                object obj = ResourceManager.GetObject("ProjectIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

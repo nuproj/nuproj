@@ -15,20 +15,16 @@ namespace NuProj.ProjectSystem
 {
     [Export]
     [PartMetadata(ProjectCapabilities.Requires, CustomProjectCapabilitiesProvider.CapabilityName)]
-    [ProjectTypeRegistration(NuProjPackagePackage.ProjectTypeGuid,
+    [ProjectTypeRegistration(NuProjPackage.ProjectTypeGuid,
                              "NuGet",
                              "#2",
-                             ProjectExtension,
-                             Language,
-                             NuProjPackagePackage.PackageGuid,
-                             PossibleProjectExtensions = ProjectExtension,
+                             NuProjPackage.ProjectExtension,
+                             NuProjPackage.ProjectLanguage,
+                             NuProjPackage.PackageGuid,
+                             PossibleProjectExtensions = NuProjPackage.ProjectExtension,
                              ProjectTemplatesDir=@"..\..\Templates\Projects\NuProj")]
     internal class MyUnconfiguredProject
     {
-        internal const string ProjectExtension = "nuproj";
-
-        internal const string Language = "NuProj";
-
         private object syncObject = new object();
 
         private MyConfiguredProjectImporter configuredProjectImporter;

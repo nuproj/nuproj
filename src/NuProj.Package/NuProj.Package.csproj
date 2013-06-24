@@ -147,7 +147,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="NuProjPackagePackage.cs" />
+    <Compile Include="NuProjPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeModifier.cs" />
     <None Include="Templates\Projects\NuProj\NuProj.nuproj">
@@ -175,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Package.ico" />
+    <None Include="Resources\ProjectIcon.bmp" />
     <VSTemplate Include="Templates\Projects\NuProj\NuProj.vstemplate">
       <Culture>127</Culture>
     </VSTemplate>
