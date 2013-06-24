@@ -151,7 +151,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="NuProjPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TreeModifier.cs" />
+    <Compile Include="ProjectTreeModifier.cs" />
     <None Include="Templates\Projects\NuProj\NuProj.nuproj">
       <SubType>Designer</SubType>
     </None>
