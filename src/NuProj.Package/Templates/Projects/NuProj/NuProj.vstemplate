@@ -5,7 +5,7 @@
     <Description>NuGet Package Description</Description>
     <Icon>NuProj.ico</Icon>
     <TemplateID>NuGet.Package.Empty</TemplateID>
-    <ProjectType>NuProj</ProjectType>
+    <ProjectType>NuGet</ProjectType>
     <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
     <SortOrder>12</SortOrder>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>

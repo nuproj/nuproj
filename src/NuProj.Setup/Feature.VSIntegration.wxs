@@ -18,7 +18,7 @@
     <DirectoryRef Id="TARGETDIR">
       <Directory Id="VS2013_EXTENSIONS_DIR">
         <Directory Id="VS120.NuGet" Name="NuGet">
-          <Directory Id="VS120.NuProj" Name="NuProj" />
+          <Directory Id="VS120.NuProj" Name="NuGet" />
         </Directory>
       </Directory>
       <Directory Id="VS2013_PROJECTTEMPLATES_DIR">
@@ -42,7 +42,7 @@
     </ComponentGroup>
     <ComponentGroup Id="VS120.ProjectTemplates.NuGet" Directory="VS120.ProjectTemplates.NuGet">
       <Component Id="NuProj.zip" Guid="cf18641b-418b-4e66-8abf-77b6209aaf76">
-        <File Source="$(var.NuProj.Package.TargetDir)ProjectTemplates\NuProj\127\NuProj.zip" />
+        <File Source="$(var.NuProj.Package.TargetDir)ProjectTemplates\NuGet\127\NuProj.zip" />
       </Component>
     </ComponentGroup>
   </Fragment>

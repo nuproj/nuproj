@@ -15,7 +15,7 @@ namespace NuProj.ProjectSystem
         public const string PackageGuid = "267c66da-0c67-4933-9ae7-a20c53608e49";
         public const string ProjectTypeGuid = "ff286327-c783-4f7a-ab73-9bcbad0d4460";
         public const string ProjectExtension = "nuproj";
-        public const string ProjectLanguage = "NuProj";
+        public const string ProjectLanguage = "NuGet";
 
         public NuProjPackage()
         {
