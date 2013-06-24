@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace NuProj.ProjectSystem
@@ -15,7 +10,7 @@ namespace NuProj.ProjectSystem
     /// </summary>
     [Export]
     [PartMetadata(ProjectCapabilities.Requires, Capabilities.NuProj)]
-    internal partial class ProjectProperties
+    internal sealed partial class ProjectProperties
     {
         /// <summary>
         /// The configured project.

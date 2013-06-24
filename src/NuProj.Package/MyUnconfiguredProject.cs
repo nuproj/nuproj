@@ -23,7 +23,7 @@ namespace NuProj.ProjectSystem
                              NuProjPackage.PackageGuid,
                              PossibleProjectExtensions = NuProjPackage.ProjectExtension,
                              ProjectTemplatesDir=@"..\..\Templates\Projects\NuProj")]
-    internal class MyUnconfiguredProject
+    internal sealed class MyUnconfiguredProject
     {
         private object syncObject = new object();
 

@@ -14,7 +14,7 @@ namespace NuProj.ProjectSystem
 {
     [Export]
     [PartMetadata(ProjectCapabilities.Requires, Capabilities.NuProj)]
-    internal class MyConfiguredProject
+    internal sealed class MyConfiguredProject
     {
         [Import, SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "MEF")]
         internal ConfiguredProject ConfiguredProject { get; private set; }

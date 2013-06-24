@@ -16,13 +16,6 @@ namespace NuProj.ProjectSystem
     internal sealed class NuProjProjectCapabilitiesProvider : IProjectCapabilitiesProvider
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NuProjProjectCapabilitiesProvider"/> class.
-        /// </summary>
-        public NuProjProjectCapabilitiesProvider()
-        {
-        }
-
-        /// <summary>
         /// Gets the capabilities that fit the project in context that this provider contributes.
         /// </summary>
         /// <value>A sequence, possibly empty but never null.</value>

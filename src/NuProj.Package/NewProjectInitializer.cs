@@ -13,7 +13,7 @@ namespace NuProj.ProjectSystem
 {
     [Export(typeof(INewProjectInitializationProvider))]
     [PartMetadata(ProjectCapabilities.Requires, Capabilities.NuProj)]
-    internal class NewProjectInitializer : INewProjectInitializationProvider
+    internal sealed class NewProjectInitializer : INewProjectInitializationProvider
     {
         [Import]
         private UnconfiguredProject UnconfiguredProject { get; set; }
