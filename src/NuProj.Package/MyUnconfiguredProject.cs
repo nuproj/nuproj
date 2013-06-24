@@ -69,9 +69,6 @@ namespace NuProj.ProjectSystem
         [Import]
         private Lazy<IActiveConfiguredProjectBrokerService> ActiveConfiguredProjectBrokerService { get; set; }
 
-        [Import(typeof(IVsProject))]
-        private IVsHierarchy ProjectHierarchy { get; set; }
-
         private void Initialize()
         {
             lock (this.syncObject)
