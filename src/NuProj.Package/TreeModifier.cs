@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities.Designers;
 namespace NuProj.ProjectSystem
 {
     [Export(typeof(IProjectTreeModifier))]
-    [PartMetadata(ProjectCapabilities.Requires, NuProjProjectCapabilitiesProvider.CapabilityName)]
+    [PartMetadata(ProjectCapabilities.Requires, Capabilities.NuProj)]
     internal class TreeModifier : IProjectTreeModifier
     {
         [Import]

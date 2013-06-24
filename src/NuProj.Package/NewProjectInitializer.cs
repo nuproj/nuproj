@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 namespace NuProj.ProjectSystem
 {
     [Export(typeof(INewProjectInitializationProvider))]
-    [PartMetadata(ProjectCapabilities.Requires, NuProjProjectCapabilitiesProvider.CapabilityName)]
+    [PartMetadata(ProjectCapabilities.Requires, Capabilities.NuProj)]
     internal class NewProjectInitializer : INewProjectInitializationProvider
     {
         [Import]

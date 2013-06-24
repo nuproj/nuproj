@@ -7,18 +7,14 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.Collections.Immutable;
 
 namespace NuProj.ProjectSystem
 {
     [Export(typeof(IProjectCapabilitiesProvider))]
     [SupportsFileExtension("." + NuProjPackage.ProjectExtension )]
-    internal class NuProjProjectCapabilitiesProvider : IProjectCapabilitiesProvider
+    internal sealed class NuProjProjectCapabilitiesProvider : IProjectCapabilitiesProvider
     {
-        /// <summary>
-        /// The project capability itself to include for matching project types.
-        /// </summary>
-        internal const string CapabilityName = "NuProj";
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NuProjProjectCapabilitiesProvider"/> class.
         /// </summary>
@@ -32,7 +28,7 @@ namespace NuProj.ProjectSystem
         /// <value>A sequence, possibly empty but never null.</value>
         public Task<IEnumerable<string>> GetCapabilitiesAsync()
         {
-            return Task.FromResult<IEnumerable<string>>(new[] { CapabilityName, "ReferencesFolder", "CPS" });
+            return Task.FromResult<IEnumerable<string>>(Capabilities.All);
         }
     }
 }

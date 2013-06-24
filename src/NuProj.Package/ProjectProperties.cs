@@ -14,7 +14,7 @@ namespace NuProj.ProjectSystem
     /// Provides rule-based property access.
     /// </summary>
     [Export]
-    [PartMetadata(ProjectCapabilities.Requires, NuProjProjectCapabilitiesProvider.CapabilityName)]
+    [PartMetadata(ProjectCapabilities.Requires, Capabilities.NuProj)]
     internal partial class ProjectProperties
     {
         /// <summary>

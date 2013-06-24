@@ -12,7 +12,7 @@ namespace NuProj.ProjectSystem
 {
     [Export(typeof(IValidProjectReferenceChecker))]
     [OrderPrecedence(1000)]
-    [PartMetadata(ProjectCapabilities.Requires, NuProjProjectCapabilitiesProvider.CapabilityName)]
+    [PartMetadata(ProjectCapabilities.Requires, Capabilities.NuProj)]
     internal sealed class ValidProjectReferenceChecker : IValidProjectReferenceChecker
     {
         // This import must be present so that this part applies to a specific project.

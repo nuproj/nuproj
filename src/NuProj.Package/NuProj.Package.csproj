@@ -136,6 +136,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Capabilities.cs" />
     <Compile Include="ValidProjectReferenceChecker.cs" />
     <Compile Include="MyConfiguredProject.cs" />
     <Compile Include="MyUnconfiguredProject.cs" />

@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 namespace NuProj.ProjectSystem
 {
     [Export]
-    [PartMetadata(ProjectCapabilities.Requires, NuProjProjectCapabilitiesProvider.CapabilityName)]
+    [PartMetadata(ProjectCapabilities.Requires, Capabilities.NuProj)]
     internal class MyConfiguredProject
     {
         [Import, SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "MEF")]
