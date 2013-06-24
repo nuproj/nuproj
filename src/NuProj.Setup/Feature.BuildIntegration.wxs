@@ -9,6 +9,17 @@
       <ComponentGroupRef Id="MSBuildIntegration" />
       <ComponentGroupRef Id="Rules" />
     </Feature>
+
+    <DirectoryRef Id="TARGETDIR">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="MSBuild" Name="MSBuild">
+          <Directory Id="NuProj" Name="NuProj">
+            <Directory Id="Rules" Name="Rules" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+
     <ComponentGroup Id="MSBuildIntegration" Directory="NuProj">
       <Component>
         <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.exe" />

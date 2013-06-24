@@ -22,17 +22,10 @@
 
     <MediaTemplate EmbedCab="yes" />
 
-    <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
-        <Directory Id="MSBuild" Name="MSBuild">
-          <Directory Id="NuProj" Name="$(var.ProductName)">
-            <Directory Id="Rules" Name="Rules" />
-          </Directory>
-        </Directory>
-      </Directory>
-    </Directory>
+    <Directory Id="TARGETDIR" Name="SourceDir" />
 
     <FeatureRef Id="MSBuildIntegration" />
+    <FeatureRef Id="VSIntegration" />
     <FeatureRef Id="Templates_VS2008" />
     <FeatureRef Id="Templates_VS2010" />
     <FeatureRef Id="Templates_VS2012" />
