@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 namespace NuProj.ProjectSystem
 {
     [Export]
-    [PartMetadata(ProjectCapabilities.Requires, CustomProjectCapabilitiesProvider.CapabilityName)]
+    [PartMetadata(ProjectCapabilities.Requires, NuProjProjectCapabilitiesProvider.CapabilityName)]
     [ProjectTypeRegistration(NuProjPackage.ProjectTypeGuid,
                              "NuGet",
                              "#2",

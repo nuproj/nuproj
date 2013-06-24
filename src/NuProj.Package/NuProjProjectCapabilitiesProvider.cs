@@ -12,7 +12,7 @@ namespace NuProj.ProjectSystem
 {
     [Export(typeof(IProjectCapabilitiesProvider))]
     [SupportsFileExtension("." + NuProjPackage.ProjectExtension )]
-    internal class CustomProjectCapabilitiesProvider : IProjectCapabilitiesProvider
+    internal class NuProjProjectCapabilitiesProvider : IProjectCapabilitiesProvider
     {
         /// <summary>
         /// The project capability itself to include for matching project types.
@@ -20,9 +20,9 @@ namespace NuProj.ProjectSystem
         internal const string CapabilityName = "NuProj";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomProjectCapabilitiesProvider"/> class.
+        /// Initializes a new instance of the <see cref="NuProjProjectCapabilitiesProvider"/> class.
         /// </summary>
-        public CustomProjectCapabilitiesProvider()
+        public NuProjProjectCapabilitiesProvider()
         {
         }
 
