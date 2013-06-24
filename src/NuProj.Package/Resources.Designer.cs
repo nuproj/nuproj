@@ -63,9 +63,9 @@ namespace NuProj.ProjectSystem {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ProjectIcon {
+        internal static System.Drawing.Bitmap NuProj {
             get {
-                object obj = ResourceManager.GetObject("ProjectIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("NuProj", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

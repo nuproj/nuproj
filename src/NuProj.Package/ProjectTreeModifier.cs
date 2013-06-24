@@ -17,7 +17,7 @@ namespace NuProj.ProjectSystem
         public IProjectTree ApplyModifications(IProjectTree tree, IProjectTreeProvider projectTreeProvider)
         {
             if (tree.Capabilities.Contains(ProjectTreeCapabilities.ProjectRoot))
-                tree = tree.SetIcon(Resources.ProjectIcon);
+                tree = tree.SetIcon(Resources.NuProj);
 
             return tree;
         }

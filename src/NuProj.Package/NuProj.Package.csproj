@@ -176,12 +176,12 @@
     <None Include="Key.snk" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Package.ico" />
-    <None Include="Resources\ProjectIcon.bmp" />
+    <Resource Include="..\Icons\NuProj.png">
+      <Link>Resources\NuProj.png</Link>
+    </Resource>
     <VSTemplate Include="Templates\Projects\NuProj\NuProj.vstemplate">
       <Culture>127</Culture>
     </VSTemplate>
-    <Resource Include="Templates\Projects\NuProj\NuProj.ico" />
     <None Include="Templates\Projects\NuProj\Readme.txt" />
   </ItemGroup>
   <ItemGroup>

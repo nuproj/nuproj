@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
   <TemplateData>
-    <Name>NuGet Package</Name>
-    <Description>NuGet Package Description</Description>
-    <Icon>NuProj.ico</Icon>
+    <Name Package="{267c66da-0c67-4933-9ae7-a20c53608e49}" ID="200" />
+    <Description Package="{267c66da-0c67-4933-9ae7-a20c53608e49}" ID="201" />
+    <Icon Package="{267c66da-0c67-4933-9ae7-a20c53608e49}" ID="400" />
     <TemplateID>NuGet.Package.Empty</TemplateID>
     <ProjectType>NuGet</ProjectType>
     <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
-    <SortOrder>12</SortOrder>
+    <SortOrder>800</SortOrder>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
     <CreateNewFolder>true</CreateNewFolder>
     <DefaultName>NuGetPackage</DefaultName>
