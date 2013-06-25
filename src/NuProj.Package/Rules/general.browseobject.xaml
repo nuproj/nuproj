@@ -21,6 +21,6 @@
 
     <StringProperty Name="Id" DisplayName="Package ID" />
     <StringProperty Name="Version" DisplayName="Package Version" />
-    <StringProperty Name="Title" DisplayName="Package Title" />
+    <StringProperty Name="Title" DisplayName="Title" />
 
 </Rule>

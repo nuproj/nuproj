@@ -55,7 +55,7 @@
         </BoolProperty.DataSource>
     </BoolProperty>
 
-    <!-- NuGet Pacakge Section -->
+    <!-- NuGet Package Section -->
 
     <StringProperty Name="Id" DisplayName="Package ID">
         <StringProperty.DataSource>
@@ -69,19 +69,19 @@
         </StringProperty.DataSource>
     </StringProperty>
 
-    <StringProperty Name="Title" DisplayName="Package Title">
+    <StringProperty Name="Title" DisplayName="Title">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
         </StringProperty.DataSource>
     </StringProperty>
 
-    <StringProperty Name="Authors" DisplayName="Package Authors">
+    <StringProperty Name="Authors" DisplayName="Authors">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
         </StringProperty.DataSource>
     </StringProperty>
 
-    <StringProperty Name="Owners" DisplayName="Package Owners">
+    <StringProperty Name="Owners" DisplayName="Owners">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
         </StringProperty.DataSource>
