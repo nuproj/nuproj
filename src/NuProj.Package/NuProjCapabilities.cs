@@ -5,11 +5,11 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace NuProj.ProjectSystem
 {
-    internal static class Capabilities
+    internal static class NuProjCapabilities
     {
         public const string NuProj = "NuProj";
 
-        public static readonly ImmutableHashSet<string> All = new[]
+        public static readonly ImmutableHashSet<string> ProjectSystem = new[]
         {
             NuProj,
             ProjectCapabilities.ReferencesFolder,

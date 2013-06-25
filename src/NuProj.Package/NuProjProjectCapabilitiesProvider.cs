@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.Collections.Immutable;
 
 namespace NuProj.ProjectSystem
 {
@@ -21,7 +18,7 @@ namespace NuProj.ProjectSystem
         /// <value>A sequence, possibly empty but never null.</value>
         public Task<IEnumerable<string>> GetCapabilitiesAsync()
         {
-            return Task.FromResult<IEnumerable<string>>(Capabilities.All);
+            return Task.FromResult<IEnumerable<string>>(NuProjCapabilities.ProjectSystem);
         }
     }
 }

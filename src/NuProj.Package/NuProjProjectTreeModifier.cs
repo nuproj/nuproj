@@ -8,8 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities.Designers;
 namespace NuProj.ProjectSystem
 {
     [Export(typeof(IProjectTreeModifier))]
-    [PartMetadata(ProjectCapabilities.Requires, Capabilities.NuProj)]
-    internal sealed class ProjectTreeModifier : IProjectTreeModifier
+    [PartMetadata(ProjectCapabilities.Requires, NuProjCapabilities.NuProj)]
+    internal sealed class NuProjProjectTreeModifier : IProjectTreeModifier
     {
         [Import]
         public Lazy<IProjectTreeFactory> TreeFactory { get; set; }

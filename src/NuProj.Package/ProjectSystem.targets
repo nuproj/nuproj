@@ -16,7 +16,7 @@
             <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
             <OutputPath>$(IntermediateOutputPath)</OutputPath>
             <Namespace>NuProj.ProjectSystem</Namespace>
-            <RuleInjectionClassName>ProjectProperties</RuleInjectionClassName>
+            <RuleInjectionClassName>NuProjProjectProperties</RuleInjectionClassName>
             <RuleInjection>ProjectLevel</RuleInjection>
             <CreateFallbackRule>false</CreateFallbackRule> 
         </XamlPropertyRule>

@@ -17,7 +17,8 @@
     <RootNamespace>NuProj.ProjectSystem</RootNamespace>
     <AssemblyName>NuProj.ProjectSystem</AssemblyName>
     <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -136,22 +137,24 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Capabilities.cs" />
-    <Compile Include="ValidProjectReferenceChecker.cs" />
-    <Compile Include="MyConfiguredProject.cs" />
-    <Compile Include="MyUnconfiguredProject.cs" />
-    <Compile Include="NewProjectInitializer.cs" />
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="NuProjCapabilities.cs" />
+    <Compile Include="NuProjValidProjectReferenceChecker.cs" />
+    <Compile Include="NuProjConfiguredProject.cs" />
+    <Compile Include="NuProjUnconfiguredProject.cs" />
     <Compile Include="NuProjProjectCapabilitiesProvider.cs" />
-    <Compile Include="ProjectProperties.cs" />
+    <Compile Include="NuProjProjectProperties.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="NuProjPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProjectTreeModifier.cs" />
+    <Compile Include="NuProjProjectTreeModifier.cs" />
     <None Include="Templates\Projects\NuProj\NuProj.nuproj">
       <SubType>Designer</SubType>
     </None>
@@ -171,9 +174,6 @@
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Key.snk" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="..\Icons\NuProj.png">

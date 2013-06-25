@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Threading.Tasks;
 
 using Microsoft.Collections.Immutable;
@@ -14,8 +13,8 @@ namespace NuProj.ProjectSystem
 {
     [Export(typeof(IValidProjectReferenceChecker))]
     [OrderPrecedence(1000)]
-    [PartMetadata(ProjectCapabilities.Requires, Capabilities.NuProj)]
-    internal sealed class ValidProjectReferenceChecker : IValidProjectReferenceChecker
+    [PartMetadata(ProjectCapabilities.Requires, NuProjCapabilities.NuProj)]
+    internal sealed class NuProjValidProjectReferenceChecker : IValidProjectReferenceChecker
     {
         // This import must be present so that this part applies to a specific project.
         [Import]
