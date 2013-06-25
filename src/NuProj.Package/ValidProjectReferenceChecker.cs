@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Threading.Tasks;
 
 using Microsoft.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Designers;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace NuProj.ProjectSystem
 {
@@ -22,7 +24,8 @@ namespace NuProj.ProjectSystem
 
         public Task<SupportedCheckResult> CanAddProjectReferenceAsync(object referencedProject)
         {
-            return Task.FromResult(SupportedCheckResult.Unknown);
+            var result = CanAddProjectReference(referencedProject);
+            return Task.FromResult(result);
         }
 
         public Task<CanAddProjectReferencesResult> CanAddProjectReferencesAsync(IImmutableSet<object> referencedProjects)
@@ -34,7 +37,8 @@ namespace NuProj.ProjectSystem
 
             foreach (object referencedProject in referencedProjects)
             {
-                results = results.Add(referencedProject, SupportedCheckResult.Unknown);
+                var result = CanAddProjectReference(referencedProject);
+                results = results.Add(referencedProject, result);
             }
 
             return Task.FromResult(new CanAddProjectReferencesResult(results, null));
@@ -43,6 +47,49 @@ namespace NuProj.ProjectSystem
         public Task<SupportedCheckResult> CanBeReferencedAsync(object referencingProject)
         {
             return Task.FromResult(SupportedCheckResult.NotSupported);
+        }
+
+        private static SupportedCheckResult CanAddProjectReference(object referencedProject)
+        {
+            return CanReference(referencedProject)
+                   ? SupportedCheckResult.Supported
+                   : SupportedCheckResult.Unknown;
+        }
+
+        private static bool CanReference(object referencedProject)
+        {
+            var r = referencedProject as IVsProjectReference;
+            return r != null && 
+                   CanReference(r.FullPath);
+        }
+
+        private static bool CanReference(string path)
+        {
+            return IsNuProj(path) ||
+                   HasGetNuGetOutputAndTargetFrameworkInformationTarget(path);
+        }
+
+        private static bool IsNuProj(string path)
+        {
+            return HasExtension(path, "." + NuProjPackage.ProjectExtension);
+        }
+
+        private static bool HasGetNuGetOutputAndTargetFrameworkInformationTarget(string path)
+        {
+            // Here we are cheating like no tomorrow. Ideally, we'd actually inspect in the project file and check
+            // whether it actually has an MSBuild target named "GetNuGetOutputAndTargetFrameworkInformation".
+            //
+            // For now we'll just whitelist the known project files C#, VB and F#.
+            return HasExtension(path, ".csproj") ||
+                   HasExtension(path, ".vbproj") ||
+                   HasExtension(path, ".fsproj");
+        }
+
+        private static bool HasExtension(string path, string extension)
+        {
+            return path != null &&
+                   extension != null &&
+                   path.EndsWith(extension, StringComparison.OrdinalIgnoreCase);
         }
     }
 }
