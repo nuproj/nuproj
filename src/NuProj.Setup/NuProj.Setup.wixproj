@@ -25,10 +25,7 @@
   <ItemGroup>
     <Compile Include="Feature.BuildIntegration.wxs" />
     <Compile Include="Feature.VSIntegration.wxs" />
-    <Compile Include="Feature.Templates.VS2008.wxs" />
-    <Compile Include="Feature.Templates.VS2010.wxs" />
     <Compile Include="Product.wxs" />
-    <Compile Include="Feature.Templates.VS2012.wxs" />
     <Compile Include="VS2013.wxs" />
   </ItemGroup>
   <ItemGroup>

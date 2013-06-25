@@ -26,9 +26,6 @@
 
     <FeatureRef Id="MSBuildIntegration" />
     <FeatureRef Id="VSIntegration" />
-    <FeatureRef Id="Templates_VS2008" />
-    <FeatureRef Id="Templates_VS2010" />
-    <FeatureRef Id="Templates_VS2012" />
 
     <WixVariable Id="WixUILicenseRtf"
                  Value="Resources\License.rtf" />
