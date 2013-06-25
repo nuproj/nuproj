@@ -2,6 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Fragment>
 
+    <PropertyRef Id="VS2013_ROOT_FOLDER" />
     <PropertyRef Id="VS2013_EXTENSIONS_DIR" />
     <PropertyRef Id="VS2013_PROJECTTEMPLATES_DIR" />
     <CustomActionRef Id="VS2013Setup" />
@@ -9,8 +10,8 @@
     <Feature Id="VSIntegration"
              Title="Visual Studio Integration"
              AllowAdvertise="no"
-             Absent="disallow"
-             Level="1">
+             Level="0">
+      <Condition Level="1">VS2013_ROOT_FOLDER</Condition>
       <ComponentGroupRef Id="NuProjProjectSystem" />
       <ComponentGroupRef Id="VS120.ProjectTemplates.NuGet" />
     </Feature>
