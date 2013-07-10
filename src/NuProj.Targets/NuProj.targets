@@ -149,9 +149,14 @@
     =================================================================================================================== -->
 
   <Target Name="GenerateNuSpec"
-          Inputs="$(MSBuildAllProjects)"
+          Inputs="@(PackageFile)"
           Outputs="$(NuSpecPath)"
           DependsOnTargets="GetPackageDependencies;GetPackageFiles">
+    <!-- Please Note:
+         In order to avoid incremental build issues this target will always run.
+         However, the task will make sure that it doesn't touch the file if the
+         contents it would generate are identical to a previously generated
+         nuspec. -->
     <GenerateNuSpec OutputFileName="$(NuSpecPath)"
                     Id="$(Id)"
                     Version="$(Version)"

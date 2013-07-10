@@ -79,12 +79,27 @@ namespace NuProj.Tasks
         private void WriteNuSpecFile()
         {
             var document = CreateNuSpecDocument();
+            if (!IsDifferent(document))
+            {
+                Log.LogMessage("Skipping generation of .nuspec because contents are identical.");
+                return;
+            }
 
             var directory = Path.GetDirectoryName(OutputFileName);
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
             document.Save(OutputFileName);
+        }
+
+        private bool IsDifferent(XDocument newDocument)
+        {
+            if (!File.Exists(OutputFileName))
+                return true;
+
+            var oldSource = XDocument.Load(OutputFileName).ToString();
+            var newSource = newDocument.ToString();
+            return oldSource != newSource;
         }
 
         private XDocument CreateNuSpecDocument()
