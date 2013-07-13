@@ -40,6 +40,8 @@
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="NuGetPack" />
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="AssignTargetFramework" />
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="ReadPackagesConfig" />
+  <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="ReadPdbSourceFiles" />
+  <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="AssignSourceTargetPaths" />
 
   <!--
     ===================================================================================================================
@@ -142,7 +144,7 @@
   <Target Name="GenerateNuSpec"
           Inputs="@(PackageFile)"
           Outputs="$(NuSpecPath)"
-          DependsOnTargets="GetPackageDependencies;GetPackageFiles">
+          DependsOnTargets="GetPackageDependencies;GetPackageFiles;GetSourceFiles">
     <!-- Please Note:
          In order to avoid incremental build issues this target will always run.
          However, the task will make sure that it doesn't touch the file if the
@@ -393,6 +395,38 @@
         <Output TaskParameter="Packages"
                 ItemName="NuGetDependency" />
       </ReadPackagesConfig>
+  </Target>
+
+
+  <!-- 
+    ===================================================================================================================
+    GetSourceFiles
+    =================================================================================================================== -->
+
+  <Target Name="GetSourceFiles"
+          DependsOnTargets="GetPackageFiles"
+          Condition="'$(EmbedSourceFiles)' == 'True'"
+          Returns="@(_SourceFileWithTargetPath)">
+    <ItemGroup>
+      <_PdbFiles Include="@(PackageFile)"
+                 Condition="'%(Extension)' == '.pdb'" />
+    </ItemGroup>
+    <ReadPdbSourceFiles PdbPath="%(_PdbFiles.Identity)">
+      <Output TaskParameter="SourcePaths"
+              ItemName="_SourceFile" />
+    </ReadPdbSourceFiles>
+    <!-- Some compilers (like VB) have source files listed that don't actually exist.
+         Since we can only package existing files we'll need to exlude those files. -->
+    <ItemGroup>
+      <_SourceFile Remove="@(_SourceFile)"
+                   Condition="!Exists(%(_SourceFile.Identity))" />
+    </ItemGroup>
+    <AssignSourceTargetPaths SourceFiles="@(_SourceFile)">
+      <Output TaskParameter="SourceFilesWithTargetPath"
+              ItemName="_SourceFileWithTargetPath" />
+      <Output TaskParameter="SourceFilesWithTargetPath"
+              ItemName="PackageFile" />
+    </AssignSourceTargetPaths>
   </Target>
 
   <!--

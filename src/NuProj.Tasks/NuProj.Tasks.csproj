@@ -56,9 +56,11 @@
     </Compile>
     <Compile Include="AssignTargetFramework.cs" />
     <Compile Include="GenerateNuSpec.cs" />
+    <Compile Include="AssignSourceTargetPaths.cs" />
     <Compile Include="NuGetPack.cs" />
     <Compile Include="ReadPackagesConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadPdbSourceFiles.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\NuProj.Targets\NuProj.Extensions.targets">

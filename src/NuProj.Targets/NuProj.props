@@ -5,6 +5,7 @@
     <OutDir Condition=" '$(OutDir)' == ''" >$(MSBuildProjectDirectory)\bin\</OutDir>
     <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(MSBuildProjectDirectory)\obj\</IntermediateOutputPath>
     <GenerateSymbolPackage Condition=" '$(GenerateSymbolPackage)' == '' ">True</GenerateSymbolPackage>
+    <EmbedSourceFiles Condition=" '$(EmbedSourceFiles)' == '' ">False</EmbedSourceFiles>
     <RequireLicenseAcceptance Condition=" '$(RequireLicenseAcceptance)' == '' ">False</RequireLicenseAcceptance>
 
     <NuProjTasksPath Condition=" '$(NuProjTasksPath)' == '' ">$(MSBuildThisFileDirectory)NuProj.Tasks.dll</NuProjTasksPath>
