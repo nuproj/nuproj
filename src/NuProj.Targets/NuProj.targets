@@ -4,20 +4,11 @@
   <Import Project="$(CustomBeforeNuProjTargets)" Condition="'$(CustomBeforeNuProjTargets)' != '' and Exists('$(CustomBeforeNuProjTargets)')"/>
 
   <!--
-      DEFAULTS
-
-      Those can be overriden.
+      NUSPEC PATH
   -->
 
   <PropertyGroup>
-    <OutDir Condition=" '$(OutDir)' == ''" >$(MSBuildProjectDirectory)\bin\</OutDir>
-    <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(MSBuildProjectDirectory)\obj\</IntermediateOutputPath>
-    <NuSpecPath Condition=" '$(NuSpecPath)' == '' ">$(IntermediateOutputPath)$(Id).nuspec</NuSpecPath>
-    <GenerateSymbolPackage Condition=" '$(GenerateSymbolPackage)' == '' ">True</GenerateSymbolPackage>
-
-    <NuProjTasksPath Condition=" '$(NuProjTasksPath)' == '' ">$(MSBuildThisFileDirectory)NuProj.Tasks.dll</NuProjTasksPath>
-    <NuProjToolPath Condition=" '$(NuProjToolPath)' == '' ">$(MSBuildThisFileDirectory)</NuProjToolPath>
-    <NuGetToolExe Condition=" '$(NuGetToolExe)' == '' ">NuGet.exe</NuGetToolExe>
+    <NuSpecPath>$(IntermediateOutputPath)$(Id).nuspec</NuSpecPath>
   </PropertyGroup>
 
   <!--

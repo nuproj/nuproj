@@ -13,6 +13,7 @@
     <File Include="$(BasePath)Microsoft.Web.XmlTransform.dll" />
     <File Include="$(BasePath)NuGet.exe" />
     <File Include="$(BasePath)Additional\NuProj.targets" />
+    <File Include="$(BasePath)Additional\NuProj.props" />
     <File Include="$(BasePath)Additional\NuProj.Extensions.targets" />
   </ItemGroup>
 

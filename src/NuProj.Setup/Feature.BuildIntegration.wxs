@@ -17,6 +17,9 @@
         <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuProj.targets" />
       </Component>
       <Component>
+        <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuProj.props" />
+      </Component>
+      <Component>
         <File Source="$(var.NuProj.Tasks.TargetDir)NuProj.Tasks.dll" />
       </Component>
       <Component>

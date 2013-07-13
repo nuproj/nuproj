@@ -69,6 +69,10 @@
       <Link>Additional\NuProj.targets</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\NuProj.Targets\NuProj.props">
+      <Link>Additional\NuProj.props</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="..\NuProj.Templates\NuGetPackage.nuproj">
       <Link>Additional\NuGetPackage.nuproj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
