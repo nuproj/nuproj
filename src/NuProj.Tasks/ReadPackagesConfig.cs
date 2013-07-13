@@ -60,7 +60,7 @@ namespace NuProj.Tasks
                 candidateFolder = Path.GetDirectoryName(candidateFolder);
             }
 
-            return null;
+            return string.Empty;
         }
     }
 }
