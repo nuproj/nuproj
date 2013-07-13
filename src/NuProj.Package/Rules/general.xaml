@@ -141,4 +141,10 @@
         </StringProperty.DataSource>
     </StringProperty>
 
+    <BoolProperty Name="GenerateSymbolPackage" DisplayName="Generate Symbol Package">
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+        </BoolProperty.DataSource>
+    </BoolProperty>
+
 </Rule>
