@@ -147,4 +147,10 @@
         </BoolProperty.DataSource>
     </BoolProperty>
 
+    <BoolProperty Name="EmbedSourceFiles" DisplayName="Embed Source Files">
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+        </BoolProperty.DataSource>
+    </BoolProperty>
+
 </Rule>
