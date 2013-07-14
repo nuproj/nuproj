@@ -317,7 +317,6 @@
     =================================================================================================================== -->
 
   <Target Name="GetNuGetFileDependencies"
-          DependsOnTargets="GetNuGetPackageDependencies"
           Returns="@(NuGetFileDependency)">
       <ItemGroup>
         <NuGetFileDependency Include="%(NuGetDependency.PackageDirectoryPath)\**\*"
