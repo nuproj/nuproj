@@ -45,6 +45,31 @@
 
   <!--
     ===================================================================================================================
+    SplitProjectReferences
+    ===================================================================================================================
+
+    This target will split the project references into NuProj project references and non-NuProj references.
+
+    INPUTS:
+        @(ProjectReference)            The project references
+
+    OUTPUTS:
+        @(_NuProjProjectReference)     References to NuProj projects.
+        @(_NonNuProjProjectReference)  References to regular, i.e. non-NuProj projects.
+
+    =================================================================================================================== -->
+
+    <Target Name="SplitProjectReferences">
+        <ItemGroup>
+            <_NuProjProjectReference Include="@(ProjectReference)"
+                                     Condition="'%(ProjectReference.Extension)' == '.nuproj'" />
+            <_NonNuProjProjectReference Include="@(ProjectReference)"
+                                        Condition="'%(ProjectReference.Extension)' != '.nuproj'" />
+        </ItemGroup>
+    </Target>
+
+  <!--
+    ===================================================================================================================
     ExpandProjectReferences
     ===================================================================================================================
 
@@ -58,11 +83,8 @@
 
     =================================================================================================================== -->
 
-    <Target Name="ExpandProjectReferences">
-      <ItemGroup>
-          <_NonNuProjProjectReference Include="@(ProjectReference)"
-                                      Condition="'%(ProjectReference.Extension)' != '.nuproj'" />
-      </ItemGroup>
+    <Target Name="ExpandProjectReferences"
+            DependsOnTargets="SplitProjectReferences">
 
       <MSBuild Projects="@(_NonNuProjProjectReference)"
                Targets="GetOutputAndTargetFrameworkInformation">
@@ -292,11 +314,8 @@
     =================================================================================================================== -->
 
   <Target Name="GetNuProjFileDependencies"
-          Returns="@(NuProjFileDependency)">
-      <ItemGroup>
-          <_NuProjProjectReference Include="@(ProjectReference)"
-                                   Condition="'%(ProjectReference.Extension)' == '.nuproj'" />
-      </ItemGroup>
+          Returns="@(NuProjFileDependency)"
+          DependsOnTargets="SplitProjectReferences">
       <MSBuild Projects="@(_NuProjProjectReference)"
                Targets="GetPackageFiles">
         <Output TaskParameter="TargetOutputs"
@@ -358,11 +377,8 @@
     =================================================================================================================== -->
 
   <Target Name="GetNuProjPackageDependencies"
-          Returns="@(NuProjDependency)">
-      <ItemGroup>
-          <_NuProjProjectReference Include="@(ProjectReference)"
-                                   Condition="'%(ProjectReference.Extension)' == '.nuproj'" />
-      </ItemGroup>
+          Returns="@(NuProjDependency)"
+          DependsOnTargets="SplitProjectReferences">
       <MSBuild Projects="@(_NuProjProjectReference)"
                Targets="GetPackageIdentity">
         <Output TaskParameter="TargetOutputs"
