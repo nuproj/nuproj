@@ -267,6 +267,7 @@
          contents it would generate are identical to a previously generated
          nuspec. -->
     <GenerateNuSpec OutputFileName="$(NuSpecPath)"
+                    MinClientVersion="$(MinClientVersion)"
                     Id="$(Id)"
                     Version="$(Version)"
                     Title="$(Title)"

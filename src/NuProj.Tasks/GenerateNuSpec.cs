@@ -17,6 +17,8 @@ namespace NuProj.Tasks
         [Required]
         public string OutputFileName { get; set; }
 
+        public string MinClientVersion { get; set; }
+
         [Required]
         public string Id { get; set; }
 
@@ -117,11 +119,19 @@ namespace NuProj.Tasks
 
         private XElement CreateMetadataElement()
         {
+            var minClientVersionAttribute = GetMinClientVersionAttribute();
             var simpleElements = GetSimpleMetadataElements();
             var dependency = GetDependenciesElement();
             var references = GetReferencesElement();
             var frameworkReference = GetFrameworkReferencesElement();
-            return new XElement(XName.Get("metadata", NuSpecXmlNamespace), simpleElements, dependency, references, frameworkReference);
+            return new XElement(XName.Get("metadata", NuSpecXmlNamespace), minClientVersionAttribute, simpleElements, dependency, references, frameworkReference);
+        }
+
+        private XAttribute GetMinClientVersionAttribute()
+        {
+            return string.IsNullOrEmpty(MinClientVersion)
+                     ? null
+                     : new XAttribute("minClientVersion", MinClientVersion);
         }
 
         private IEnumerable<XElement> GetSimpleMetadataElements()
