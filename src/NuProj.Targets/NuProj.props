@@ -4,8 +4,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutDir Condition=" '$(OutDir)' == ''" >$(MSBuildProjectDirectory)\bin\</OutDir>
-    <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(MSBuildProjectDirectory)\obj\</IntermediateOutputPath>
+    <OutDir Condition=" '$(OutDir)' == ''" >$(MSBuildProjectDirectory)\bin\$(Configuration)\</OutDir>
+    <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(MSBuildProjectDirectory)\obj\$(Configuration)\</IntermediateOutputPath>
     <GenerateSymbolPackage Condition=" '$(GenerateSymbolPackage)' == '' ">True</GenerateSymbolPackage>
     <EmbedSourceFiles Condition=" '$(EmbedSourceFiles)' == '' ">False</EmbedSourceFiles>
     <RequireLicenseAcceptance Condition=" '$(RequireLicenseAcceptance)' == '' ">False</RequireLicenseAcceptance>
