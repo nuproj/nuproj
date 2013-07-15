@@ -141,6 +141,12 @@
         </StringProperty.DataSource>
     </StringProperty>
 
+    <StringProperty Name="MinClientVersion" DisplayName="Minimum NuGet Version">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
     <BoolProperty Name="GenerateSymbolPackage" DisplayName="Generate Symbol Package">
         <BoolProperty.DataSource>
             <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
