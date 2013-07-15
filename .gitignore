@@ -4,4 +4,4 @@ syntax: glob
 bin
 obj
 TestResults
-src/packages/*
+packages
