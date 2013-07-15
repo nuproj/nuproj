@@ -63,10 +63,6 @@
     <Compile Include="ReadPdbSourceFiles.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\NuProj.Targets\NuProj.Extensions.targets">
-      <Link>Additional\NuProj.Extensions.targets</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\NuProj.Targets\NuProj.targets">
       <Link>Additional\NuProj.targets</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

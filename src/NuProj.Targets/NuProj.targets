@@ -34,6 +34,40 @@
   </PropertyGroup>
 
   <!--
+      OUTPUT GROUPS
+
+      These are the groups we are using to discover outputs from our project references.
+  -->
+
+  <PropertyGroup>
+    <ProjectOutputGroups>
+      BuiltProjectOutputGroup;
+      BuiltProjectOutputGroupDependencies;
+      DebugSymbolsProjectOutputGroup;
+      DebugSymbolsProjectOutputGroupDependencies;
+      DocumentationProjectOutputGroup;
+      DocumentationProjectOutputGroupDependencies;
+      SatelliteDllsProjectOutputGroup;
+      SatelliteDllsProjectOutputGroupDependencies;
+      SGenFilesOutputGroup;
+      SGenFilesOutputGroupDependencies;
+    </ProjectOutputGroups>
+  </PropertyGroup>
+
+  <!--
+      PROJECT PROPERTIES
+
+      These are the properties we forward to our project references.
+  -->
+
+  <PropertyGroup>
+    <ProjectProperties>
+      Configuration=$(Configuration);
+      Platform=$(Platform);
+    </ProjectProperties>
+  </PropertyGroup>
+
+  <!--
       CUSTOM TASKS
   -->
 
@@ -85,18 +119,77 @@
     =================================================================================================================== -->
 
     <Target Name="ExpandProjectReferences"
-            DependsOnTargets="SplitProjectReferences">
+            DependsOnTargets="SplitProjectReferences"
+            Inputs="%(_NonNuProjProjectReference.Identity)"
+            Outputs="fake">
 
-      <MSBuild Projects="@(_NonNuProjProjectReference)"
-               Targets="GetOutputAndTargetFrameworkInformation">
-        <Output TaskParameter="TargetOutputs"
-                ItemName="_Output" />
-      </MSBuild>
+        <!-- First let's make sure that the project reference has been fully build -->
 
-      <AssignTargetFramework OutputsWithTargetFrameworkInformation="@(_Output)">
-        <Output TaskParameter="Libraries"
-                ItemName="Library" />
-      </AssignTargetFramework>
+        <MSBuild Targets="Build"
+                 Projects="%(_NonNuProjProjectReference.Identity)"
+                 Properties="$(ProjectProperties)" />
+
+        <!-- Now we can ask for the output and all dependencies. -->
+
+        <MSBuild Targets="$(ProjectOutputGroups)"
+                 Projects="%(_NonNuProjProjectReference.Identity)"
+                 Properties="$(ProjectProperties)">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="_NonNuProjProjectOutput" />
+        </MSBuild>
+
+        <!-- Since the dependencies include platform assemblies, we'll filter
+             out all files that don't exist in this project's output folder.
+             First we need the project's output folder. The easiest way is
+             to ask for the target path and then use a property function to
+             get the directory name. -->
+
+        <MSBuild Targets="GetTargetPath"
+                 Projects="%(_NonNuProjProjectReference.Identity)"
+                 Properties="$(ProjectProperties)">
+            <Output TaskParameter="TargetOutputs"
+                    PropertyName="_NonNuProjProjectTargetPath" />
+        </MSBuild>
+
+        <PropertyGroup>
+             <_NonNuProjProjectTargetPath>$([System.IO.Path]::GetDirectoryName($(_NonNuProjProjectTargetPath)))\</_NonNuProjProjectTargetPath>
+        </PropertyGroup>
+
+        <!-- Now we can filter the outputs based on whether they exist
+             in the project's output folder. -->
+
+        <ItemGroup>
+            <_NonNuProjProjectOutput Remove="@(_NonNuProjProjectOutput)"
+                                     Condition="!Exists('$(_NonNuProjProjectTargetPath)%(_NonNuProjProjectOutput.Filename)%(_NonNuProjProjectOutput.Extension)') "/>
+        </ItemGroup>
+
+        <!-- In order to package the the files in the correct folder in the
+             NuGet package we need need to know the target framework moniker. -->
+
+        <MSBuild Targets="GetTargetFrameworkMoniker"
+                 Projects="%(_NonNuProjProjectReference.Identity)"
+                 Properties="$(ProjectProperties)">
+            <Output TaskParameter="TargetOutputs"
+                    PropertyName="_NonNuProjProjectTargetFrameworkMoniker" />
+        </MSBuild>
+
+        <!-- In order to add custom metadata, we need to create a new item group -->
+
+        <CreateItem Include="@(_NonNuProjProjectOutput)"
+                    AdditionalMetadata="TargetFrameworkMoniker=$(_NonNuProjProjectTargetFrameworkMoniker)">
+            <Output TaskParameter="Include"
+                    ItemName="_NonNuProjProjectOutputWithTargetFrameworkMoniker"/>
+        </CreateItem>
+
+        <!-- Now we can run the AssignTargetFramework task. It will use the
+             %(TargetFrameworkMoniker) metadata to create the %(TargetPath).
+             The target path will use the NuGet lib convention, e.g.
+             lib\net40\foo.dll -->
+
+        <AssignTargetFramework OutputsWithTargetFrameworkInformation="@(_NonNuProjProjectOutputWithTargetFrameworkMoniker)">
+            <Output TaskParameter="Libraries"
+                    ItemName="Library" />
+        </AssignTargetFramework>
 
     </Target>
 
@@ -317,8 +410,9 @@
   <Target Name="GetNuProjFileDependencies"
           Returns="@(NuProjFileDependency)"
           DependsOnTargets="SplitProjectReferences">
-      <MSBuild Projects="@(_NuProjProjectReference)"
-               Targets="GetPackageFiles">
+      <MSBuild Targets="GetPackageFiles"
+               Projects="@(_NuProjProjectReference)"
+               Properties="$(ProjectProperties)">
         <Output TaskParameter="TargetOutputs"
                 ItemName="NuProjFileDependency" />
       </MSBuild>
@@ -380,8 +474,9 @@
   <Target Name="GetNuProjPackageDependencies"
           Returns="@(NuProjDependency)"
           DependsOnTargets="SplitProjectReferences">
-      <MSBuild Projects="@(_NuProjProjectReference)"
-               Targets="GetPackageIdentity">
+      <MSBuild Targets="GetPackageIdentity"
+               Projects="@(_NuProjProjectReference)"
+               Properties="$(ProjectProperties)">
         <Output TaskParameter="TargetOutputs"
                 ItemName="NuProjDependency" />
       </MSBuild>
@@ -412,7 +507,6 @@
                 ItemName="NuGetDependency" />
       </ReadPackagesConfig>
   </Target>
-
 
   <!-- 
     ===================================================================================================================
@@ -477,8 +571,9 @@
     =================================================================================================================== -->
 
   <Target Name="Clean">
-    <MSBuild Projects="@(ProjectReference)"
-             Targets="Clean" />
+    <MSBuild Targets="Clean"
+             Projects="@(ProjectReference)"
+             Properties="$(ProjectProperties)" />
     <ItemGroup>
       <_ToBeDeleted Include="$(NuSpecPath)" />
       <_ToBeDeleted Include="$(NuGetOutputPath)" />
