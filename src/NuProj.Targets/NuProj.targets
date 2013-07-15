@@ -12,14 +12,15 @@
   </PropertyGroup>
 
   <!--
-      OUTPUT PATH
+      OUTPUT PATHS
 
-      This property isn't passed to NuGet.exe - it's implicit. However, we need to know the output path
-      at several occasions (e.g. incremental build or clean up) so we want a central spot to capture it.
+      These properties aren't passed to NuGet.exe - they're implicit. However, we need to know the output paths
+      at several occasions (e.g. incremental build or clean up) so we want a central spot to capture those.
   -->
 
   <PropertyGroup>
     <NuGetOutputPath>$(OutDir)$(Id).$(Version).nupkg</NuGetOutputPath>
+    <NuGetSymbolsOutputPath>$(OutDir)$(Id).$(Version).symbols.nupkg</NuGetSymbolsOutputPath>
   </PropertyGroup>
 
   <!--
@@ -481,6 +482,7 @@
     <ItemGroup>
       <_ToBeDeleted Include="$(NuSpecPath)" />
       <_ToBeDeleted Include="$(NuGetOutputPath)" />
+      <_ToBeDeleted Include="$(NuGetSymbolsOutputPath)" />
     </ItemGroup>
     <Delete Files="@(_ToBeDeleted)" />
   </Target>
