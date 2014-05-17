@@ -26,7 +26,6 @@
     <Compile Include="Feature.BuildIntegration.wxs" />
     <Compile Include="Feature.VSIntegration.wxs" />
     <Compile Include="Product.wxs" />
-    <Compile Include="VS2013.wxs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NuProj.Tasks\NuProj.Tasks.csproj">
