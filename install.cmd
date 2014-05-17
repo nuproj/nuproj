@@ -1,4 +1,4 @@
 @echo off
 cls
-msbuild
+call build.cmd
 msiexec /qb /i bin\raw\NuProj.msi

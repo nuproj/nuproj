@@ -5,3 +5,4 @@ bin
 obj
 TestResults
 packages
+msbuild.log
