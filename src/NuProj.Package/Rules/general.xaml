@@ -159,4 +159,10 @@
         </BoolProperty.DataSource>
     </BoolProperty>
 
+    <BoolProperty Name="NoPackageAnalysis" DisplayName="No Package Analysis">
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+        </BoolProperty.DataSource>
+    </BoolProperty>
+
 </Rule>
