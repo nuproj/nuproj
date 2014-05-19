@@ -313,6 +313,7 @@
     <MakeDir Directories="$(OutDir)"
              Condition="!Exists('$(OutDir)')" />
     <NuGetPack OutputDirectory="$(OutDir)"
+               NoPackageAnalysis="$(NoPackageAnalysis)"
                Symbols="$(GenerateSymbolPackage)"
                ToolPath="$(NuProjToolPath)"
                ToolExe="$(NuGetToolExe)"
