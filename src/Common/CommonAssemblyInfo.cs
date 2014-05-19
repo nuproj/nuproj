@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Immo Landwerth")]
 [assembly: AssemblyProduct("NuProj")]
 [assembly: AssemblyCopyright("Copyright © Immo Landwerth")]
 [assembly: AssemblyTrademark("")]
