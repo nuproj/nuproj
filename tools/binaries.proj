@@ -9,6 +9,9 @@
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
     <Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
     <BuildInParallel Condition="'$(BuildInParallel)' == ''">True</BuildInParallel>
+    <WixToolPath>$(SourceDir)\packages\WiX.Toolset.3.8.1128.0\tools\wix\</WixToolPath>
+    <WixTargetsPath>$(WixToolPath)Wix.targets</WixTargetsPath>
+    <WixTasksPath>$(WixToolPath)wixtasks.dll</WixTasksPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,6 +21,9 @@
       Platform=$(Platform);
       OutDir=$(OutDir)raw\;
       IntermediateOutputPath=$(IntermediateOutputPath)raw\;
+      WixToolPath=$(WixToolPath);
+      WixTargetsPath=$(WixTargetsPath);
+      WixTasksPath=$(WixTasksPath);
     </ProjectProperties>
   </PropertyGroup>
 
