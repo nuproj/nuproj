@@ -176,8 +176,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="..\Icons\NuProj.png">
-      <Link>Resources\NuProj.png</Link>
+    <Resource Include="..\Icons\NuProj16.png">
+      <Link>Resources\NuProj16.png</Link>
     </Resource>
     <VSTemplate Include="Templates\Projects\NuProj\NuProj.vstemplate">
       <Culture>127</Culture>
