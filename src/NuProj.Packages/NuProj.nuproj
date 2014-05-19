@@ -9,10 +9,15 @@
   <PropertyGroup>
     <Id>NuProj</Id>
     <Title>NuProj</Title>
+    <IconUrl>http://bit.ly/NuProjLogo64</IconUrl>
     <Summary>NuProj provides an MSBuild-based approach to create NuGet packages (.nupkg). The build projects are called .nuproj files and are regular MSBuild projects.</Summary>
-    <Description>In general, the definition of a NuProj file is very similar to the NuGet .nuspec file – except that it is done via MSBuild. In fact, NuProj generates the .nuspec file and simply calles NuGet to build the package.  
+    <Description>NuProj provides an MSBuild-based approach to create NuGet packages (.nupkg). The build projects are called .nuproj files and are regular MSBuild projects.
 
-Thus, for details you can still refer to the official NuGet documentation.</Description>
+In general, the definition of a NuProj file is very similar to the NuGet .nuspec file – except that it is done via MSBuild. In fact, NuProj generates the .nuspec file and simply calles NuGet to build the package.  
+
+Thus, for details you can still refer to the official NuGet documentation.
+
+There is also a Visual Studio which you find under http://bit.ly/NuProjVS.</Description>
     <Tags>NuGet nupkg MSBuild NuProj</Tags>
     <NoPackageAnalysis>True</NoPackageAnalysis>
     <GenerateSymbolPackage>False</GenerateSymbolPackage>
