@@ -2,18 +2,14 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <OutputPath>$(OutDir)$(OutputName)</OutputPath>
+    <OutputPath>$([System.IO.Path]::GetFullPath('$(OutDir)$(OutputName)'))</OutputPath>
     <BuildTasksPath>$(OutDir)raw\NuProj.Build.dll</BuildTasksPath>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
 
   <UsingTask TaskName="Zip" AssemblyFile="$(BuildTasksPath)" />
 
-  <Target Name="Clean">
-    <Delete Files="$(OutputPath)" />
-  </Target>
-
-  <Target Name="Build"
+  <Target Name="CreateZipFile"
           Inputs="$(MSBuildAllProjects);
                   @(File)"
           Outputs="$(OutputPath)">
@@ -21,6 +17,16 @@
              Condition="!Exists('$(OutDir)')" />
     <Zip ZipFileName="$(OutputPath)"
          Files="@(File)" />
+  </Target>
+
+  <Target Name="Clean">
+    <Delete Files="$(OutputPath)" />
+  </Target>
+
+  <Target Name="Build"
+          DependsOnTargets="CreateZipFile">
+    <Message Text="$(MSBuildProjectName) -> $(OutputPath)"
+             Importance="high" />
   </Target>
 
   <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
