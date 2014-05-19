@@ -222,6 +222,11 @@
       <Output TaskParameter="Include"
               ItemName="File"/>
     </CreateItem>
+    <CreateItem Include="@(Tool)"
+                AdditionalMetadata="TargetPath=tools\%(Tool.TargetPath)">
+      <Output TaskParameter="Include"
+              ItemName="File"/>
+    </CreateItem>
   </Target>
 
   <!--
