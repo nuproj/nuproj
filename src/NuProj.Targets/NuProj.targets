@@ -19,7 +19,7 @@
   -->
 
   <PropertyGroup>
-    <NuGetOutputPath>$(OutDir)$(Id).$(Version).nupkg</NuGetOutputPath>
+    <NuGetOutputPath>$([System.IO.Path]::GetFullPath('$(OutDir)$(Id).$(Version).nupkg'))</NuGetOutputPath>
     <NuGetSymbolsOutputPath>$(OutDir)$(Id).$(Version).symbols.nupkg</NuGetSymbolsOutputPath>
   </PropertyGroup>
 
@@ -589,7 +589,10 @@
     <Delete Files="@(_ToBeDeleted)" />
   </Target>
 
-  <Target Name="Build" DependsOnTargets="CreatePackage" />
+  <Target Name="Build" DependsOnTargets="CreatePackage">
+    <Message Text="$(MSBuildProjectName) -> $(NuGetOutputPath)"
+             Importance="high" />
+  </Target>
 
   <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
 
