@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+
+  <PropertyGroup>
+    <Id>NuProj</Id>
+    <Title>NuProj</Title>
+    <Summary>NuProj provides an MSBuild-based approach to create NuGet packages (.nupkg). The build projects are called .nuproj files and are regular MSBuild projects.</Summary>
+    <Description>In general, the definition of a NuProj file is very similar to the NuGet .nuspec file – except that it is done via MSBuild. In fact, NuProj generates the .nuspec file and simply calles NuGet to build the package.  
+
+Thus, for details you can still refer to the official NuGet documentation.</Description>
+    <Tags>NuGet nupkg MSBuild NuProj</Tags>
+    <NoPackageAnalysis>True</NoPackageAnalysis>
+    <GenerateSymbolPackage>False</GenerateSymbolPackage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Tool Include="$(BasePath)raw\NuProj.Tasks.dll" />
+    <Tool Include="$(BasePath)raw\NuGet.exe" />
+    <Tool Include="$(BasePath)raw\Additional\NuProj.props" />
+    <Tool Include="$(BasePath)raw\Additional\NuProj.targets" />
+    <Tool Include="..\packages\NuGet.Core*\lib\net40-Client\NuGet.Core.dll" />
+    <Tool Include="..\packages\Microsoft.Web.Xdt*\lib\net40\Microsoft.Web.XmlTransform.dll" />
+  </ItemGroup>
+
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+
+</Project>

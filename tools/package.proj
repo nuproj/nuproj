@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="build.props" />
+
+  <!--
+      DEFAULT SETTINGS
+      Those can be customized from the outside.
+    -->
+
+  <PropertyGroup>
+    <OutDir Condition="'$(OutDir)' == ''">$(ProjectDir)bin\</OutDir>
+    <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(ProjectDir)obj\</IntermediateOutputPath>
+    <BuildInParallel Condition="'$(BuildInParallel)' == ''">True</BuildInParallel>
+  </PropertyGroup>
+
+  <!--
+       FORWARDING
+       The properties below handle forwarding of properties to the
+       underlying MSBuild projects.
+    -->
+
+  <PropertyGroup>
+    <ProjectProperties>
+      BasePath=$(OutDir);
+      OutDir=$(OutDir)release\;
+      IntermediateOutputPath=$(IntermediateOutputPath);
+      NuProjPath=$(OutDir)raw\Additional\;
+      NuProjTasksPath=$(OutDir)raw\NuProj.Tasks.dll;
+      NuProjToolPath=$(OutDir)raw\;
+    </ProjectProperties>
+  </PropertyGroup>
+  
+  <!-- External Tasks -->
+
+  <UsingTask AssemblyFile="$(OutDir)raw\NuProj.Build.dll" TaskName="NuProj.Build.GetFileVersionInfo" />
+  <UsingTask AssemblyFile="$(OutDir)raw\NuProj.Build.dll" TaskName="NuProj.Build.GetAssemblyMetadata" />
+
+  <ItemGroup>
+    <NuProj Include="$(SourceDir)NuProj.Packages\*.nuproj" />
+  </ItemGroup>
+
+  <Target Name="GetCommonMetadata">
+  	<PropertyGroup>
+  		<_AssemblyWithMetadataPath>$(OutDir)raw\NuProj.Tasks.dll</_AssemblyWithMetadataPath>
+  	</PropertyGroup>
+    <GetFileVersionInfo File="$(_AssemblyWithMetadataPath)">
+      <Output TaskParameter="FileMajorPart"
+              PropertyName="_FileMajorPart" />
+      <Output TaskParameter="FileMinorPart"
+              PropertyName="_FileMinorPart" />
+      <Output TaskParameter="FileBuildPart"
+              PropertyName="_FileBuildPart" />
+      <Output TaskParameter="CompanyName"
+              PropertyName="_CompanyName" />
+      <Output TaskParameter="LegalCopyright"
+              PropertyName="_LegalCopyright" />
+    </GetFileVersionInfo>
+    <GetAssemblyMetadata File="$(_AssemblyWithMetadataPath)"
+                         AssemblyMetadataKey="PreRelease">
+      <Output TaskParameter="AssemblyMetadataValue"
+              PropertyName="_PreRelease" />
+    </GetAssemblyMetadata>
+    <GetAssemblyMetadata File="$(_AssemblyWithMetadataPath)"
+                         AssemblyMetadataKey="ProjectUrl">
+      <Output TaskParameter="AssemblyMetadataValue"
+              PropertyName="_ProjectUrl" />
+    </GetAssemblyMetadata>
+    <GetAssemblyMetadata File="$(_AssemblyWithMetadataPath)"
+                         AssemblyMetadataKey="LicenseUrl">
+      <Output TaskParameter="AssemblyMetadataValue"
+              PropertyName="_LicenseUrl" />
+    </GetAssemblyMetadata>
+    <PropertyGroup>
+      <Version>$(_FileMajorPart).$(_FileMinorPart).$(_FileBuildPart)</Version>
+      <Version Condition="'$(_PreRelease)' != ''">$(Version)-$(_PreRelease.ToLower())</Version>
+      <Authors>$(_CompanyName)</Authors>
+      <Owners>$(_CompanyName)</Owners>
+      <Copyright>$(_LegalCopyright)</Copyright>
+      <ProjectUrl>$(_ProjectUrl)</ProjectUrl>
+      <LicenseUrl>$(_LicenseUrl)</LicenseUrl>
+      <ProjectProperties>
+        $(ProjectProperties);
+        Version=$(Version);
+        Authors=$(Authors);
+        Owners=$(Owners);
+        Copyright=$(Copyright);
+        ProjectUrl=$(ProjectUrl);
+        LicenseUrl=$(LicenseUrl);
+      </ProjectProperties>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="Clean">
+    <MSBuild Projects="@(NuProj)"
+             BuildInParallel="$(BuildInParallel)"
+             Targets="Clean"
+             Properties="$(ProjectProperties)" />
+  </Target>
+
+  <Target Name="Build"
+          DependsOnTargets="GetCommonMetadata">
+    <MSBuild Projects="@(NuProj)"
+             BuildInParallel="$(BuildInParallel)"
+             Targets="Build"
+             Properties="$(ProjectProperties)" />
+  </Target>
+
+  <Target Name="Rebuild"
+          DependsOnTargets="GetCommonMetadata">
+    <MSBuild Projects="@(NuProj)"
+             BuildInParallel="$(BuildInParallel)"
+             Targets="Rebuild"
+             Properties="$(ProjectProperties)" />
+  </Target>
+
+</Project>
