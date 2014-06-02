@@ -27,6 +27,17 @@
     <FeatureRef Id="MSBuildIntegration" />
     <FeatureRef Id="VSIntegration" />
 
+    <Icon Id="NuProjIcon" SourceFile="$(var.SolutionDir)Icons\NuProj.ico" />
+
+    <Property Id="ARPPRODUCTICON"
+              Value="NuProjIcon" />
+    <Property Id="ARPHELPLINK"
+              Value="$(var.ProductHomePage)" />
+    <Property Id="ARPURLINFOABOUT"
+              Value="$(var.ProductHomePage)" />
+    <Property Id="ARPURLUPDATEINFO"
+              Value="$(var.ProductHomePage)" />
+
     <WixVariable Id="WixUILicenseRtf"
                  Value="Resources\License.rtf" />
     <WixVariable Id="WixUIBannerBmp"
