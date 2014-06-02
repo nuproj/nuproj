@@ -37,6 +37,10 @@
 
     <WixVariable Id="WixUILicenseRtf"
                  Value="Resources\License.rtf" />
+    <WixVariable Id="WixUIBannerBmp"
+                 Value="Resources\Banner.jpg" />
+    <WixVariable Id="WixUIDialogBmp"
+                 Value="Resources\Dialog.jpg" />
 
     <UI>
       <UIRef Id="WixUI_Minimal" />
