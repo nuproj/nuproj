@@ -4,6 +4,8 @@
     <Identity Id="267c66da-0c67-4933-9ae7-a20c53608e49" Version="0.9.2" Language="en-US" Publisher="NuGet" />
     <DisplayName>NuGet Package Project</DisplayName>
     <Description xml:space="preserve">Provides a NuGet package project (*.nuproj).</Description>
+    <MoreInfo>http://bit.ly/NuProjVS</MoreInfo>
+    <Icon>NuProj.ico</Icon>
   </Metadata>
   <Installation InstalledByMsi="true">
     <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="12.0" />

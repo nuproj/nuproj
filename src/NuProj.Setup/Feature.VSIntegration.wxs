@@ -31,6 +31,9 @@
       <Component Id="extension.vsixmanifest" Guid="c83627bd-59a4-4690-ad34-be24aa2840d4">
         <File Source="$(var.NuProj.Package.TargetDir)extension.vsixmanifest" />
       </Component>
+      <Component Id="NuProj.icon" Guid="92c21537-291d-497c-bc09-46426b97fd2c">
+        <File Source="$(var.SolutionDir)Icons\NuProj.ico" />
+      </Component>
       <Component Id="NuProj.ProjectSystem.dll" Guid="98331398-3d3a-4608-89c6-b1736e657d40">
         <File Source="$(var.NuProj.Package.TargetDir)NuProj.ProjectSystem.dll" />
       </Component>
