@@ -330,7 +330,7 @@
     GetPackageFiles
     ===================================================================================================================
 
-    Gets the set of files that will be included in this package. This set will no include any files that are already
+    Gets the set of files that will be included in this package. This set will not include any files that are already
     provided by our NuGet dependencies.
 
     OUTPUTS:
