@@ -173,7 +173,7 @@
                     PropertyName="_NonNuProjProjectTargetFrameworkMoniker" />
         </MSBuild>
 
-        <!-- In order to add custom metadata, we need to create a new item group -->
+        <!-- In order to add custom metadata, we need to create a new item list -->
 
         <CreateItem Include="@(_NonNuProjProjectOutput)"
                     AdditionalMetadata="TargetFrameworkMoniker=$(_NonNuProjProjectTargetFrameworkMoniker)">
@@ -198,7 +198,7 @@
     ConvertItems
     ===================================================================================================================
 
-    This target is converting specialized items groups into the general <File> item group that indicates what should
+    This target is converting specialized items groups into the general <File> item list that indicates what should
     be packaged.
 
     INPUTS:
@@ -344,7 +344,7 @@
 
       <ItemGroup>
         <!-- 
-            We create a new item group where the identity is the simple file name
+            We create a new item list where the identity is the simple file name
             so that we can filter out the dependencies.
         -->
         <_FileTargetPath Include="@(File->'%(FileName)%(Extension)')">
