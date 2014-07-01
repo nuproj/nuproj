@@ -299,7 +299,7 @@
     CreatePackage
     ===================================================================================================================
 
-    This target creates the NuGet pacakge from a .nuspec file
+    This target creates the NuGet package from a .nuspec file
 
     INPUTS:
         $(NuSpecPath)                  The path to the NuSpec file.
