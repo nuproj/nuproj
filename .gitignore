@@ -6,3 +6,5 @@ obj
 TestResults
 packages
 msbuild.log
+*.sln.ide
+UpgradeLog*.htm
