@@ -25,6 +25,7 @@
     <LicenseUrl>http://example.com/license</LicenseUrl>
     <Copyright>Copyright (c)</Copyright>
     <RequireLicenseAcceptance>False</RequireLicenseAcceptance>
+    <DevelopmentDependency>False</DevelopmentDependency>
     <Tags>HelloWorld</Tags>
     -->
   </PropertyGroup>

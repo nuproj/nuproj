@@ -19,6 +19,7 @@ Most of the metadata is represented via simple MSBuild properties:
   <LicenseUrl>http://example.com/license</LicenseUrl>
   <Copyright>Copyright (c)</Copyright>
   <RequireLicenseAcceptance>False</RequireLicenseAcceptance>
+  <DevelopmentDependency>False</DevelopmentDependency>
   <Tags>HelloWorld</Tags>
   -->
 </PropertyGroup>
@@ -49,6 +50,17 @@ that the dependency is only there when targeting a certain framework:
   <Dependency Include="RouteMagic">
     <Version>1.1.6</Version>
     <TargetFramework>net40</TargetFramework>
+  </Dependency>
+</ItemGroup>
+```
+
+Packages marked as development dependencies will be ignored.
+
+```xml
+<ItemGroup>
+  <Dependency Include="Fody">
+    <Version>1.25.0</Version>
+    <DevelopmentDependency>true</DevelopmentDependency>
   </Dependency>
 </ItemGroup>
 ```

@@ -253,7 +253,8 @@
         $(LicenseUrl),
         $(Copyright),
         $(RequireLicenseAcceptance),
-        $(Tags)                        General properties of the NuSpec
+        $(Tags),
+        $(DevelopmentDependency)       General properties of the NuSpec
 
         @(Dependency)                  (Optional) The NuGet package dependencies
         @(FrameworkReference)          (Optional) Framework assembly references
@@ -288,6 +289,7 @@
                     Copyright="$(Copyright)"
                     RequireLicenseAcceptance="$(RequireLicenseAcceptance)"
                     Tags="$(Tags)"
+                    DevelopmentDependency="$(DevelopmentDependency)"
                     Dependencies="@(Dependency)"
                     References="@(Reference)"
                     FrameworkReferences="@(FrameworkReference)"
@@ -441,7 +443,7 @@
           Returns="@(NuGetFileDependency)">
       <ItemGroup>
         <NuGetFileDependency Include="%(NuGetDependency.PackageDirectoryPath)\**\*"
-                             Condition="'%(NuGetDependency.PackageDirectoryPath)' != ''" />
+                             Condition="'%(NuGetDependency.PackageDirectoryPath)' != '' And '%(NuGetDependency.DevelopmentDependency)' != 'true'" />
       </ItemGroup>
   </Target>
 

@@ -31,16 +31,22 @@ namespace NuProj.Tasks
             var idAttribute = element.Attribute("id");
             var versionAttribute = element.Attribute("version");
             var targetFrameworkAttribute = element.Attribute("targetFramework");
+            var developmentDependencyAttribute = element.Attribute("developmentDependency");
 
             var id = idAttribute.Value;
             var version = versionAttribute.Value;
             var targetFramework = targetFrameworkAttribute == null ? null : targetFrameworkAttribute.Value;
             var packageDirectoryPath = GetPackageDirectoryPath(PackagesConfigPath, id, version);
+            var developmentDependency = developmentDependencyAttribute == null ? null : developmentDependencyAttribute.Value;
 
             var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             metadata.Add("Version", version);
             if (targetFramework != null)
                 metadata.Add("TargetFramework", targetFramework);
+            
+            if (developmentDependency != null)
+                metadata.Add("DevelopmentDependency", developmentDependency);
+
             metadata.Add("PackageDirectoryPath", packageDirectoryPath);
 
             var item = new TaskItem(id, metadata);

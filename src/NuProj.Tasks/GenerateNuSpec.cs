@@ -53,6 +53,8 @@ namespace NuProj.Tasks
 
         public bool RequireLicenseAcceptance { get; set; }
 
+        public bool DevelopmentDependency { get; set; }
+
         public string Tags { get; set; }
 
         public ITaskItem[] Dependencies { get; set; }
@@ -151,6 +153,7 @@ namespace NuProj.Tasks
             yield return GetMetadataElement("copyright", Copyright);
             yield return GetMetadataElement("requireLicenseAcceptance", RequireLicenseAcceptance);
             yield return GetMetadataElement("tags", Tags);
+            yield return GetMetadataElement("developmentDependency", DevelopmentDependency);
         }
 
         private static XElement GetMetadataElement(string name, string value)
@@ -178,9 +181,12 @@ namespace NuProj.Tasks
                                               Id = d.ItemSpec,
                                               Version = d.GetMetadata("Version"),
                                               TargetFramework = d.GetMetadata("TargetFramework"),
+                                              DevelopmentDependency = d.GetMetadata("DevelopmentDependency")
                                           };
+            
+            var nonDevelopmentDependencies = dependencies.Where(x => x.DevelopmentDependency != "true");
 
-            var dependenciesGroupedByTargetFramework = dependencies.GroupBy(d => d.TargetFramework);
+            var dependenciesGroupedByTargetFramework = nonDevelopmentDependencies.GroupBy(d => d.TargetFramework);
 
             var elements = from g in dependenciesGroupedByTargetFramework
                            let d = from d in g
