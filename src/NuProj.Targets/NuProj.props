@@ -10,10 +10,12 @@
     <GenerateSymbolPackage Condition=" '$(GenerateSymbolPackage)' == '' ">True</GenerateSymbolPackage>
     <EmbedSourceFiles Condition=" '$(EmbedSourceFiles)' == '' ">False</EmbedSourceFiles>
     <RequireLicenseAcceptance Condition=" '$(RequireLicenseAcceptance)' == '' ">False</RequireLicenseAcceptance>
+    <DevelopmentDependency Condition=" '$(DevelopmentDependency)' == '' ">False</DevelopmentDependency>
 
     <NuProjTasksPath Condition=" '$(NuProjTasksPath)' == '' ">$(MSBuildThisFileDirectory)NuProj.Tasks.dll</NuProjTasksPath>
     <NuProjToolPath Condition=" '$(NuProjToolPath)' == '' ">$(MSBuildThisFileDirectory)</NuProjToolPath>
     <NuGetToolExe Condition=" '$(NuGetToolExe)' == '' ">NuGet.exe</NuGetToolExe>
-  </PropertyGroup>
+  
+</PropertyGroup>
 
 </Project>
