@@ -17,9 +17,10 @@ At first this might not look like a big deal but this gives you the following
 advantages:
 
 * Easy integration into existing build processes
-* No placeholder limations -- every piece of information can be injected via the
-  build process
+* No placeholder limitations -- every piece of information can be injected via
+  the build process
 * Proper reporting of errors and warnings
+* Enables a [Visual Studio Integration][NuProjVS]
 
 Below is an example how HelloWorld.nuproj would look like:
 
@@ -57,6 +58,14 @@ Below is an example how HelloWorld.nuproj would look like:
 </Project>
 ```
 
+## Visual Studio Integration
+
+Also, make sure to check out the [Visual Studio Integration][NuProjVS]:
+
+![Visual Studio Integration](docs/NuProjVS.png)
+
 ## Documentation
 
 For more details, check out the [documentation](docs/Documentation.md).
+
+[NuProjVS]: http://visualstudiogallery.msdn.microsoft.com/fbe9b9b8-34ae-47b5-a751-cb71a16f7e96
