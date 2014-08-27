@@ -443,7 +443,7 @@
           Returns="@(NuGetFileDependency)">
       <ItemGroup>
         <NuGetFileDependency Include="%(NuGetDependency.PackageDirectoryPath)\**\*"
-                             Condition="'%(NuGetDependency.PackageDirectoryPath)' != '' And '%(NuGetDependency.DevelopmentDependency)' != 'true'" />
+                             Condition="'%(NuGetDependency.PackageDirectoryPath)' != ''" />
       </ItemGroup>
   </Target>
 
