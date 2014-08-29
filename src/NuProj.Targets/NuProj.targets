@@ -217,8 +217,19 @@
       <Output TaskParameter="Include"
               ItemName="File"/>
     </CreateItem>
-    <CreateItem Include="@(Content)"
-                AdditionalMetadata="TargetPath=content\%(Content.TargetPath)">
+    <ItemGroup>
+      <_LinkedContentFiles Include="@(Content)"
+                           Condition="'%(Content.Link)' != ''" />
+      <_UnlinkedContentFiles Include="@(Content)"
+                             Condition="'%(Content.Link)' == ''" />
+    </ItemGroup>
+    <CreateItem Include="@(_LinkedContentFiles)"
+                AdditionalMetadata="TargetPath=%(Link)">
+      <Output TaskParameter="Include"
+              ItemName="File"/>
+    </CreateItem>
+    <CreateItem Include="@(_UnlinkedContentFiles)"
+                AdditionalMetadata="TargetPath=%(RelativeDir)">
       <Output TaskParameter="Include"
               ItemName="File"/>
     </CreateItem>
