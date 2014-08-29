@@ -8,13 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\ProjectItemsSchema.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
     <PropertyPageSchema Include="$(NuProjRulesDir)\general.xaml">
       <Context>Project;File</Context>
     </PropertyPageSchema>
     <PropertyPageSchema Include="$(NuProjRulesDir)\general.browseobject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
-    <PropertyPageSchema Include="$(NuProjRulesDir)\folder.xaml">
+    <PropertyPageSchema Include="$(NuProjRulesDir)\folder.xaml;
+                                 $(NuProjRulesDir)\none.xaml;
+                                 $(NuProjRulesDir)\content.xaml">
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
   </ItemGroup>

@@ -199,6 +199,22 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Rules\ProjectItemsSchema.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="Rules\content.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="Rules\none.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>

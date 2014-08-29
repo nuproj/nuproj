@@ -31,6 +31,9 @@
     </ComponentGroup>
     <ComponentGroup Id="Rules" Directory="Rules">
       <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\content.xaml" />
+      </Component>
+      <Component>
         <File Source="$(var.SolutionDir)NuProj.Package\Rules\folder.xaml" />
       </Component>
       <Component>
@@ -38,6 +41,12 @@
       </Component>
       <Component>
         <File Source="$(var.SolutionDir)NuProj.Package\Rules\general.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\none.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\ProjectItemsSchema.xaml" />
       </Component>
     </ComponentGroup>
   </Fragment>
