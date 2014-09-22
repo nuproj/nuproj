@@ -238,6 +238,28 @@
       <Output TaskParameter="Include"
               ItemName="File"/>
     </CreateItem>
+
+    <!-- We need to special case library files in later phases. In order to make this
+         easier, we add custom metadata 'IsLibrary' that indiates whether the file is
+         targeting the lib folder or not. -->
+
+    <ItemGroup>
+      <_FileWithIsLibrary Include="@(File)"
+                          Condition="'%(File.TargetPath)' == 'lib' OR
+                                     $([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib\')) OR
+                                     $([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib/'))">
+        <IsLibrary>True</IsLibrary>
+      </_FileWithIsLibrary>
+      <_FileWithIsLibrary Include="@(File)"
+                          Condition="'%(File.TargetPath)' != 'lib' AND
+                                     !$([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib\')) AND
+                                     !$([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib/'))">
+        <IsLibrary>False</IsLibrary>
+      </_FileWithIsLibrary>
+      <File Remove="@(File)" />
+      <File Include="@(_FileWithIsLibrary)" />
+    </ItemGroup>
+
   </Target>
 
   <!--
@@ -356,23 +378,42 @@
           DependsOnTargets="GetFiles;GetFileDependencies">
 
       <ItemGroup>
-        <!--
-            We create a new item list where the identity is the simple file name
-            so that we can filter out the dependencies.
-        -->
-        <_FileTargetPath Include="@(File->'%(FileName)%(Extension)')">
+
+        <!-- We don't want to package libraries that come from dependencies.
+             Please note that we do want to package non-library files regardless
+             as we generally don't automatically pick those up from dependencies.
+
+             This allows people to include binaries in their tools folder, for
+             example.
+
+             In order to filter based on the simple file name, we'll set the
+             identity to the simple file name and record the original identity
+             as new metadata that we'll use to restore afterwards.
+
+             Since we want to only filer libraries we'll set the identity to an
+             illegal file name if the packaged file isn't a library. -->
+
+        <_FileTargetPath Include="@(File->'%(FileName)%(Extension)')"
+                         Condition="'%(File.IsLibrary)' == 'True'">
             <OriginalItemSpec>%(File.Identity)</OriginalItemSpec>
         </_FileTargetPath>
-        <!--
-            Now we can remove all files from _FileTargetPath that come from dependencies.
-        -->
+        <_FileTargetPath Include="@(File->'::KEEP::')"
+                         Condition="'%(File.IsLibrary)' == 'False'">
+            <OriginalItemSpec>%(File.Identity)</OriginalItemSpec>
+        </_FileTargetPath>
+
+        <!-- Now we can remove all files from _FileTargetPath that come from
+             dependencies. -->
+
         <_FileDependencyTargetPath Include="@(FileDependency->'%(FileName)%(Extension)')" />
         <_FileTargetPath Remove="@(_FileDependencyTargetPath)" />
-        <!--
-            In order to produce the final list we have to restore the original item spec.
-        -->
+
+        <!-- In order to produce the final list we have to restore the original
+             identity. -->
+
         <PackageFile Remove="@(PackageFile)" />
         <PackageFile Include="@(_FileTargetPath->'%(OriginalItemSpec)')" />
+
       </ItemGroup>
 
   </Target>
