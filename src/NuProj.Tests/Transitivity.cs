@@ -1,20 +1,33 @@
 ﻿using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
+//using NuGet;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
+using System.Diagnostics;
 
 namespace NuProj.Tests
 {
     public class Transitivity
     {
         [Theory]
-        [InlineData(@"..\..\Transitivity\Transitivity.sln", "Debug", "Any CPU")]
-        //[InlineData(@"c"..\..\Transitivity\B.nuget\A.nuget.nuproj", "Debug", "AnyCPU")]
-        public void DependencyTransitivityTest(string msbuildFileName, string configuration, string platform)
+        [InlineData(@"Transitivity", @"Transitivity.sln", "Debug", "Any CPU")]
+        [InlineData(@"Transitivity", @"A.nuget\A.nuget.nuproj", "Debug", "AnyCPU")]
+        public void DependencyTransitivityTest(string scenarioName, string projectToBuild, string configuration, string platform)
         {
-            // TODO: package restore for test
+            // Arange
             
+            // get testOutDir location of this project, that should contain all required files: .targets, .props, nuget.exe
+            var testOutDir = Directory.GetCurrentDirectory();
+            
+            // by convention, all scenarios should be in directory 
+            string solutionDir = TestsHelper.GetScenarioDirectory(scenarioName);
+
             var errorLogger = new ErrorLogger();
 
             List<ILogger> loggers = new List<ILogger>()
@@ -22,31 +35,44 @@ namespace NuProj.Tests
                 errorLogger
             };
 
-            var msbuildFilePath = Path.GetFullPath(msbuildFileName);
+            TestsHelper.RestorePackages(solutionDir);
 
-            // get OutDir location of this project, that should contain all required files: .targets, .props, nuget.exe
-            var nuProjPath = Directory.GetCurrentDirectory();
+            var projectPath = Path.Combine(solutionDir, projectToBuild);
 
             string[] targetsToBuild = new[] { "Rebuild" };
 
             var props = new Dictionary<string, string>()
             {
-                {"NuProjPath", nuProjPath},
+                {"NuProjPath", testOutDir},
                 {"Configuration", configuration},
                 {"Platform", platform},
-                //{"OutDir", nuProjPath + "\\"}
             };
 
+            var parameters = new BuildParameters();
+            parameters.Loggers = loggers;
+
+            // Act
+            BuildResult result;
             using (var buildManager = new BuildManager())
             {
-                var parameters = new BuildParameters();
-                parameters.Loggers = loggers;
-                BuildRequestData requestData = new BuildRequestData(msbuildFilePath, props, "12.0", targetsToBuild, null);
+                BuildRequestData requestData = new BuildRequestData(projectPath, props, "4.0", targetsToBuild, null);
 
-                BuildResult result = buildManager.Build(parameters, requestData);
-                Assert.Equal(result.OverallResult, BuildResultCode.Success);
-                Assert.Empty(errorLogger.Errors);
+                result = buildManager.Build(parameters, requestData);
             }
+            
+
+            // Assert
+            Assert.Equal(result.OverallResult, BuildResultCode.Success);
+            Assert.Empty(errorLogger.Errors);
+
+            var packagePath = Path.Combine(solutionDir, @"A.nuget\bin\Debug\A.1.0.0.nupkg");
+            Assert.True(File.Exists(packagePath));
+            var package = new NuGet.OptimizedZipPackage(packagePath);
+            var files = package.GetFiles();
+
+            Assert.None(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
+            Assert.None(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
+
         }
     }
 }
