@@ -21,7 +21,7 @@ namespace NuProj.Tests
             // by convention, all scenarios should be in directory
             string solutionDir = NuGetHelper.GetScenarioDirectory(scenarioName);
 
-            NuGetHelper.RestorePackages(solutionDir);
+            await NuGetHelper.RestorePackagesAsync(solutionDir);
 
             var projectPath = Path.Combine(solutionDir, projectToBuild);
 
