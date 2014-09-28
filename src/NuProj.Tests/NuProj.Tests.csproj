@@ -71,9 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DevEnv.cs" />
+    <Compile Include="MSBuild.cs" />
     <Compile Include="NuGetHelper.cs" />
     <Compile Include="Transitivity.cs" />
-    <Compile Include="ErrorLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -127,8 +127,6 @@
     <ItemGroup>
       <TestScenario Include="Scenarios\**\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(TestScenario)"
-          DestinationFiles="@(TestScenario->'$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')"
-          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(TestScenario)" DestinationFiles="@(TestScenario->'$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
   </Target>
 </Project>
