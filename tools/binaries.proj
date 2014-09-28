@@ -4,10 +4,6 @@
   <Import Project="build.props" />
 
   <PropertyGroup>
-    <OutDir Condition="'$(OutDir)' == ''">$(ProjectDir)bin\</OutDir>
-    <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(ProjectDir)obj\</IntermediateOutputPath>
-    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
-    <Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
     <BuildInParallel Condition="'$(BuildInParallel)' == ''">True</BuildInParallel>
     <WixToolPath>$(SourceDir)\packages\WiX.Toolset.3.8.1128.0\tools\wix\</WixToolPath>
     <WixTargetsPath>$(WixToolPath)Wix.targets</WixTargetsPath>
@@ -20,7 +16,6 @@
       Configuration=$(Configuration);
       Platform=$(Platform);
       OutDir=$(OutDir)raw\;
-      IntermediateOutputPath=$(IntermediateOutputPath)raw\;
       WixToolPath=$(WixToolPath);
       WixTargetsPath=$(WixTargetsPath);
       WixTasksPath=$(WixTasksPath);

@@ -10,7 +10,6 @@
 
   <PropertyGroup>
     <OutDir Condition="'$(OutDir)' == ''">$(ProjectDir)bin\</OutDir>
-    <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)' == '' ">$(ProjectDir)obj\</IntermediateOutputPath>
     <BuildInParallel Condition="'$(BuildInParallel)' == ''">True</BuildInParallel>
   </PropertyGroup>
 
@@ -24,7 +23,6 @@
     <ProjectProperties>
       BasePath=$(OutDir);
       OutDir=$(OutDir)release\;
-      IntermediateOutputPath=$(IntermediateOutputPath);
       NuProjPath=$(OutDir)raw\Additional\;
       NuProjTasksPath=$(OutDir)raw\NuProj.Tasks.dll;
       NuProjToolPath=$(OutDir)raw\;

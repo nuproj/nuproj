@@ -4,7 +4,6 @@
   <Import Project="build.props" />
 
   <PropertyGroup>
-    <OutDir Condition="'$(OutDir)' == ''">$(ProjectDir)bin\</OutDir>
     <PackagesDir>$(MSBuildThisFileDirectory)..\src\packages\</PackagesDir>
     <NuGetToolPath>$(LOCALAPPDATA)\NuGet\NuGet.exe</NuGetToolPath>
   </PropertyGroup>
