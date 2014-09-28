@@ -39,24 +39,5 @@ namespace NuProj.Tests
             Assert.None(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
             Assert.None(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
         }
-
-
-        //[Theory]
-        //[InlineData(@"Transitivity", @"Transitivity.sln", "Debug", "Any CPU")]
-        public void DevEnvDependencyTransitivityTest(string scenarioName, string projectToBuild, string configuration, string platform)
-        {
-            string solutionDir = NuGetHelper.GetScenarioDirectory(scenarioName);
-            var projectPath = Path.Combine(solutionDir, projectToBuild);
-
-            NuGetHelper.RestorePackages(solutionDir);
-
-            using (var devEnv = new DevEnv())
-            {
-                devEnv.OpenSolution(projectPath);
-                devEnv.ActivateConfiguration(configuration, platform);
-                devEnv.Clean();
-                devEnv.Build();
-            }
-        }
     }
 }
