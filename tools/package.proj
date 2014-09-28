@@ -28,6 +28,7 @@
       NuProjPath=$(OutDir)raw\Additional\;
       NuProjTasksPath=$(OutDir)raw\NuProj.Tasks.dll;
       NuProjToolPath=$(OutDir)raw\;
+      NuGetToolPath=$(SourceDir)packages\NuGet.CommandLine.2.8.2\tools\;
     </ProjectProperties>
   </PropertyGroup>
   

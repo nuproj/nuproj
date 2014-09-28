@@ -10,7 +10,7 @@
     </Feature>
     <ComponentGroup Id="MSBuildIntegration" Directory="INSTALLDIR">
       <Component>
-        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.exe" />
+        <File Source="$(var.SolutionDir)packages\NuGet.CommandLine.2.8.2\tools\NuGet.exe" />
       </Component>
       <Component>
         <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuProj.targets" />
