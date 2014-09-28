@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NuProj.Tests
 {
-    public class TestsHelper
+    public static class NuGetHelper
     {
         private static readonly object restoreTasksLock = new object();
 
@@ -54,9 +54,8 @@ namespace NuProj.Tests
 
         public static string GetScenarioDirectory(string scenarioName)
         {
-            var solutionDir = @"..\..\" + scenarioName;
-            return Path.GetFullPath(solutionDir);
-
+            var currentDirectory = Directory.GetCurrentDirectory();
+            return Path.Combine(currentDirectory, scenarioName);
         }
     }
 }

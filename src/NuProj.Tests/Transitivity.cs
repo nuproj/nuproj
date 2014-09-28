@@ -1,15 +1,10 @@
 ﻿using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
+
 //using NuGet;
-using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
-using System.Diagnostics;
 
 namespace NuProj.Tests
 {
@@ -18,15 +13,12 @@ namespace NuProj.Tests
         [Theory]
         [InlineData(@"Transitivity", @"Transitivity.sln", "Debug", "Any CPU")]
         [InlineData(@"Transitivity", @"A.nuget\A.nuget.nuproj", "Debug", "AnyCPU")]
-        public void DependencyTransitivityTest(string scenarioName, string projectToBuild, string configuration, string platform)
+        public void MSBuildDependencyTransitivityTest(string scenarioName, string projectToBuild, string configuration, string platform)
         {
             // Arange
-            
-            // get testOutDir location of this project, that should contain all required files: .targets, .props, nuget.exe
-            var testOutDir = Directory.GetCurrentDirectory();
-            
-            // by convention, all scenarios should be in directory 
-            string solutionDir = TestsHelper.GetScenarioDirectory(scenarioName);
+
+            // by convention, all scenarios should be in directory
+            string solutionDir = NuGetHelper.GetScenarioDirectory(scenarioName);
 
             var errorLogger = new ErrorLogger();
 
@@ -35,7 +27,7 @@ namespace NuProj.Tests
                 errorLogger
             };
 
-            TestsHelper.RestorePackages(solutionDir);
+            NuGetHelper.RestorePackages(solutionDir);
 
             var projectPath = Path.Combine(solutionDir, projectToBuild);
 
@@ -43,7 +35,6 @@ namespace NuProj.Tests
 
             var props = new Dictionary<string, string>()
             {
-                {"NuProjPath", testOutDir},
                 {"Configuration", configuration},
                 {"Platform", platform},
             };
@@ -59,7 +50,6 @@ namespace NuProj.Tests
 
                 result = buildManager.Build(parameters, requestData);
             }
-            
 
             // Assert
             Assert.Equal(result.OverallResult, BuildResultCode.Success);
@@ -72,7 +62,25 @@ namespace NuProj.Tests
 
             Assert.None(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
             Assert.None(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
+        }
 
+
+        //[Theory]
+        //[InlineData(@"Transitivity", @"Transitivity.sln", "Debug", "Any CPU")]
+        public void DevEnvDependencyTransitivityTest(string scenarioName, string projectToBuild, string configuration, string platform)
+        {
+            string solutionDir = NuGetHelper.GetScenarioDirectory(scenarioName);
+            var projectPath = Path.Combine(solutionDir, projectToBuild);
+
+            NuGetHelper.RestorePackages(solutionDir);
+
+            using (var devEnv = new DevEnv())
+            {
+                devEnv.OpenSolution(projectPath);
+                devEnv.ActivateConfiguration(configuration, platform);
+                devEnv.Clean();
+                devEnv.Build();
+            }
         }
     }
 }
