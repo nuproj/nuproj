@@ -10,7 +10,17 @@
 
     public static class MSBuild
     {
-        public static async Task<BuildResult> ExecuteAsync(string projectPath, Action<BuildErrorEventArgs> onError = null)
+        public static Task<BuildResult> RebuildAsync(string projectPath, Action<BuildErrorEventArgs> onError = null)
+        {
+            return MSBuild.ExecuteAsync(projectPath, new[] { "Rebuild" }, onError);
+        }
+
+        public static Task<BuildResult> ExecuteAsync(string projectPath, string targetToBuild, Action<BuildErrorEventArgs> onError = null)
+        {
+            return MSBuild.ExecuteAsync(projectPath, new[] { targetToBuild }, onError);
+        }
+
+        public static async Task<BuildResult> ExecuteAsync(string projectPath, string[] targetsToBuild, Action<BuildErrorEventArgs> onError = null)
         {
             var loggers = new List<ILogger>();
             if (onError != null)
@@ -24,7 +34,6 @@
             };
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            string[] targetsToBuild = new[] { "Rebuild" };
 
             BuildResult result;
             using (var buildManager = new BuildManager())
