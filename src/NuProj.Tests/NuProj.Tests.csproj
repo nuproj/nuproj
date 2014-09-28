@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetPackageIdentity.cs" />
     <Compile Include="MSBuild.cs" />
     <Compile Include="NuGetHelper.cs" />
     <Compile Include="Transitivity.cs" />
