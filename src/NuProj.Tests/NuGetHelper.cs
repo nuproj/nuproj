@@ -12,29 +12,24 @@ namespace NuProj.Tests
     {
         private static readonly object restoreTasksLock = new object();
 
-        private static readonly Dictionary<string, Task> restorePackagesTasks = new Dictionary<string, Task>();
-        
-        public static void RestorePackages(string path)
+        private static readonly Dictionary<string, Task> restorePackagesTasks = new Dictionary<string, Task>(StringComparer.OrdinalIgnoreCase);
+
+        public static Task RestorePackagesAsync(string path)
         {
             Task restorePackagesTask;
             lock (restoreTasksLock)
             {
-                path = path.ToLowerInvariant();
-                if (!restorePackagesTasks.ContainsKey(path))
+                if (!restorePackagesTasks.TryGetValue(path, out restorePackagesTask))
                 {
-                    restorePackagesTasks[path] = Task.Run(()=>
-                    {
-                        NuGetExeRestore(path);
-                    });
+                    restorePackagesTask = NuGetExeRestoreAsync(path);
+                    restorePackagesTasks[path] = restorePackagesTask;
                 }
-
-                restorePackagesTask = restorePackagesTasks[path];
             }
 
-            restorePackagesTask.Wait();
+            return restorePackagesTask;
         }
 
-        private static void NuGetExeRestore(string path)
+        private static Task<int> NuGetExeRestoreAsync(string path)
         {
             var testOutDir = Directory.GetCurrentDirectory();
             ProcessStartInfo startInfo = new ProcessStartInfo()
@@ -47,9 +42,17 @@ namespace NuProj.Tests
 
             var process = new Process();
             process.StartInfo = startInfo;
+            process.EnableRaisingEvents = true;
             process.Start();
-            process.WaitForExit();
 
+            var tcs = new TaskCompletionSource<int>();
+            process.Exited += (sender, args) => tcs.TrySetResult(process.ExitCode);
+            if (process.HasExited)
+            {
+                tcs.TrySetResult(process.ExitCode);
+            }
+
+            return tcs.Task;
         }
 
         public static string GetScenarioDirectory(string scenarioName)

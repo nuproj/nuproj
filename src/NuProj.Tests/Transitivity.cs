@@ -21,12 +21,12 @@ namespace NuProj.Tests
             // by convention, all scenarios should be in directory
             string solutionDir = NuGetHelper.GetScenarioDirectory(scenarioName);
 
-            NuGetHelper.RestorePackages(solutionDir);
+            await NuGetHelper.RestorePackagesAsync(solutionDir);
 
             var projectPath = Path.Combine(solutionDir, projectToBuild);
 
             // Act
-            BuildResult result = await MSBuild.RebuildAsync(projectPath, err => Assert.False(true, "Error logged."));
+            BuildResult result = await MSBuild.ExecuteAsync(projectPath, onError: err => Assert.False(true, "Error logged."));
 
             // Assert
             Assert.Equal(result.OverallResult, BuildResultCode.Success);

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -10,17 +11,25 @@
 
     public static class MSBuild
     {
-        public static Task<BuildResult> RebuildAsync(string projectPath, Action<BuildErrorEventArgs> onError = null)
+        public static Task<BuildResult> RebuildAsync(string projectPath, IDictionary<string, string> properties = null, Action<BuildErrorEventArgs> onError = null)
         {
-            return MSBuild.ExecuteAsync(projectPath, new[] { "Rebuild" }, onError);
+            return MSBuild.ExecuteAsync(projectPath, new[] { "Rebuild" }, properties, onError);
         }
 
-        public static Task<BuildResult> ExecuteAsync(string projectPath, string targetToBuild, Action<BuildErrorEventArgs> onError = null)
+        public static Task<BuildResult> ExecuteAsync(string projectPath, string targetToBuild, IDictionary<string, string> properties = null, Action<BuildErrorEventArgs> onError = null)
         {
-            return MSBuild.ExecuteAsync(projectPath, new[] { targetToBuild }, onError);
+            return MSBuild.ExecuteAsync(projectPath, new[] { targetToBuild }, properties, onError);
         }
 
-        public static async Task<BuildResult> ExecuteAsync(string projectPath, string[] targetsToBuild, Action<BuildErrorEventArgs> onError = null)
+        /// <summary>
+        /// Builds a project.
+        /// </summary>
+        /// <param name="projectPath">The absolute path to the project.</param>
+        /// <param name="targetsToBuild">The targets to build. If not specified, the project's default target will be invoked.</param>
+        /// <param name="properties">The optional global properties to pass to the project. May come from the <see cref="MSBuild.Properties"/> static class.</param>
+        /// <param name="onError">An optional handler to receive errors logged during the build.</param>
+        /// <returns>A task whose result is the result of the build.</returns>
+        public static async Task<BuildResult> ExecuteAsync(string projectPath, string[] targetsToBuild = null, IDictionary<string, string> properties = null, Action<BuildErrorEventArgs> onError = null)
         {
             var loggers = new List<ILogger>();
             if (onError != null)
@@ -33,14 +42,12 @@
                 Loggers = loggers,
             };
 
-            var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
             BuildResult result;
             using (var buildManager = new BuildManager())
             {
                 buildManager.BeginBuild(parameters);
 
-                var requestData = new BuildRequestData(projectPath, properties, null, targetsToBuild, null);
+                var requestData = new BuildRequestData(projectPath, properties ?? Properties.Empty, null, targetsToBuild, null);
                 var submission = buildManager.PendBuildRequest(requestData);
                 result = await submission.ExecuteAsync();
                 buildManager.EndBuild();
@@ -54,6 +61,23 @@
             var tcs = new TaskCompletionSource<BuildResult>();
             submission.ExecuteAsync(s => tcs.SetResult(s.BuildResult), null);
             return tcs.Task;
+        }
+
+        /// <summary>
+        /// Common properties to pass to a build request.
+        /// </summary>
+        public static class Properties
+        {
+            /// <summary>
+            /// No properties. The project will be built in its default configuration.
+            /// </summary>
+            public static readonly ImmutableDictionary<string, string> Empty = ImmutableDictionary.Create<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            /// <summary>
+            /// The project will build in the same manner as if it were building inside Visual Studio.
+            /// </summary>
+            public static readonly ImmutableDictionary<string, string> BuildingInsideVisualStudio = Empty
+                .Add("BuildingInsideVisualStudio", "true");
         }
 
         private class ErrorLogger : ILogger

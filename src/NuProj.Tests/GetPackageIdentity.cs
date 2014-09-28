@@ -24,7 +24,7 @@ namespace NuProj.Tests
             var projectPath = Path.Combine(solutionDir, projectToBuild);
 
             // Act
-            BuildResult result = await MSBuild.ExecuteAsync(projectPath, target, err => Assert.False(true, "Error logged."));
+            BuildResult result = await MSBuild.ExecuteAsync(projectPath, target, onError: err => Assert.False(true, "Error logged."));
 
             // Assert
             Assert.Equal(result.OverallResult, BuildResultCode.Success);
