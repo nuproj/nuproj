@@ -14,6 +14,7 @@
 
     <NuProjTasksPath Condition=" '$(NuProjTasksPath)' == '' ">$(MSBuildThisFileDirectory)NuProj.Tasks.dll</NuProjTasksPath>
     <NuProjToolPath Condition=" '$(NuProjToolPath)' == '' ">$(MSBuildThisFileDirectory)</NuProjToolPath>
+    <NuGetToolPath Condition=" '$(NuGetToolPath)' == '' ">$(NuProjToolPath)</NuGetToolPath>
     <NuGetToolExe Condition=" '$(NuGetToolExe)' == '' ">NuGet.exe</NuGetToolExe>
   </PropertyGroup>
 
