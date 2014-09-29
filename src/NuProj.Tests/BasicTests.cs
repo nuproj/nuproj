@@ -8,6 +8,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Xml.Linq;
     using Microsoft.Build.Evaluation;
     using Microsoft.Build.Execution;
     using Microsoft.Build.Framework;
@@ -57,6 +58,29 @@
                 var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
                 result.AssertSuccessfulBuild();
                 AssertNu.PackageContainsContentItems(nuproj);
+            }
+            finally
+            {
+                ProjectBuilder.Cleanup(nuproj);
+            }
+        }
+
+        [Fact]
+        public async Task NuSpecPropertiesMatchProjectProperties()
+        {
+            var nuproj = Assets.FromTemplate()
+                .AssignNuProjDirectory()
+                .ToProject()
+                .CreateMockContentFiles();
+            try
+            {
+                var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+                result.AssertSuccessfulBuild();
+                XElement package = NuPkg.ExtractNuSpecFromPackage(nuproj);
+                var metadata = package.Element(XName.Get("metadata", NuPkg.NuSpecXmlNamespace));
+                var id = metadata.Element(XName.Get("id", NuPkg.NuSpecXmlNamespace));
+                Assert.Equal(nuproj.GetPropertyValue("id"), id.Value);
+                // TODO: check more properties here.
             }
             finally
             {

@@ -31,22 +31,28 @@
         /// <param name="packedFile">The path to the file that should exist in the archive. Case sensitive.</param>
         public static void PackageContains(string nupkgPath, string packedFile)
         {
-            using (var nupkgStream = File.OpenRead(nupkgPath))
+            using (var archive = NuPkg.GetArchive(nupkgPath))
             {
-                using (var archive = new ZipArchive(nupkgStream, ZipArchiveMode.Read))
-                {
-                    Assert.NotNull(archive.GetEntry(packedFile));
-                }
+                Assert.NotNull(archive.GetEntry(packedFile));
             }
         }
 
         public static void PackageContainsContentItems(Project nuProj)
         {
-            string actualNuPkgPath = nuProj.GetNuPkgPath();
-            foreach (var contentItem in nuProj.GetItems("Content"))
+            using (var archive = NuPkg.GetArchive(nuProj))
             {
-                AssertNu.PackageContains(actualNuPkgPath, contentItem.EvaluatedInclude);
+                foreach (var contentItem in nuProj.GetItems("Content"))
+                {
+                    string expectedPath = GetExpectedPackagePathForContent(contentItem);
+                    Assert.NotNull(archive.GetEntry(expectedPath));
+                }
             }
+        }
+
+        private static string GetExpectedPackagePathForContent(ProjectItem item)
+        {
+            // TODO: account for items with Link metadata.
+            return item.EvaluatedInclude;
         }
     }
 }

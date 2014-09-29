@@ -76,6 +76,7 @@
     <Compile Include="GetPackageIdentity.cs" />
     <Compile Include="MSBuild.cs" />
     <Compile Include="NuGetHelper.cs" />
+    <Compile Include="NuPkg.cs" />
     <Compile Include="ProjectBuilder.cs" />
     <Compile Include="Transitivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
