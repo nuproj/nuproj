@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace NuProj.Tests.Infrastructure
@@ -81,17 +80,6 @@ namespace NuProj.Tests.Infrastructure
             process.BeginOutputReadLine();
 
             return tcs.Task;
-        }
-
-        public static string GetScenarioDirectory(string scenarioName)
-        {
-            return Path.Combine(Assets.ScenariosDirectory, scenarioName);
-        }
-
-        public static string GetScenarioSolutionPath(string scenarioName)
-        {
-            var solutioDirectory = GetScenarioDirectory(scenarioName);
-            return Path.Combine(solutioDirectory, scenarioName + ".sln");
         }
     }
 }

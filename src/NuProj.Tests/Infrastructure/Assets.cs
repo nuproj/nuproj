@@ -40,6 +40,17 @@ namespace NuProj.Tests.Infrastructure
             get { return Path.Combine(ProjectDirectory, "src", "NuProj.Tests", "Scenarios"); }
         }
 
+        public static string GetScenarioDirectory(string scenarioName)
+        {
+            return Path.Combine(ScenariosDirectory, scenarioName);
+        }
+
+        public static string GetScenarioSolutionPath(string scenarioName)
+        {
+            var solutioDirectory = GetScenarioDirectory(scenarioName);
+            return Path.Combine(solutioDirectory, scenarioName + ".sln");
+        }
+
         private static string ComputeProjectDirectory()
         {
             // When running inside the IDE, the tests are shadow copied. In order to find the

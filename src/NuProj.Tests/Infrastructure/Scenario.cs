@@ -18,7 +18,7 @@ namespace NuProj.Tests.Infrastructure
 
         public static async Task<IReadOnlyCollection<IPackage>> RestoreAndBuildPackages(string scenarioName)
         {
-            var projectFullPath = NuGetHelper.GetScenarioSolutionPath(scenarioName);
+            var projectFullPath = Assets.GetScenarioSolutionPath(scenarioName);
 
             var projectDirectory = Path.GetDirectoryName(projectFullPath);
             await NuGetHelper.RestorePackagesAsync(projectDirectory);

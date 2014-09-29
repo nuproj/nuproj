@@ -18,7 +18,7 @@ namespace NuProj.Tests
             // Arange
 
             // by convention, all scenarios should be in directory
-            var solutionDir = NuGetHelper.GetScenarioDirectory(scenarioName);
+            var solutionDir = Assets.GetScenarioDirectory(scenarioName);
 
             await NuGetHelper.RestorePackagesAsync(solutionDir);
 
