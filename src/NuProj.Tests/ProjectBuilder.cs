@@ -27,5 +27,23 @@
                 toolsVersion: null);
             return project;
         }
+
+        public static Project CreateMockContentFiles(this Project nuProj)
+        {
+            var random = new Random();
+            foreach (var item in nuProj.GetItems("Content"))
+            {
+                byte[] randomData = new byte[10];
+                random.NextBytes(randomData);
+                File.WriteAllText(item.GetMetadataValue("FullPath"), Convert.ToBase64String(randomData));
+            }
+
+            return nuProj;
+        }
+
+        public static void Cleanup(Project nuProj)
+        {
+            Directory.Delete(Path.GetDirectoryName(nuProj.FullPath), recursive: true);
+        }
     }
 }

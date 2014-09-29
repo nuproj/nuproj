@@ -14,15 +14,22 @@
 
     public class BasicTests
     {
-        [Fact(Skip = "Test not finished yet.")]
-        public async Task ProjectTemplatCanBuild()
+        [Fact]
+        public async Task ProjectTemplateCanBuild()
         {
             var nuproj = Assets.FromTemplate()
                 .AssignNuProjDirectory()
-                .ToProject();
-
-            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
-            result.AssertSuccessfulBuild();
+                .ToProject()
+                .CreateMockContentFiles();
+            try
+            {
+                var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+                result.AssertSuccessfulBuild();
+            }
+            finally
+            {
+                ProjectBuilder.Cleanup(nuproj);
+            }
         }
 
         [Fact(Skip = "Test fails because GenerateNuSpec target is skipped when no inputs are declared in the project.")]
@@ -32,11 +39,18 @@
                 .AssignNuProjDirectory()
                 .ToProject();
 
-            // This test focuses on a completely empty project.
-            nuproj.RemoveItems(nuproj.GetItems("Content"));
+            try
+            {
+                // This test focuses on a completely empty project.
+                nuproj.RemoveItems(nuproj.GetItems("Content"));
 
-            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
-            result.AssertSuccessfulBuild();
+                var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+                result.AssertSuccessfulBuild();
+            }
+            finally
+            {
+                ProjectBuilder.Cleanup(nuproj);
+            }
         }
     }
 }
