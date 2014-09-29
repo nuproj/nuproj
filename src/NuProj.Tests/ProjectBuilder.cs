@@ -45,5 +45,10 @@
         {
             Directory.Delete(Path.GetDirectoryName(nuProj.FullPath), recursive: true);
         }
+
+        public static string GetNuPkgPath(this Project nuProj)
+        {
+            return nuProj.GetPropertyValue("NuGetOutputPath");
+        }
     }
 }

@@ -71,9 +71,9 @@
         /// <param name="targetsToBuild">The targets to build. If not specified, the project's default target will be invoked.</param>
         /// <param name="properties">The optional global properties to pass to the project. May come from the <see cref="MSBuild.Properties"/> static class.</param>
         /// <returns>A task whose result is the result of the build.</returns>
-        public static async Task<BuildResultAndLogs> ExecuteAsync(ProjectInstance projectInstance, string[] targetsToBuild = null)
+        public static async Task<BuildResultAndLogs> ExecuteAsync(ProjectInstance projectInstance, params string[] targetsToBuild)
         {
-            targetsToBuild = targetsToBuild ?? projectInstance.DefaultTargets.ToArray();
+            targetsToBuild = (targetsToBuild == null || targetsToBuild.Length == 0) ? projectInstance.DefaultTargets.ToArray() : targetsToBuild;
 
             var logger = new EventLogger();
             var logLines = new List<string>();

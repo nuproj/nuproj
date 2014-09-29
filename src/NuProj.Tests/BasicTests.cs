@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -25,6 +26,37 @@
             {
                 var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
                 result.AssertSuccessfulBuild();
+            }
+            finally
+            {
+                ProjectBuilder.Cleanup(nuproj);
+            }
+        }
+
+        [Fact]
+        public void NuPkgFileNameBasedOnProjectName()
+        {
+            var nuproj = Assets.FromTemplate()
+                .AssignNuProjDirectory()
+                .ToProject();
+
+            string expectedNuPkgFileName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.nupkg", nuproj.GetPropertyValue("Id"), nuproj.GetPropertyValue("Version"));
+            string actualNuPkgPath = nuproj.GetNuPkgPath();
+            Assert.Equal(expectedNuPkgFileName, Path.GetFileName(actualNuPkgPath));
+        }
+
+        [Fact]
+        public async Task PackageIncludesContentFiles()
+        {
+            var nuproj = Assets.FromTemplate()
+                .AssignNuProjDirectory()
+                .ToProject()
+                .CreateMockContentFiles();
+            try
+            {
+                var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+                result.AssertSuccessfulBuild();
+                AssertNu.PackageContainsContentItems(nuproj);
             }
             finally
             {
