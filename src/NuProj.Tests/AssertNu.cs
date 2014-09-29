@@ -31,21 +31,18 @@
         /// <param name="packedFile">The path to the file that should exist in the archive. Case sensitive.</param>
         public static void PackageContains(string nupkgPath, string packedFile)
         {
-            using (var archive = NuPkg.GetArchive(nupkgPath))
-            {
-                Assert.NotNull(archive.GetEntry(packedFile));
-            }
+            var package = NuPkg.GetPackage(nupkgPath);
+            Assert.NotNull(package.GetFile(packedFile));
         }
 
         public static void PackageContainsContentItems(Project nuProj)
         {
-            using (var archive = NuPkg.GetArchive(nuProj))
+            var package = nuProj.GetPackage();
+            
+            foreach (var contentItem in nuProj.GetItems("Content"))
             {
-                foreach (var contentItem in nuProj.GetItems("Content"))
-                {
-                    string expectedPath = GetExpectedPackagePathForContent(contentItem);
-                    Assert.NotNull(archive.GetEntry(expectedPath));
-                }
+                string expectedPath = GetExpectedPackagePathForContent(contentItem);
+                Assert.NotNull(package.GetFile(expectedPath));
             }
         }
 

@@ -76,22 +76,32 @@
             {
                 var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
                 result.AssertSuccessfulBuild();
-                XElement package = NuPkg.ExtractNuSpecFromPackage(nuproj);
-                var metadata = package.Element(XName.Get("metadata", NuPkg.NuSpecXmlNamespace));
 
-                var properties = new string[] { "id", "version", "authors", "requireLicenseAcceptance", "description", "projectUrl", "licenseUrl" };
-                foreach (string propertyName in properties)
+                var package = nuproj.GetPackage();
+
+                var properties = new Dictionary<string, object>
                 {
-                    XElement nuspecPropertyElement = metadata.Element(XName.Get(propertyName, NuPkg.NuSpecXmlNamespace));
-                    string projectPropertyValue = nuproj.GetPropertyValue(propertyName);
-                    if (nuspecPropertyElement == null)
-                    {
-                        Assert.True(string.IsNullOrEmpty(projectPropertyValue));
-                    }
-                    else
-                    {
-                        Assert.Equal(projectPropertyValue, nuspecPropertyElement.Value, StringComparer.OrdinalIgnoreCase);
-                    }
+                    {"Id", package.Id},
+                    {"Version", package.Version},
+                    {"Authors", package.Authors},
+                    {"RequireLicenseAcceptance", package.RequireLicenseAcceptance},
+                    {"Description", package.Description},
+                    {"ProjectUrl", package.ProjectUrl},
+                    {"LicenseUrl", package.LicenseUrl},
+                };
+
+                foreach (var property in properties)
+                {
+                    var propertyName = property.Key;
+                    var expectedValueText = nuproj.GetPropertyValue(propertyName);
+                    var actualValue = property.Value;
+                    var actualValueText = actualValue == null
+                                            ? string.Empty
+                                            : actualValue is IEnumerable<string>
+                                                ? ((IEnumerable<string>) actualValue).First()
+                                                : actualValue.ToString();
+
+                    Assert.Equal(expectedValueText, actualValueText);
                 }
             }
             finally
