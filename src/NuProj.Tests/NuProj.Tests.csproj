@@ -73,12 +73,12 @@
     <Compile Include="Infrastructure\AssertNu.cs" />
     <Compile Include="Infrastructure\Assets.cs" />
     <Compile Include="BasicTests.cs" />
-    <Compile Include="GetPackageIdentity.cs" />
+    <Compile Include="PackageIdentityTests.cs" />
     <Compile Include="Infrastructure\MSBuild.cs" />
     <Compile Include="Infrastructure\NuGetHelper.cs" />
     <Compile Include="Infrastructure\NuPkg.cs" />
     <Compile Include="Infrastructure\ProjectBuilder.cs" />
-    <Compile Include="Transitivity.cs" />
+    <Compile Include="TransitivityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

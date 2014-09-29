@@ -8,11 +8,11 @@ using Xunit;
 
 namespace NuProj.Tests
 {
-    public class GetPackageIdentity
+    public class PackageIdentityTests
     {
         [Theory]
         [InlineData("Transitivity", @"A.nuget\A.nuget.nuproj", "A")]
-        public async Task ExecuteGetPackageIdentityTarget(string scenarioName, string projectToBuild, string identity)
+        public async Task PackageIdentity_GetPackageIdentity_ResturnsCorrectValue(string scenarioName, string projectToBuild, string identity)
         {
             const string target = "GetPackageIdentity";
 

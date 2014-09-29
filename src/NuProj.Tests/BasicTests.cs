@@ -16,7 +16,7 @@ namespace NuProj.Tests
     public class BasicTests
     {
         [Fact]
-        public async Task ProjectTemplateCanBuild()
+        public async Task Basic_ProjectTemplateCanBuild()
         {
             var nuproj = Assets.FromTemplate()
                                .AssignNuProjDirectory()
@@ -34,7 +34,7 @@ namespace NuProj.Tests
         }
 
         [Fact]
-        public void NuPkgFileNameBasedOnProjectName()
+        public void Basic_NuPkgFileNameBasedOnProjectName()
         {
             var nuproj = Assets.FromTemplate()
                                .AssignNuProjDirectory()
@@ -46,7 +46,7 @@ namespace NuProj.Tests
         }
 
         [Fact]
-        public async Task PackageIncludesContentFiles()
+        public async Task Basic_PackageIncludesContentFiles()
         {
             var nuproj = Assets.FromTemplate()
                                .AssignNuProjDirectory()
@@ -65,7 +65,7 @@ namespace NuProj.Tests
         }
 
         [Fact]
-        public async Task NuSpecPropertiesMatchProjectProperties()
+        public async Task Basic_NuSpecPropertiesMatchProjectProperties()
         {
             var nuproj = Assets.FromTemplate()
                                .AssignNuProjDirectory()
@@ -110,7 +110,7 @@ namespace NuProj.Tests
         }
 
         [Fact]
-        public async Task EmptyProjectCannotBuild()
+        public async Task Basic_EmptyProjectCannotBuild()
         {
             var nuproj = Assets.FromTemplate()
                                .AssignNuProjDirectory()

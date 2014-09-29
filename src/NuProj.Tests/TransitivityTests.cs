@@ -8,12 +8,12 @@ using Xunit;
 
 namespace NuProj.Tests
 {
-    public class Transitivity
+    public class TransitivityTests
     {
         [Theory(Skip = "Not yet passing. Issue #10?")]
         [InlineData(@"Transitivity", @"Transitivity.sln")]
         [InlineData(@"Transitivity", @"A.nuget\A.nuget.nuproj")]
-        public async Task MSBuildDependencyTransitivityTest(string scenarioName, string projectToBuild)
+        public async Task Transitivity_IndirectDependencies_AreNotPackaged(string scenarioName, string projectToBuild)
         {
             // Arange
 
