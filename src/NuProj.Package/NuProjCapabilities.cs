@@ -9,11 +9,10 @@ namespace NuProj.ProjectSystem
     {
         public const string NuProj = "NuProj";
 
-        public static readonly ImmutableHashSet<string> ProjectSystem = new[]
+        public static readonly ImmutableHashSet<string> ProjectSystem = Empty.CapabilitiesSet.Union(new[]
         {
             NuProj,
             ProjectCapabilities.ReferencesFolder,
-            ProjectCapabilities.Cps
-        }.ToImmutableHashSet(StringComparer.OrdinalIgnoreCase);
+        });
     }
 }
