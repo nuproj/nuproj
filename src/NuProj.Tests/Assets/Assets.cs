@@ -1,12 +1,8 @@
 ﻿namespace NuProj.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Xml;
     using Microsoft.Build.Construction;
 
@@ -14,29 +10,63 @@
     {
         private const string Namespace = "NuProj.Tests.Assets";
 
-        /// <summary>
-        /// The current directory when this type was first accessed.
-        /// </summary>
-        /// <remarks>
-        /// This value is captured because as tests run, the current directory may change,
-        /// and we want to be sure we know the original current directory because xunit
-        /// sets it to be the test project's output directory, where many of our test assets are.
-        /// </remarks>
-        private static readonly string InitialCurrentDirectory = Environment.CurrentDirectory;
+        private static readonly string ProjectDirectory = ComputeProjectDirectory();
 
         public static ProjectRootElement FromTemplate()
         {
             return GetResourceProjectRootElement("FromTemplate.nuproj");
         }
 
-        public static string NuProjImportsDirectory
+        public static string NuProjPath
         {
-            get { return InitialCurrentDirectory; }
+            get { return Path.Combine(ProjectDirectory, @"src\NuProj.Targets"); }
         }
 
-        public static string BuildOutputDirectory
+        public static string NuProjTasksPath
         {
-            get { return InitialCurrentDirectory; }
+            get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"NuProj.Tasks.dll"); }
+        }
+
+        public static string NuGetToolPath
+        {
+            get { return Path.Combine(ProjectDirectory, @"src\packages\NuGet.CommandLine.2.8.2\tools"); }
+        }
+
+        public static string NuGetExePath
+        {
+            get { return Path.Combine(NuGetToolPath, "nuget.exe"); }
+        }
+
+        public static string ScenariosDirectory
+        {
+            get { return Path.Combine(ProjectDirectory, "src", "NuProj.Tests", "Scenarios"); }
+        }
+
+        private static string ComputeProjectDirectory()
+        {
+            // When running inside the IDE, the tests are shadow copied. In order to find the
+            // original location, we can use AppDomain.CurrentDomain.BaseDirectory.
+
+            var appDomainBase = AppDomain.CurrentDomain.BaseDirectory;
+
+            // For IDE runs, the base directory will be something like
+            //
+            //      <ProjectDir>\src\NuProj.Tests\bin\Debug\
+            //
+            // When running from the automated build (command line or Visual Studio Online) we
+            // run the tests from the output directory, which means the base directory will
+            // look like this:
+            //
+            //      <ProjectDir>\bin\raw\
+            //
+            // This means we either have to go up 4 or 2 levels. In order to decide we simply
+            // check whether the base directory is "raw"  -- which is a fixed part, even if
+            // $(OutDir) is redirected.
+
+            var isBuildOutput = string.Equals(Path.GetFileName(appDomainBase), "raw", StringComparison.OrdinalIgnoreCase);
+            var parentPath = isBuildOutput ? @"..\.." : @"..\..\..\..";
+
+            return Path.GetFullPath(Path.Combine(appDomainBase, parentPath));
         }
 
         private static ProjectRootElement GetResourceProjectRootElement(string name)

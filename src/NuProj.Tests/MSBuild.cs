@@ -126,7 +126,9 @@
             /// Gets the global properties to pass to indicate where NuProj imports can be found.
             /// </summary>
             public static readonly ImmutableDictionary<string, string> Default = Empty
-                .Add("NuProjPath", Assets.NuProjImportsDirectory);
+                .Add("NuProjPath", Assets.NuProjPath)
+                .Add("NuProjTasksPath", Assets.NuProjTasksPath)
+                .Add("NuGetToolPath", Assets.NuGetToolPath);
 
             /// <summary>
             /// The project will build in the same manner as if it were building inside Visual Studio.

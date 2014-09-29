@@ -28,11 +28,9 @@ namespace NuProj.Tests
 
         private static Task<int> NuGetExeRestoreAsync(string path)
         {
-            var testOutDir = Directory.GetCurrentDirectory();
-
             var startInfo = new ProcessStartInfo
             {
-                FileName = Path.Combine(testOutDir, "nuget.exe"),
+                FileName = Assets.NuGetExePath,
                 Arguments = "restore",
                 WorkingDirectory = path,
                 UseShellExecute = false,
@@ -87,7 +85,7 @@ namespace NuProj.Tests
 
         public static string GetScenarioDirectory(string scenarioName)
         {
-            return Path.Combine(Assets.BuildOutputDirectory, scenarioName);
+            return Path.Combine(Assets.ScenariosDirectory, scenarioName);
         }
     }
 }

@@ -82,14 +82,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\NuProj.Targets\NuProj.props">
-      <Link>NuProj.props</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.Targets\NuProj.targets">
-      <Link>NuProj.targets</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <EmbeddedResource Include="Assets\FromTemplate.nuproj" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -105,32 +97,13 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <UsingTask TaskName="DownloadFile" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
-    <ParameterGroup>
-      <Address ParameterType="System.String" Required="true" />
-      <FileName ParameterType="System.String" Required="true" />
-    </ParameterGroup>
-    <Task>
-      <Reference Include="System" />
-      <Code Type="Fragment" Language="cs"><![CDATA[
-           var directory = System.IO.Path.GetDirectoryName(FileName);
-           System.IO.Directory.CreateDirectory(directory);
-           new System.Net.WebClient().DownloadFile(Address, FileName);
-        ]]></Code>
-    </Task>
-  </UsingTask>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-    <PropertyGroup>
-      <NuGetToolPath>$(OutDir)NuGet.exe</NuGetToolPath>
-    </PropertyGroup>
-    <DownloadFile Condition="!Exists($(NuGetToolPath))" Address="http://nuget.org/nuget.exe" FileName="$(NuGetToolPath)" />
   </Target>
   <Target Name="AfterBuild">
-    <ItemGroup>
-      <TestScenario Include="Scenarios\**\*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(TestScenario)" DestinationFiles="@(TestScenario->'$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
   </Target>
+  -->
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
