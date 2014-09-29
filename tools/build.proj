@@ -14,6 +14,7 @@
     <ProjectFiles Include="$(ToolsDir)restore.proj" />
     <ProjectFiles Include="$(ToolsDir)binaries.proj" />
     <ProjectFiles Include="$(ToolsDir)package.proj" />
+    <ProjectFiles Include="$(ToolsDir)tests.proj" />
     <ProjectFiles Include="$(ToolsDir)release.proj" />
   </ItemGroup>
 
