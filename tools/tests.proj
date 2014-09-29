@@ -1,0 +1,22 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="build.props" />
+
+  <UsingTask TaskName="xunit" AssemblyFile="$(SourceDir)packages\xunit.runners.2.0.0-beta4-build2738\tools\xunit.runner.msbuild.dll" />
+
+  <ItemGroup>
+    <TestAssembly Include="$(OutDir)raw\*Tests*.dll" />
+  </ItemGroup>
+
+  <Target Name="Clean">
+  </Target>
+
+  <Target Name="Build">
+    <xunit Assemblies="@(TestAssembly)"
+           Verbose="True" />
+  </Target>
+
+  <Target Name="Rebuild"
+          DependsOnTargets="Clean;Build" />
+
+</Project>

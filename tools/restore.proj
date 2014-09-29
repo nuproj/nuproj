@@ -4,9 +4,8 @@
   <Import Project="build.props" />
 
   <PropertyGroup>
-    <OutDir Condition="'$(OutDir)' == ''">$(ProjectDir)bin\</OutDir>
     <PackagesDir>$(MSBuildThisFileDirectory)..\src\packages\</PackagesDir>
-    <NuGetToolPath>$(OutDir)raw\NuGet.exe</NuGetToolPath>
+    <NuGetToolPath>$(LOCALAPPDATA)\NuGet\NuGet.exe</NuGetToolPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +29,15 @@
     </Task>
   </UsingTask>
 
+  <Target Name="DownloadNuGetExe"
+          Condition="!Exists($(NuGetToolPath))">
+    <DownloadFile Condition=""
+                  Address="http://nuget.org/nuget.exe"
+                  FileName="$(NuGetToolPath)" />
+    <Message Importance="High"
+             Text="NuGet.exe -> $(NuGetToolPath)" />
+  </Target>
+
   <Target Name="Clean">
     <ItemGroup>
       <_PackageFiles Include="$(PackagesDir)**\*.*"
@@ -38,10 +46,8 @@
     <Delete Files="@(_PackageFiles)" />
   </Target>
 
-  <Target Name="Build">
-    <DownloadFile Condition="!Exists($(NuGetToolPath))"
-                  Address="http://nuget.org/nuget.exe"
-                  FileName="$(NuGetToolPath)" />
+  <Target Name="Build"
+          DependsOnTargets="DownloadNuGetExe">
     <Exec Command="&quot;$(NuGetToolPath)&quot; install &quot;%(Package.FullPath)&quot; -o &quot;$(PackagesDir)\&quot;" />
   </Target>
 

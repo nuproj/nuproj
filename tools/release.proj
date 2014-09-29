@@ -4,10 +4,6 @@
   <Import Project="build.props" />
 
   <PropertyGroup>
-    <OutDir Condition="'$(OutDir)' == ''">$(ProjectDir)bin\</OutDir>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <ProjectProperties>
       Configuration=$(Configuration);

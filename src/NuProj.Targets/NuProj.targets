@@ -356,7 +356,7 @@
     =================================================================================================================== -->
 
   <Target Name="GenerateNuSpec"
-          Inputs="@(PackageFile)"
+          Inputs="@(PackageFile);AlwaysRunEvenIfPackageFileIsEmpty"
           Outputs="$(NuSpecPath)"
           DependsOnTargets="GetPackageDependencies;GetPackageFiles;GetSourceFiles">
     <!-- Please Note:
@@ -398,7 +398,7 @@
     INPUTS:
         $(NuSpecPath)                  The path to the NuSpec file.
         $(OutDir)                      The path to the directory where the .nupkg should be created
-        $(NuProjToolPath)              The path of the directory that contains to NuGet.exe
+        $(NuGetToolPath)               The path of the directory that contains to NuGet.exe
         $(NuGetToolExe)                The name of NuGet.exe
 
     =================================================================================================================== -->
@@ -414,7 +414,7 @@
     <NuGetPack OutputDirectory="$(OutDir)"
                NoPackageAnalysis="$(NoPackageAnalysis)"
                Symbols="$(GenerateSymbolPackage)"
-               ToolPath="$(NuProjToolPath)"
+               ToolPath="$(NuGetToolPath)"
                ToolExe="$(NuGetToolExe)"
                NuSpecPath="$(NuSpecPath)"/>
   </Target>
