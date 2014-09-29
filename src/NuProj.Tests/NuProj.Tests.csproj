@@ -12,7 +12,7 @@
     <AssemblyName>NuProj.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>e07b4d3f</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>d4534cf0</NuGetPackageImportStamp>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -69,6 +69,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Assets.cs" />
+    <Compile Include="BasicTests.cs" />
     <Compile Include="GetPackageIdentity.cs" />
     <Compile Include="MSBuild.cs" />
     <Compile Include="NuGetHelper.cs" />
@@ -84,6 +86,7 @@
       <Link>NuProj.targets</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Assets\FromTemplate.nuproj" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
