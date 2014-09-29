@@ -51,7 +51,7 @@
                 buildManager.BeginBuild(parameters);
                 try
                 {
-                    var requestData = new BuildRequestData(projectPath, properties ?? Properties.Empty, null, targetsToBuild, null);
+                    var requestData = new BuildRequestData(projectPath, properties ?? Properties.Default, null, targetsToBuild, null);
                     var submission = buildManager.PendBuildRequest(requestData);
                     result = await submission.ExecuteAsync();
                 }
@@ -120,12 +120,18 @@
             /// <summary>
             /// No properties. The project will be built in its default configuration.
             /// </summary>
-            public static readonly ImmutableDictionary<string, string> Empty = ImmutableDictionary.Create<string, string>(StringComparer.OrdinalIgnoreCase);
+            private static readonly ImmutableDictionary<string, string> Empty = ImmutableDictionary.Create<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            /// <summary>
+            /// Gets the global properties to pass to indicate where NuProj imports can be found.
+            /// </summary>
+            public static readonly ImmutableDictionary<string, string> Default = Empty
+                .Add("NuProjPath", Assets.NuProjImportsDirectory);
 
             /// <summary>
             /// The project will build in the same manner as if it were building inside Visual Studio.
             /// </summary>
-            public static readonly ImmutableDictionary<string, string> BuildingInsideVisualStudio = Empty
+            public static readonly ImmutableDictionary<string, string> BuildingInsideVisualStudio = Default
                 .Add("BuildingInsideVisualStudio", "true");
         }
 

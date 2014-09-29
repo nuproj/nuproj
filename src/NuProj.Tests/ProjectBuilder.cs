@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.Build.Construction;
@@ -11,6 +13,8 @@
 
     public static class ProjectBuilder
     {
+        private static string NuProjTargetsDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
         public static ProjectRootElement AssignNuProjDirectory(this ProjectRootElement nuProj)
         {
             var projectDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
@@ -23,7 +27,7 @@
         {
             var project = new Project(
                 nuProj,
-                MSBuild.Properties.Empty.Add("NuProjPath", Environment.CurrentDirectory),
+                MSBuild.Properties.Default,
                 toolsVersion: null);
             return project;
         }
