@@ -100,8 +100,8 @@
             }
         }
 
-        [Fact(Skip = "Test fails because GenerateNuSpec target is skipped when no inputs are declared in the project.")]
-        public async Task EmptyProjectCanBuild()
+        [Fact]
+        public async Task EmptyProjectCannotBuild()
         {
             var nuproj = Assets.FromTemplate()
                 .AssignNuProjDirectory()
@@ -113,7 +113,10 @@
                 nuproj.RemoveItems(nuproj.GetItems("Content"));
 
                 var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
-                result.AssertSuccessfulBuild();
+
+                // Verify that the build fails and tells the user why.
+                Assert.Equal(BuildResultCode.Failure, result.Result.OverallResult);
+                Assert.NotEqual(0, result.ErrorEvents.Count());
             }
             finally
             {

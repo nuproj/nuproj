@@ -16,6 +16,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6C4096
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{B990C73A-43DF-45E0-B616-5DBA2D2060F3}"
+	ProjectSection(SolutionItems) = preProject
+		NuProj.Targets\NuProj.props = NuProj.Targets\NuProj.props
+		NuProj.Targets\NuProj.targets = NuProj.Targets\NuProj.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
