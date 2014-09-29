@@ -87,5 +87,11 @@ namespace NuProj.Tests.Infrastructure
         {
             return Path.Combine(Assets.ScenariosDirectory, scenarioName);
         }
+
+        public static string GetScenarioSolutionPath(string scenarioName)
+        {
+            var solutioDirectory = GetScenarioDirectory(scenarioName);
+            return Path.Combine(solutioDirectory, scenarioName + ".sln");
+        }
     }
 }

@@ -73,6 +73,7 @@
     <Compile Include="Infrastructure\AssertNu.cs" />
     <Compile Include="Infrastructure\Assets.cs" />
     <Compile Include="BasicTests.cs" />
+    <Compile Include="Infrastructure\Scenario.cs" />
     <Compile Include="PackageIdentityTests.cs" />
     <Compile Include="Infrastructure\MSBuild.cs" />
     <Compile Include="Infrastructure\NuGetHelper.cs" />
