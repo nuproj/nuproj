@@ -1,16 +1,17 @@
-﻿namespace NuProj.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Immutable;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.Build.Execution;
-    using Microsoft.Build.Framework;
-    using Microsoft.Build.Logging;
-    using Xunit;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Threading.Tasks;
 
+using Microsoft.Build.Execution;
+using Microsoft.Build.Framework;
+using Microsoft.Build.Logging;
+
+using Xunit;
+
+namespace NuProj.Tests
+{
     public static class MSBuild
     {
         public static Task<BuildResultAndLogs> RebuildAsync(string projectPath, IDictionary<string, string> properties = null)
@@ -69,7 +70,6 @@
         /// </summary>
         /// <param name="projectInstance">The project to build.</param>
         /// <param name="targetsToBuild">The targets to build. If not specified, the project's default target will be invoked.</param>
-        /// <param name="properties">The optional global properties to pass to the project. May come from the <see cref="MSBuild.Properties"/> static class.</param>
         /// <returns>A task whose result is the result of the build.</returns>
         public static async Task<BuildResultAndLogs> ExecuteAsync(ProjectInstance projectInstance, params string[] targetsToBuild)
         {
@@ -141,9 +141,9 @@
         {
             internal BuildResultAndLogs(BuildResult result, List<BuildEventArgs> events, IReadOnlyList<string> logLines)
             {
-                this.Result = result;
-                this.LogEvents = events;
-                this.LogLines = logLines;
+                Result = result;
+                LogEvents = events;
+                LogLines = logLines;
             }
 
             public BuildResult Result { get; private set; }
@@ -152,31 +152,31 @@
 
             public IEnumerable<BuildErrorEventArgs> ErrorEvents
             {
-                get { return this.LogEvents.OfType<BuildErrorEventArgs>(); }
+                get { return LogEvents.OfType<BuildErrorEventArgs>(); }
             }
 
             public IReadOnlyList<string> LogLines { get; private set; }
 
             public string EntireLog
             {
-                get { return string.Join(string.Empty, this.LogLines); }
+                get { return string.Join(string.Empty, LogLines); }
             }
 
             public void AssertSuccessfulBuild()
             {
-                Assert.False(this.ErrorEvents.Any(), this.ErrorEvents.Select(e => e.Message).FirstOrDefault());
-                Assert.Equal(BuildResultCode.Success, this.Result.OverallResult);
+                Assert.False(ErrorEvents.Any(), ErrorEvents.Select(e => e.Message).FirstOrDefault());
+                Assert.Equal(BuildResultCode.Success, Result.OverallResult);
             }
         }
 
         private class EventLogger : ILogger
         {
-            private IEventSource eventSource;
+            private IEventSource _eventSource;
 
             internal EventLogger()
             {
-                this.Verbosity = LoggerVerbosity.Normal;
-                this.LogEvents = new List<BuildEventArgs>();
+                Verbosity = LoggerVerbosity.Normal;
+                LogEvents = new List<BuildEventArgs>();
             }
 
             public LoggerVerbosity Verbosity { get; set; }
@@ -186,19 +186,19 @@
             public List<BuildEventArgs> LogEvents { get; set; }
 
             public void Initialize(IEventSource eventSource)
-            {
-                this.eventSource = eventSource;
-                this.eventSource.AnyEventRaised += this.eventSource_AnyEventRaised;
+            {               
+                _eventSource = eventSource;
+                _eventSource.AnyEventRaised += EventSourceAnyEventRaised;
             }
 
-            private void eventSource_AnyEventRaised(object sender, BuildEventArgs e)
+            private void EventSourceAnyEventRaised(object sender, BuildEventArgs e)
             {
-                this.LogEvents.Add(e);
+                LogEvents.Add(e);
             }
 
             public void Shutdown()
             {
-                this.eventSource.AnyEventRaised -= this.eventSource_AnyEventRaised;
+                _eventSource.AnyEventRaised -= EventSourceAnyEventRaised;
             }
         }
     }

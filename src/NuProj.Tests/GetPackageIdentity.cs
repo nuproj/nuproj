@@ -1,12 +1,8 @@
-﻿using Microsoft.Build.Execution;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+
 using Xunit;
-using Microsoft.Build.Framework;
 
 namespace NuProj.Tests
 {
@@ -20,7 +16,7 @@ namespace NuProj.Tests
 
             // Arange
             // by convention, all scenarios should be in directory
-            string solutionDir = NuGetHelper.GetScenarioDirectory(scenarioName);
+            var solutionDir = NuGetHelper.GetScenarioDirectory(scenarioName);
 
             var projectPath = Path.Combine(solutionDir, projectToBuild);
 

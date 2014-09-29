@@ -1,10 +1,11 @@
-﻿namespace NuProj.Tests
-{
-    using System;
-    using System.IO;
-    using System.Xml;
-    using Microsoft.Build.Construction;
+﻿using System;
+using System.IO;
+using System.Xml;
 
+using Microsoft.Build.Construction;
+
+namespace NuProj.Tests
+{
     public static class Assets
     {
         private static readonly string ProjectDirectory = ComputeProjectDirectory();

@@ -1,28 +1,25 @@
-﻿namespace NuProj.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Xml.Linq;
-    using Microsoft.Build.Evaluation;
-    using Microsoft.Build.Execution;
-    using Microsoft.Build.Framework;
-    using Xunit;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
+using Microsoft.Build.Execution;
+
+using Xunit;
+
+namespace NuProj.Tests
+{
     public class BasicTests
     {
         [Fact]
         public async Task ProjectTemplateCanBuild()
         {
             var nuproj = Assets.FromTemplate()
-                .AssignNuProjDirectory()
-                .ToProject()
-                .CreateMockContentFiles();
+                               .AssignNuProjDirectory()
+                               .ToProject()
+                               .CreateMockContentFiles();
             try
             {
                 var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
@@ -38,11 +35,11 @@
         public void NuPkgFileNameBasedOnProjectName()
         {
             var nuproj = Assets.FromTemplate()
-                .AssignNuProjDirectory()
-                .ToProject();
+                               .AssignNuProjDirectory()
+                               .ToProject();
 
-            string expectedNuPkgFileName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.nupkg", nuproj.GetPropertyValue("Id"), nuproj.GetPropertyValue("Version"));
-            string actualNuPkgPath = nuproj.GetNuPkgPath();
+            var expectedNuPkgFileName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.nupkg", nuproj.GetPropertyValue("Id"), nuproj.GetPropertyValue("Version"));
+            var actualNuPkgPath = nuproj.GetNuPkgPath();
             Assert.Equal(expectedNuPkgFileName, Path.GetFileName(actualNuPkgPath));
         }
 
@@ -50,9 +47,9 @@
         public async Task PackageIncludesContentFiles()
         {
             var nuproj = Assets.FromTemplate()
-                .AssignNuProjDirectory()
-                .ToProject()
-                .CreateMockContentFiles();
+                               .AssignNuProjDirectory()
+                               .ToProject()
+                               .CreateMockContentFiles();
             try
             {
                 var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
@@ -69,9 +66,9 @@
         public async Task NuSpecPropertiesMatchProjectProperties()
         {
             var nuproj = Assets.FromTemplate()
-                .AssignNuProjDirectory()
-                .ToProject()
-                .CreateMockContentFiles();
+                               .AssignNuProjDirectory()
+                               .ToProject()
+                               .CreateMockContentFiles();
             try
             {
                 var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
@@ -114,8 +111,8 @@
         public async Task EmptyProjectCannotBuild()
         {
             var nuproj = Assets.FromTemplate()
-                .AssignNuProjDirectory()
-                .ToProject();
+                               .AssignNuProjDirectory()
+                               .ToProject();
 
             try
             {

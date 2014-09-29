@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Build.Execution;
-using Microsoft.Build.Framework;
+
 using Xunit;
 
 namespace NuProj.Tests
@@ -18,7 +16,7 @@ namespace NuProj.Tests
             // Arange
 
             // by convention, all scenarios should be in directory
-            string solutionDir = NuGetHelper.GetScenarioDirectory(scenarioName);
+            var solutionDir = NuGetHelper.GetScenarioDirectory(scenarioName);
 
             await NuGetHelper.RestorePackagesAsync(solutionDir);
 

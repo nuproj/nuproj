@@ -1,16 +1,11 @@
-﻿namespace NuProj.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.IO.Compression;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.Build.Evaluation;
-    using Microsoft.Build.Execution;
-    using Xunit;
+﻿using System;
 
+using Microsoft.Build.Evaluation;
+
+using Xunit;
+
+namespace NuProj.Tests
+{
     /// <summary>
     /// NuProj specific assertions.
     /// </summary>
@@ -41,7 +36,7 @@
             
             foreach (var contentItem in nuProj.GetItems("Content"))
             {
-                string expectedPath = GetExpectedPackagePathForContent(contentItem);
+                var expectedPath = GetExpectedPackagePathForContent(contentItem);
                 Assert.NotNull(package.GetFile(expectedPath));
             }
         }

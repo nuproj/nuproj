@@ -1,23 +1,18 @@
-﻿namespace NuProj.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.Build.Construction;
-    using Microsoft.Build.Evaluation;
+﻿using System;
+using System.IO;
 
+using Microsoft.Build.Construction;
+using Microsoft.Build.Evaluation;
+
+namespace NuProj.Tests
+{
     public static class ProjectBuilder
     {
-        private static string NuProjTargetsDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
         public static ProjectRootElement AssignNuProjDirectory(this ProjectRootElement nuProj)
         {
-            var projectDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            var tempPath = Path.GetTempPath();
+            var randomFileName = Path.GetRandomFileName();
+            var projectDirectory = Path.Combine(tempPath, randomFileName);
             Directory.CreateDirectory(projectDirectory);
             nuProj.FullPath = Path.Combine(projectDirectory, "test.nuproj");
             return nuProj;
@@ -37,9 +32,11 @@
             var random = new Random();
             foreach (var item in nuProj.GetItems("Content"))
             {
-                byte[] randomData = new byte[10];
+                var randomData = new byte[10];
                 random.NextBytes(randomData);
-                File.WriteAllText(item.GetMetadataValue("FullPath"), Convert.ToBase64String(randomData));
+                var randataDataBase64 = Convert.ToBase64String(randomData);
+                var filePath = item.GetMetadataValue("FullPath");
+                File.WriteAllText(filePath, randataDataBase64);
             }
 
             return nuProj;
@@ -47,7 +44,8 @@
 
         public static void Cleanup(Project nuProj)
         {
-            Directory.Delete(Path.GetDirectoryName(nuProj.FullPath), recursive: true);
+            var projectDirectory = Path.GetDirectoryName(nuProj.FullPath);
+            Directory.Delete(projectDirectory, recursive: true);
         }
 
         public static string GetNuPkgPath(this Project nuProj)
