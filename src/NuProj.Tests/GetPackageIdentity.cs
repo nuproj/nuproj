@@ -28,8 +28,7 @@ namespace NuProj.Tests
             var result = await MSBuild.ExecuteAsync(projectPath, target);
 
             // Assert
-            Assert.Equal(BuildResultCode.Success, result.Result.OverallResult);
-            Assert.Equal(0, result.LogEvents.OfType<BuildErrorEventArgs>().Count());
+            result.AssertSuccessfulBuild();
             Assert.Single(result.Result.ResultsByTarget[target].Items);
             Assert.Equal(result.Result.ResultsByTarget[target].Items[0].ItemSpec, identity);
         }

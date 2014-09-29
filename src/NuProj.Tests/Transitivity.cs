@@ -28,8 +28,7 @@ namespace NuProj.Tests
             var result = await MSBuild.ExecuteAsync(projectPath);
 
             // Assert
-            Assert.Equal(BuildResultCode.Success, result.Result.OverallResult);
-            Assert.Equal(0, result.LogEvents.OfType<BuildErrorEventArgs>().Count());
+            result.AssertSuccessfulBuild();
 
             var packagePath = Path.Combine(solutionDir, @"A.nuget\bin\Debug\A.1.0.0.nupkg");
             Assert.True(File.Exists(packagePath));

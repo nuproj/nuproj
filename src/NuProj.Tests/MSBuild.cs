@@ -9,6 +9,7 @@
     using Microsoft.Build.Execution;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Logging;
+    using Xunit;
 
     public static class MSBuild
     {
@@ -151,6 +152,12 @@
             public string EntireLog
             {
                 get { return string.Join(string.Empty, this.LogLines); }
+            }
+
+            public void AssertSuccessfulBuild()
+            {
+                Assert.False(this.ErrorEvents.Any(), this.ErrorEvents.Select(e => e.Message).FirstOrDefault());
+                Assert.Equal(BuildResultCode.Success, this.Result.OverallResult);
             }
         }
 

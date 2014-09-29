@@ -35,7 +35,7 @@
     <Tags>NuGetPackage1</Tags>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="README.txt" />
+    <Content Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>

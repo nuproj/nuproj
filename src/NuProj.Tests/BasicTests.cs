@@ -14,25 +14,29 @@
 
     public class BasicTests
     {
+        [Fact(Skip = "Test not finished yet.")]
+        public async Task ProjectTemplatCanBuild()
+        {
+            var nuproj = Assets.FromTemplate()
+                .AssignNuProjDirectory()
+                .ToProject();
+
+            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+            result.AssertSuccessfulBuild();
+        }
+
         [Fact(Skip = "Test fails because GenerateNuSpec target is skipped when no inputs are declared in the project.")]
         public async Task EmptyProjectCanBuild()
         {
-            var pre = Assets.FromTemplate();
-            var projectDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            Directory.CreateDirectory(projectDirectory);
-            Directory.CreateDirectory(Path.Combine(projectDirectory, "obj", "Debug"));
-            Directory.CreateDirectory(Path.Combine(projectDirectory, "bin", "Debug"));
-            pre.FullPath = Path.Combine(projectDirectory, "test.nuproj");
+            var nuproj = Assets.FromTemplate()
+                .AssignNuProjDirectory()
+                .ToProject();
 
-            var errors = new List<object>();
-            var project = new Project(pre, MSBuild.Properties.Empty.Add("NuProjPath", Environment.CurrentDirectory), null);
-            
             // This test focuses on a completely empty project.
-            project.RemoveItems(project.GetItems("Content"));
+            nuproj.RemoveItems(nuproj.GetItems("Content"));
 
-            var result = await MSBuild.ExecuteAsync(project.CreateProjectInstance());
-            Assert.Equal(0, result.ErrorEvents.Count());
-            Assert.Equal(BuildResultCode.Success, result.Result.OverallResult);
+            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+            result.AssertSuccessfulBuild();
         }
     }
 }
