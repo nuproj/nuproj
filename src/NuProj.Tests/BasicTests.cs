@@ -78,9 +78,21 @@
                 result.AssertSuccessfulBuild();
                 XElement package = NuPkg.ExtractNuSpecFromPackage(nuproj);
                 var metadata = package.Element(XName.Get("metadata", NuPkg.NuSpecXmlNamespace));
-                var id = metadata.Element(XName.Get("id", NuPkg.NuSpecXmlNamespace));
-                Assert.Equal(nuproj.GetPropertyValue("id"), id.Value);
-                // TODO: check more properties here.
+
+                var properties = new string[] { "id", "version", "authors", "requireLicenseAcceptance", "description", "projectUrl", "licenseUrl" };
+                foreach (string propertyName in properties)
+                {
+                    XElement nuspecPropertyElement = metadata.Element(XName.Get(propertyName, NuPkg.NuSpecXmlNamespace));
+                    string projectPropertyValue = nuproj.GetPropertyValue(propertyName);
+                    if (nuspecPropertyElement == null)
+                    {
+                        Assert.True(string.IsNullOrEmpty(projectPropertyValue));
+                    }
+                    else
+                    {
+                        Assert.Equal(projectPropertyValue, nuspecPropertyElement.Value, StringComparer.OrdinalIgnoreCase);
+                    }
+                }
             }
             finally
             {
