@@ -2,14 +2,11 @@
 {
     using System;
     using System.IO;
-    using System.Reflection;
     using System.Xml;
     using Microsoft.Build.Construction;
 
     public static class Assets
     {
-        private const string Namespace = "NuProj.Tests.Assets";
-
         private static readonly string ProjectDirectory = ComputeProjectDirectory();
 
         public static ProjectRootElement FromTemplate()
@@ -81,7 +78,10 @@
 
         private static Stream GetResourceStream(string name)
         {
-            return Assembly.GetExecutingAssembly().GetManifestResourceStream(Namespace + "." + name);
+            var assembly = typeof(Assets).Assembly;
+            var resourceNamespace = typeof(Assets).Namespace;
+            var qualifiedResourceName = resourceNamespace + ".Assets." + name;
+            return assembly.GetManifestResourceStream(qualifiedResourceName);
         }
     }
 }
