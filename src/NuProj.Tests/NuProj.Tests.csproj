@@ -80,7 +80,6 @@
     <Compile Include="Infrastructure\NuGetHelper.cs" />
     <Compile Include="Infrastructure\NuPkg.cs" />
     <Compile Include="Infrastructure\ProjectBuilder.cs" />
-    <Compile Include="TransitivityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

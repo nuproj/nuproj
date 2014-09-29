@@ -11,7 +11,7 @@ namespace NuProj.Tests
     public class PackageIdentityTests
     {
         [Theory]
-        [InlineData("Transitivity", @"A.nuget\A.nuget.nuproj", "A")]
+        [InlineData("Dependency_IndirectDependencies_AreNotPackaged", @"A.nuget\A.nuget.nuproj", "A")]
         public async Task PackageIdentity_GetPackageIdentity_ResturnsCorrectValue(string scenarioName, string projectToBuild, string identity)
         {
             const string target = "GetPackageIdentity";

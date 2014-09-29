@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,6 +38,16 @@ namespace NuProj.Tests
             };
             var files = package.GetFiles().Select(f => f.Path);
             Assert.Equal(expectedFileNames, files);
+        }
+
+        [Fact(Skip = "Not yet passing. Issue #10?")]
+        public async Task Dependency_IndirectDependencies_AreNotPackaged(string scenarioName, string projectToBuild)
+        {
+            var package = await Scenario.RestoreAndBuildSinglePackage("Dependency_IndirectDependencies_AreNotPackaged");
+            var files = package.GetFiles();
+
+            Assert.None(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
+            Assert.None(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
         }
     }
 }
