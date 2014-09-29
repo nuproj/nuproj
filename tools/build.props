@@ -6,6 +6,9 @@
     <SourceDir>$(ProjectDir)src\</SourceDir>
     <LibDir>$(ProjectDir)lib\</LibDir>
     <ToolsDir>$(ProjectDir)tools\</ToolsDir>
+    <OutDir Condition="'$(OutDir)' == ''">$(ProjectDir)bin\</OutDir>
+    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+    <Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
   </PropertyGroup>
  
 </Project>
