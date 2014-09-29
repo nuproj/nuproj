@@ -8,17 +8,19 @@
     using System.Threading.Tasks;
     using Microsoft.Build.Execution;
     using Microsoft.Build.Framework;
+    using Microsoft.Build.Logging;
+    using Xunit;
 
     public static class MSBuild
     {
-        public static Task<BuildResult> RebuildAsync(string projectPath, IDictionary<string, string> properties = null, Action<BuildErrorEventArgs> onError = null)
+        public static Task<BuildResultAndLogs> RebuildAsync(string projectPath, IDictionary<string, string> properties = null)
         {
-            return MSBuild.ExecuteAsync(projectPath, new[] { "Rebuild" }, properties, onError);
+            return MSBuild.ExecuteAsync(projectPath, new[] { "Rebuild" }, properties);
         }
 
-        public static Task<BuildResult> ExecuteAsync(string projectPath, string targetToBuild, IDictionary<string, string> properties = null, Action<BuildErrorEventArgs> onError = null)
+        public static Task<BuildResultAndLogs> ExecuteAsync(string projectPath, string targetToBuild, IDictionary<string, string> properties = null)
         {
-            return MSBuild.ExecuteAsync(projectPath, new[] { targetToBuild }, properties, onError);
+            return MSBuild.ExecuteAsync(projectPath, new[] { targetToBuild }, properties);
         }
 
         /// <summary>
@@ -27,36 +29,83 @@
         /// <param name="projectPath">The absolute path to the project.</param>
         /// <param name="targetsToBuild">The targets to build. If not specified, the project's default target will be invoked.</param>
         /// <param name="properties">The optional global properties to pass to the project. May come from the <see cref="MSBuild.Properties"/> static class.</param>
-        /// <param name="onError">An optional handler to receive errors logged during the build.</param>
         /// <returns>A task whose result is the result of the build.</returns>
-        public static async Task<BuildResult> ExecuteAsync(string projectPath, string[] targetsToBuild = null, IDictionary<string, string> properties = null, Action<BuildErrorEventArgs> onError = null)
+        public static async Task<BuildResultAndLogs> ExecuteAsync(string projectPath, string[] targetsToBuild = null, IDictionary<string, string> properties = null)
         {
-            var loggers = new List<ILogger>();
-            if (onError != null)
-            {
-                loggers.Add(new ErrorLogger(onError));
-            }
+            targetsToBuild = targetsToBuild ?? new string[0];
 
+            var logger = new EventLogger();
+            var logLines = new List<string>();
             var parameters = new BuildParameters
             {
-                Loggers = loggers,
+                Loggers = new List<ILogger>
+                {
+                    new ConsoleLogger(LoggerVerbosity.Detailed, logLines.Add, null, null),
+                    logger,
+                },
             };
 
             BuildResult result;
             using (var buildManager = new BuildManager())
             {
                 buildManager.BeginBuild(parameters);
-
-                var requestData = new BuildRequestData(projectPath, properties ?? Properties.Empty, null, targetsToBuild, null);
-                var submission = buildManager.PendBuildRequest(requestData);
-                result = await submission.ExecuteAsync();
-                buildManager.EndBuild();
+                try
+                {
+                    var requestData = new BuildRequestData(projectPath, properties ?? Properties.Default, null, targetsToBuild, null);
+                    var submission = buildManager.PendBuildRequest(requestData);
+                    result = await submission.ExecuteAsync();
+                }
+                finally
+                {
+                    buildManager.EndBuild();
+                }
             }
 
-            return result;
+            return new BuildResultAndLogs(result, logger.LogEvents, logLines);
         }
 
-        public static Task<BuildResult> ExecuteAsync(this BuildSubmission submission)
+        /// <summary>
+        /// Builds a project.
+        /// </summary>
+        /// <param name="projectInstance">The project to build.</param>
+        /// <param name="targetsToBuild">The targets to build. If not specified, the project's default target will be invoked.</param>
+        /// <param name="properties">The optional global properties to pass to the project. May come from the <see cref="MSBuild.Properties"/> static class.</param>
+        /// <returns>A task whose result is the result of the build.</returns>
+        public static async Task<BuildResultAndLogs> ExecuteAsync(ProjectInstance projectInstance, params string[] targetsToBuild)
+        {
+            targetsToBuild = (targetsToBuild == null || targetsToBuild.Length == 0) ? projectInstance.DefaultTargets.ToArray() : targetsToBuild;
+
+            var logger = new EventLogger();
+            var logLines = new List<string>();
+            var parameters = new BuildParameters
+            {
+                Loggers = new List<ILogger>
+                {
+                    new ConsoleLogger(LoggerVerbosity.Detailed, logLines.Add, null, null),
+                    logger,
+                },
+            };
+
+            BuildResult result;
+            using (var buildManager = new BuildManager())
+            {
+                buildManager.BeginBuild(parameters);
+                try
+                {
+                    var requestData = new BuildRequestData(projectInstance, targetsToBuild);
+                    var submission = buildManager.PendBuildRequest(requestData);
+                    result = await submission.ExecuteAsync();
+                }
+                finally
+                {
+                    buildManager.EndBuild();
+                }
+            }
+
+            return new BuildResultAndLogs(result, logger.LogEvents, logLines);
+        }
+
+        private static Task<BuildResult> ExecuteAsync(this BuildSubmission submission)
         {
             var tcs = new TaskCompletionSource<BuildResult>();
             submission.ExecuteAsync(s => tcs.SetResult(s.BuildResult), null);
@@ -71,44 +120,83 @@
             /// <summary>
             /// No properties. The project will be built in its default configuration.
             /// </summary>
-            public static readonly ImmutableDictionary<string, string> Empty = ImmutableDictionary.Create<string, string>(StringComparer.OrdinalIgnoreCase);
+            private static readonly ImmutableDictionary<string, string> Empty = ImmutableDictionary.Create<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            /// <summary>
+            /// Gets the global properties to pass to indicate where NuProj imports can be found.
+            /// </summary>
+            public static readonly ImmutableDictionary<string, string> Default = Empty
+                .Add("NuProjPath", Assets.NuProjImportsDirectory);
 
             /// <summary>
             /// The project will build in the same manner as if it were building inside Visual Studio.
             /// </summary>
-            public static readonly ImmutableDictionary<string, string> BuildingInsideVisualStudio = Empty
+            public static readonly ImmutableDictionary<string, string> BuildingInsideVisualStudio = Default
                 .Add("BuildingInsideVisualStudio", "true");
         }
 
-        private class ErrorLogger : ILogger
+        public class BuildResultAndLogs
         {
-            private readonly Action<BuildErrorEventArgs> onError;
+            internal BuildResultAndLogs(BuildResult result, List<BuildEventArgs> events, IReadOnlyList<string> logLines)
+            {
+                this.Result = result;
+                this.LogEvents = events;
+                this.LogLines = logLines;
+            }
+
+            public BuildResult Result { get; private set; }
+
+            public List<BuildEventArgs> LogEvents { get; private set; }
+
+            public IEnumerable<BuildErrorEventArgs> ErrorEvents
+            {
+                get { return this.LogEvents.OfType<BuildErrorEventArgs>(); }
+            }
+
+            public IReadOnlyList<string> LogLines { get; private set; }
+
+            public string EntireLog
+            {
+                get { return string.Join(string.Empty, this.LogLines); }
+            }
+
+            public void AssertSuccessfulBuild()
+            {
+                Assert.False(this.ErrorEvents.Any(), this.ErrorEvents.Select(e => e.Message).FirstOrDefault());
+                Assert.Equal(BuildResultCode.Success, this.Result.OverallResult);
+            }
+        }
+
+        private class EventLogger : ILogger
+        {
             private IEventSource eventSource;
 
-            internal ErrorLogger(Action<BuildErrorEventArgs> onError)
+            internal EventLogger()
             {
-                this.onError = onError;
-                this.Verbosity = LoggerVerbosity.Minimal;
+                this.Verbosity = LoggerVerbosity.Normal;
+                this.LogEvents = new List<BuildEventArgs>();
             }
 
             public LoggerVerbosity Verbosity { get; set; }
 
             public string Parameters { get; set; }
 
+            public List<BuildEventArgs> LogEvents { get; set; }
+
             public void Initialize(IEventSource eventSource)
             {
                 this.eventSource = eventSource;
-                this.eventSource.ErrorRaised += this.eventSource_ErrorRaised;
+                this.eventSource.AnyEventRaised += this.eventSource_AnyEventRaised;
+            }
+
+            private void eventSource_AnyEventRaised(object sender, BuildEventArgs e)
+            {
+                this.LogEvents.Add(e);
             }
 
             public void Shutdown()
             {
-                this.eventSource.ErrorRaised -= this.eventSource_ErrorRaised;
-            }
-
-            private void eventSource_ErrorRaised(object sender, BuildErrorEventArgs e)
-            {
-                this.onError(e);
+                this.eventSource.AnyEventRaised -= this.eventSource_AnyEventRaised;
             }
         }
     }

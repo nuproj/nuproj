@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Microsoft.Build.Framework;
 
 namespace NuProj.Tests
 {
@@ -24,12 +25,12 @@ namespace NuProj.Tests
             var projectPath = Path.Combine(solutionDir, projectToBuild);
 
             // Act
-            BuildResult result = await MSBuild.ExecuteAsync(projectPath, target, onError: err => Assert.False(true, "Error logged."));
+            var result = await MSBuild.ExecuteAsync(projectPath, target);
 
             // Assert
-            Assert.Equal(result.OverallResult, BuildResultCode.Success);
-            Assert.Single(result.ResultsByTarget[target].Items);
-            Assert.Equal(result.ResultsByTarget[target].Items[0].ItemSpec, identity);
+            result.AssertSuccessfulBuild();
+            Assert.Single(result.Result.ResultsByTarget[target].Items);
+            Assert.Equal(result.Result.ResultsByTarget[target].Items[0].ItemSpec, identity);
         }
     }
 }

@@ -57,8 +57,7 @@ namespace NuProj.Tests
 
         public static string GetScenarioDirectory(string scenarioName)
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
-            return Path.Combine(currentDirectory, scenarioName);
+            return Path.Combine(Assets.BuildOutputDirectory, scenarioName);
         }
     }
 }
