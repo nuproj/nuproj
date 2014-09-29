@@ -4,7 +4,7 @@ using System.IO;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
-namespace NuProj.Tests
+namespace NuProj.Tests.Infrastructure
 {
     public static class ProjectBuilder
     {

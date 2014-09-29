@@ -4,7 +4,7 @@ using Microsoft.Build.Evaluation;
 
 using Xunit;
 
-namespace NuProj.Tests
+namespace NuProj.Tests.Infrastructure
 {
     /// <summary>
     /// NuProj specific assertions.

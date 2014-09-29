@@ -4,7 +4,7 @@ using System.Xml;
 
 using Microsoft.Build.Construction;
 
-namespace NuProj.Tests
+namespace NuProj.Tests.Infrastructure
 {
     public static class Assets
     {

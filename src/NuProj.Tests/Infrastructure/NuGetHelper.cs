@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace NuProj.Tests
+namespace NuProj.Tests.Infrastructure
 {
     public static class NuGetHelper
     {

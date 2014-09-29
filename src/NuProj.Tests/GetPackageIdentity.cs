@@ -2,6 +2,8 @@
 using System.IO;
 using System.Threading.Tasks;
 
+using NuProj.Tests.Infrastructure;
+
 using Xunit;
 
 namespace NuProj.Tests

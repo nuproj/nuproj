@@ -10,7 +10,7 @@ using Microsoft.Build.Logging;
 
 using Xunit;
 
-namespace NuProj.Tests
+namespace NuProj.Tests.Infrastructure
 {
     public static class MSBuild
     {

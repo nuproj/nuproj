@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Build.Execution;
 
+using NuProj.Tests.Infrastructure;
+
 using Xunit;
 
 namespace NuProj.Tests

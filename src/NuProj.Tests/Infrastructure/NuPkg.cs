@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 
-using NuGet;
-
 using Microsoft.Build.Evaluation;
 
-namespace NuProj.Tests
+using NuGet;
+
+namespace NuProj.Tests.Infrastructure
 {
     public static class NuPkg
     {
