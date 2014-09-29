@@ -297,7 +297,7 @@
     =================================================================================================================== -->
 
   <Target Name="GenerateNuSpec"
-          Inputs="@(PackageFile)"
+          Inputs="@(PackageFile);AlwaysRunEvenIfPackageFileIsEmpty"
           Outputs="$(NuSpecPath)"
           DependsOnTargets="GetPackageDependencies;GetPackageFiles;GetSourceFiles">
     <!-- Please Note:

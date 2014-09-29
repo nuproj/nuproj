@@ -11,35 +11,31 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>3d517ab5-457a-4a53-adbf-5fb37de1faf5</ProjectGuid>
+    <ProjectGuid>298ddd7a-3b6b-4017-aeda-e61f0ead62f0</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>A</Id>
+    <Id>NuGetPackage1</Id>
     <Version>1.0.0</Version>
-    <Title>B.nuget</Title>
-    <Authors>nuproj</Authors>
-    <Owners>nuproj</Owners>
-    <Summary>A</Summary>
-    <Description>A</Description>
+    <Title>NuGetPackage1</Title>
+    <Authors>Andrew</Authors>
+    <Owners>Andrew</Owners>
+    <Summary>NuGetPackage1</Summary>
+    <Description>NuGetPackage1</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
     </ProjectUrl>
     <LicenseUrl>
     </LicenseUrl>
-    <Copyright>Copyright © nuproj</Copyright>
-    <Tags>A</Tags>
-    <EmbedSourceFiles>true</EmbedSourceFiles>
+    <Copyright>Copyright © Andrew</Copyright>
+    <Tags>NuGetPackage1</Tags>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\A1\A1.csproj" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>
