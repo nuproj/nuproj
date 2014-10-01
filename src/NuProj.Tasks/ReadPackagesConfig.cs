@@ -18,12 +18,12 @@ namespace NuProj.Tasks
         public string ProjectPath { get; set; }
 
         [Output]
-        public ITaskItem[] Packages { get; set; }
+        public ITaskItem[] PackageReferences { get; set; }
 
         public override bool Execute()
         {
             var packageReferenceFile = PackageReferenceFile.CreateFromProject(ProjectPath);
-            Packages = packageReferenceFile.GetPackageReferences().Select(ConvertPackageElement).ToArray();
+            PackageReferences = packageReferenceFile.GetPackageReferences().Select(ConvertPackageElement).ToArray();
             return true;
         }
 
@@ -40,19 +40,19 @@ namespace NuProj.Tasks
 
             var packageDirectoryPath = GetPackageDirectoryPath(ProjectPath, id, version);
             metadata.Add("PackageDirectoryPath", packageDirectoryPath);
-            
-            metadata.Add("Version", version.ToString());
+            metadata.Add("ProjectPath", ProjectPath);
+
+            metadata.Add("IsDevelopmentDependency", isDevelopmentDependency.ToString());
+            metadata.Add("RequireReinstallation", requireReinstallation.ToString());
+
+            if (version != null)
+                metadata.Add("Version", version.ToString());
+
             if (targetFramework != null)
                 metadata.Add("TargetFramework", VersionUtility.GetShortFrameworkName(targetFramework));
 
-            if (isDevelopmentDependency)
-                metadata.Add("DevelopmentDependency", isDevelopmentDependency.ToString());
-
-            if (requireReinstallation)
-                metadata.Add("RequireReinstallation", requireReinstallation.ToString());
-
             if (versionConstraint != null)
-                metadata.Add("AllowedVersions", versionConstraint.ToString());
+                metadata.Add("VersionConstraint", versionConstraint.ToString());
 
             var item = new TaskItem(id, metadata);
             return item;

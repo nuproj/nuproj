@@ -23,12 +23,12 @@ namespace NuProj.Tests
             var expectedVersionConstraint = VersionUtility.ParseVersionSpec("[1,2]").ToString();
 
             Assert.True(result);
-            var fodyItem = new AssertTaskItem(task.Packages, "Fody", items => Assert.Single(items)) {
+            var fodyItem = new AssertTaskItem(task.PackageReferences, "Fody", items => Assert.Single(items)) {
                 {"Version", "1.25.0"},
                 {"TargetFramework", "net45"},
-                {"AllowedVersions", expectedVersionConstraint},
-                {"RequireReinstallation", ""},
-                {"DevelopmentDependency", bool.TrueString},
+                {"VersionConstraint", expectedVersionConstraint},
+                {"RequireReinstallation", bool.FalseString},
+                {"IsDevelopmentDependency", bool.TrueString},
             };
 
             Assert.Single(fodyItem);
@@ -45,10 +45,10 @@ namespace NuProj.Tests
 
             Assert.True(result);
 
-            Assert.Single(task.Packages.Where(x => x.ItemSpec == "Microsoft.Bcl.Immutable"));
-            Assert.Single(task.Packages.Where(x => x.ItemSpec == "Microsoft.Bcl.Metadata"));
-            Assert.Single(task.Packages.Where(x => x.ItemSpec == "Microsoft.CodeAnalysis.Common"));
-            Assert.Single(task.Packages.Where(x => x.ItemSpec == "Microsoft.CodeAnalysis.CSharp"));
+            Assert.Single(task.PackageReferences.Where(x => x.ItemSpec == "Microsoft.Bcl.Immutable"));
+            Assert.Single(task.PackageReferences.Where(x => x.ItemSpec == "Microsoft.Bcl.Metadata"));
+            Assert.Single(task.PackageReferences.Where(x => x.ItemSpec == "Microsoft.CodeAnalysis.Common"));
+            Assert.Single(task.PackageReferences.Where(x => x.ItemSpec == "Microsoft.CodeAnalysis.CSharp"));
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace NuProj.Tests
             var result = task.Execute();
 
             Assert.True(result);
-            Assert.Empty(task.Packages);
+            Assert.Empty(task.PackageReferences);
         }
     }
 }

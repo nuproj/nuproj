@@ -12,7 +12,7 @@ namespace NuProj.Tasks
     public static class Extensions
     {
         private static readonly FrameworkName NullFramework = new FrameworkName("Null,Version=v1.0");
-        
+
         public static bool GetBoolean(this ITaskItem taskItem, string metadataName, bool defaultValue = false)
         {
             bool result = false;
@@ -21,10 +21,10 @@ namespace NuProj.Tasks
             return result;
         }
 
-        public static FrameworkName GetFrameworkName(this ITaskItem taskItem, string metadataName)
+        public static FrameworkName GetTargetFramework(this ITaskItem taskItem)
         {
             FrameworkName result = null;
-            var metadataValue = taskItem.GetMetadata(metadataName);
+            var metadataValue = taskItem.GetMetadata("TargetFramework");
             if (!string.IsNullOrEmpty(metadataValue))
             {
                 result = VersionUtility.ParseFrameworkName(metadataValue);
@@ -37,23 +37,15 @@ namespace NuProj.Tasks
             return result;
         }
 
-        public static IVersionSpec GetVersionSpec(this ITaskItem taskItem, string metadataName)
+        public static IVersionSpec GetVersion(this ITaskItem taskItem)
         {
             IVersionSpec result = null;
-            var metadataValue = taskItem.GetMetadata(metadataName);
+            var metadataValue = taskItem.GetMetadata("Version");
             if (!string.IsNullOrEmpty(metadataValue))
             {
                 VersionUtility.TryParseVersionSpec(metadataValue, out result);
             }
 
-            return result;
-        }
-
-        public static SemanticVersion GetVersion(this ITaskItem taskItem, string metadataName)
-        {
-            SemanticVersion result = null;
-            var metadataValue = taskItem.GetMetadata(metadataName);
-            SemanticVersion.TryParse(metadataValue, out result);
             return result;
         }
 
@@ -75,6 +67,16 @@ namespace NuProj.Tasks
             }
 
             return VersionUtility.GetShortFrameworkName(frameworkName);
+        }
+
+        public static string ToStringSafe(this object value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return value.ToString();
         }
     }
 }

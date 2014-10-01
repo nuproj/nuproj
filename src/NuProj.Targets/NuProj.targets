@@ -559,9 +559,17 @@
           Returns="@(NuGetDependency)">
       <ReadPackagesConfig ProjectPath="%(ProjectReference.FullPath)"
                           Condition="'%(ProjectReference.FullPath)' != ''">
-        <Output TaskParameter="Packages"
-                ItemName="NuGetDependency" />
+        <Output TaskParameter="PackageReferences"
+                ItemName="_PackageReference" />
       </ReadPackagesConfig>
+
+      <ItemGroup Condition="'@(_PackageReference)' != ''">
+        <NuGetDependency Include="@(_PackageReference)" 
+                         Condition="!%(IsDevelopmentDependency)"
+                         RemoveMetadata="IsDevelopmentDependency;RequireReinstallation;VersionConstraint">
+          <Version Condition="'%(_PackageReference.VersionConstraint)' != ''">%(_PackageReference.VersionConstraint)</Version>
+        </NuGetDependency>
+      </ItemGroup>
   </Target>
 
   <!--

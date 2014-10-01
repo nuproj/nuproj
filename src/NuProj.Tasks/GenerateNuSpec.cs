@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -145,13 +146,13 @@ namespace NuProj.Tasks
             var manifest = new Manifest()
             {
                 Metadata = manifestMetadata,
-                Files = GetMainfiestFiles()
+                Files = GetManifestFiles()
             };
 
             return manifest;
         }
 
-        private List<ManifestFile> GetMainfiestFiles()
+        private List<ManifestFile> GetManifestFiles()
         {
             return (from f in Files.NullAsEmpty()
                     select new ManifestFile
@@ -168,23 +169,21 @@ namespace NuProj.Tasks
                     select new ManifestFrameworkAssembly
                     {
                         AssemblyName = fr.ItemSpec,
-                        TargetFramework = fr.GetFrameworkName("TargetFramework").GetShortFrameworkName(),
+                        TargetFramework = fr.GetTargetFramework().GetShortFrameworkName(),
                     }).ToList();
         }
 
         private List<ManifestDependencySet> GetDependencySets()
         {
             var dependencies = from d in Dependencies.NullAsEmpty()
-                               select new PackageReference(
-                                   d.ItemSpec,
-                                   d.GetVersion("Version"),
-                                   d.GetVersionSpec("AllowedVersions"),
-                                   d.GetFrameworkName("TargetFramework"),
-                                   d.GetBoolean("DevelopmentDependency"),
-                                   d.GetBoolean("RequireReinstallation"));
+                               select new Dependency
+                               {
+                                   Id = d.ItemSpec,
+                                   Version = d.GetVersion(),
+                                   TargetFramework = d.GetTargetFramework()
+                               };
 
             return (from dependency in dependencies
-                    where !dependency.IsDevelopmentDependency
                     group dependency by dependency.TargetFramework into dependenciesByFramework
                     select new ManifestDependencySet
                     {
@@ -194,25 +193,11 @@ namespace NuProj.Tasks
                                         select new ManifestDependency
                                         {
                                             Id = dependenciesById.Key,
-                                            Version = ToVersion(dependenciesById.Aggregate(AggregateVersions))
+                                            Version = dependenciesById.Select(x => x.Version)
+                                                .Aggregate(AggregateVersions)
+                                                .ToStringSafe()
                                         }).ToList()
                     }).ToList();
-        }
-
-        private string ToVersion(PackageReference packageReference)
-        {
-            if (packageReference.VersionConstraint != null)
-            {
-                return packageReference.VersionConstraint.ToString();
-            }
-            else if (packageReference.Version != null)
-            {
-                return packageReference.Version.ToString();
-            }
-            else
-            {
-                return null;
-            }
         }
 
         private List<ManifestReferenceSet> GetReferenceSets()
@@ -221,7 +206,7 @@ namespace NuProj.Tasks
                              select new
                              {
                                  File = r.ItemSpec,
-                                 TargetFramework = r.GetFrameworkName("TargetFramework"),
+                                 TargetFramework = r.GetTargetFramework(),
                              };
 
             return (from reference in references
@@ -237,40 +222,20 @@ namespace NuProj.Tasks
                     }).ToList();
         }
 
-        private static PackageReference AggregateVersions(PackageReference aggregate, PackageReference next)
+        private static IVersionSpec AggregateVersions(IVersionSpec aggregate, IVersionSpec next)
         {
-            if (aggregate == null)
-            {
-                throw new ArgumentNullException("aggregate");
-            }
-
-            if (next == null)
-            {
-                throw new ArgumentNullException("next");
-            }
-
-            SemanticVersion version = aggregate.Version;
-            if (version != null && next.Version != null)
-            {
-                version = version > next.Version ? version : next.Version;
-            }
-            else if (next.Version != null)
-            {
-                version = next.Version;
-            }
-
             var versionSpec = new VersionSpec();
-            SetMinVersion(versionSpec, aggregate.VersionConstraint);
-            SetMinVersion(versionSpec, next.VersionConstraint);
-            SetMaxVersion(versionSpec, aggregate.VersionConstraint);
-            SetMaxVersion(versionSpec, next.VersionConstraint);
+            SetMinVersion(versionSpec, aggregate);
+            SetMinVersion(versionSpec, next);
+            SetMaxVersion(versionSpec, aggregate);
+            SetMaxVersion(versionSpec, next);
 
             if (versionSpec.MinVersion == null && versionSpec.MaxVersion == null)
             {
                 versionSpec = null;
             }
 
-            return new PackageReference(next.Id, version, versionSpec, next.TargetFramework, false);
+            return versionSpec;
         }
 
         private static void SetMinVersion(VersionSpec target, IVersionSpec source)
@@ -321,6 +286,15 @@ namespace NuProj.Tasks
             {
                 target.IsMaxInclusive = target.IsMaxInclusive && source.IsMaxInclusive;
             }
+        }
+
+        private class Dependency
+        {
+            public string Id { get; set; }
+
+            public FrameworkName TargetFramework { get; set; }
+
+            public IVersionSpec Version { get; set; }
         }
     }
 }
