@@ -26,10 +26,7 @@ namespace NuProj.Tests.Infrastructure
             var result = await MSBuild.RebuildAsync(projectFullPath);
             result.AssertSuccessfulBuild();
 
-            return Directory.GetFiles(projectDirectory, "*.nupkg", SearchOption.AllDirectories)
-                            .Where(f => !f.EndsWith("symbols.nupkg") && !f.Contains(@"\packages\"))
-                            .Select(f => new OptimizedZipPackage(f))
-                            .ToArray();
+            return NuPkg.GetPackages(projectDirectory);
         }
     }
 }
