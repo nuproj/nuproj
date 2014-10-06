@@ -69,4 +69,7 @@
     <StringProperty Name="FusionName"
                     Visible="false"
                     ReadOnly="true" />
+    <StringProperty Name="Name"
+                    Visible="false"
+                    ReadOnly="True" />
 </Rule>
