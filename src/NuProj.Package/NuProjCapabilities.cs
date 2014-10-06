@@ -1,6 +1,10 @@
 ﻿using System;
 
+#if Dev12
 using Microsoft.Collections.Immutable;
+#else
+using System.Collections.Immutable;
+#endif
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace NuProj.ProjectSystem

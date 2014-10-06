@@ -9,7 +9,11 @@ namespace NuProj.ProjectSystem
     /// Provides rule-based property access.
     /// </summary>
     [Export]
+#if Dev12
     [PartMetadata(ProjectCapabilities.Requires, NuProjCapabilities.NuProj)]
+#else
+    [AppliesTo(NuProjCapabilities.NuProj)]
+#endif
     internal sealed partial class NuProjProjectProperties
     {
         /// <summary>

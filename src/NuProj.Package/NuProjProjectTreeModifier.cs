@@ -8,13 +8,21 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities.Designers;
 namespace NuProj.ProjectSystem
 {
     [Export(typeof(IProjectTreeModifier))]
+#if Dev12
     [PartMetadata(ProjectCapabilities.Requires, NuProjCapabilities.NuProj)]
+#else
+    [AppliesTo(NuProjCapabilities.NuProj)]
+#endif
     internal sealed class NuProjProjectTreeModifier : IProjectTreeModifier
     {
         public IProjectTree ApplyModifications(IProjectTree tree, IProjectTreeProvider projectTreeProvider)
         {
+#if Dev12
             if (tree.Capabilities.Contains(ProjectTreeCapabilities.ProjectRoot))
                 tree = tree.SetIcon(Resources.NuProj);
+#else
+            // TODO: code here
+#endif
 
             return tree;
         }
