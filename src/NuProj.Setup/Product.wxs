@@ -3,7 +3,7 @@
 
   <?define Manufacturer        = "Immo Landwerth" ?>
   <?define ProductName         = "NuProj" ?>
-  <?define ProductHomePage     = "http://nuproj.codeplex.com" ?>
+  <?define ProductHomePage     = "http://nuproj.net" ?>
   <?define UpgradeCode         = "73875B23-C4D8-49CC-B34D-380325A4A0D8" ?>
 
   <Product Id="*"
