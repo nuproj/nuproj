@@ -50,6 +50,16 @@ namespace NuProj.Tests
         }
 
         [Fact]
+        public async Task Dependency_DirectDependencies_AreNotPackaged()
+        {
+            var package = await Scenario.RestoreAndBuildSinglePackage("Dependency_DirectDependencies_AreNotPackaged");
+            var files = package.GetFiles();
+
+            Assert.None(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
+            Assert.None(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
+        }
+
+        [Fact]
         public async Task Dependency_Versions_AreAggregated()
         {
             var package = await Scenario.RestoreAndBuildSinglePackage("Dependency_Versions_AreAggregated");
