@@ -155,6 +155,11 @@ namespace NuProj.Tests.Infrastructure
                 get { return LogEvents.OfType<BuildErrorEventArgs>(); }
             }
 
+            public IEnumerable<BuildWarningEventArgs> WarningEvents
+            {
+                get { return LogEvents.OfType<BuildWarningEventArgs>(); }
+            }
+
             public IReadOnlyList<string> LogLines { get; private set; }
 
             public string EntireLog
