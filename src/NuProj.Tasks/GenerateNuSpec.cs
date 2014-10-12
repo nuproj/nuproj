@@ -96,7 +96,7 @@ namespace NuProj.Tasks
                 Directory.CreateDirectory(directory);
             }
 
-            using (var file = File.OpenWrite(OutputFileName))
+            using (var file = File.Create(OutputFileName))
             {
                 manifest.Save(file, false);
             }
