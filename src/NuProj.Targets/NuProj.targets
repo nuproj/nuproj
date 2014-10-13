@@ -128,6 +128,7 @@
 
     <Target Name="SplitProjectReferences">
         <ItemGroup>
+            <!-- Split direct project dependencies -->
             <_NuProjProjectReference Include="@(ProjectReference)"
                                      Condition="'%(ProjectReference.Extension)' == '.nuproj'" />
             <_NonNuProjProjectReference Include="@(ProjectReference)"
@@ -274,7 +275,7 @@
     </CreateItem>
 
     <!-- We need to special case library files in later phases. In order to make this
-         easier, we add custom metadata 'IsLibrary' that indiates whether the file is
+         easier, we add custom metadata 'IsLibrary' that indicates whether the file is
          targeting the lib folder or not. -->
 
     <ItemGroup>
@@ -636,7 +637,7 @@
               ItemName="_SourceFile" />
     </ReadPdbSourceFiles>
     <!-- Some compilers (like VB) have source files listed that don't actually exist.
-         Since we can only package existing files we'll need to exlude those files. -->
+         Since we can only package existing files we'll need to exclude those files. -->
     <ItemGroup>
       <_SourceFile Remove="@(_SourceFile)"
                    Condition="!Exists(%(_SourceFile.Identity))" />
@@ -655,7 +656,7 @@
     ===================================================================================================================
 
     Returns an item whose identity is the $(Id). The version is included in custom metadata item Version. This format
-    is identitcal to the one used to describe package dependencies.
+    is identical to the one used to describe package dependencies.
 
     OUTPUTS:
         $(_PackageIdentity)               The Id and Version of this package
