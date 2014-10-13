@@ -11,40 +11,34 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>3d517ab5-457a-4a53-adbf-5fb37de1faf5</ProjectGuid>
+    <ProjectGuid>fb00415e-917c-4c5b-a762-b9a9c1221c57</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>A</Id>
+    <Id>B3.nuget</Id>
     <Version>1.0.0</Version>
-    <Title>B.nuget</Title>
-    <Authors>nuproj</Authors>
-    <Owners>nuproj</Owners>
-    <Summary>A</Summary>
-    <Description>A</Description>
+    <Title>B3.nuget</Title>
+    <Authors>Immo</Authors>
+    <Owners>Immo</Owners>
+    <Summary>B3.nuget</Summary>
+    <Description>B3.nuget</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
     </ProjectUrl>
     <LicenseUrl>
     </LicenseUrl>
-    <Copyright>Copyright © nuproj</Copyright>
-    <Tags>A</Tags>
-    <EmbedSourceFiles>true</EmbedSourceFiles>
+    <Copyright>Copyright © Immo</Copyright>
+    <Tags>B3.nuget</Tags>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\A1\A1.csproj" />
-    <ProjectReference Include="..\A2\A2.csproj" />
-    <ProjectReference Include="..\A3\A3.csproj" />
-    <ProjectReference Include="..\B1.nuget\B1.nuget.nuproj" />
-    <ProjectReference Include="..\B2.nuget\B2.nuget.nuproj" />
-    <ProjectReference Include="..\B3.nuget\B3.nuget.nuproj" />
+    <ProjectReference Include="..\B3\B3.csproj" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>
