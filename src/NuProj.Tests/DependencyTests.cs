@@ -41,8 +41,8 @@ namespace NuProj.Tests
             Assert.Equal(expectedFileNames, files);
         }
 
-        [Fact(Skip = "Not yet passing. Issue #10?")]
-        public async Task Dependency_IndirectDependencies_AreNotPackaged(string scenarioName, string projectToBuild)
+        [Fact]
+        public async Task Dependency_IndirectDependencies_AreNotPackaged()
         {
             var package = await Scenario.RestoreAndBuildSinglePackage("Dependency_IndirectDependencies_AreNotPackaged", "A");
             var files = package.GetFiles();

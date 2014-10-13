@@ -35,6 +35,11 @@ namespace NuProj.Tests.Infrastructure
             get { return Path.Combine(NuGetToolPath, "nuget.exe"); }
         }
 
+        public static string MicrosoftCommonNuProjTargetsPath
+        {
+            get { return Path.Combine(NuProjPath, @"Microsoft.Common.NuProj.targets"); }
+        }
+
         public static string ScenariosDirectory
         {
             get { return Path.Combine(ProjectDirectory, "src", "NuProj.Tests", "Scenarios"); }
