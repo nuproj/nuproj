@@ -391,8 +391,6 @@
     =================================================================================================================== -->
 
   <Target Name="GenerateNuSpec"
-          Inputs="@(PackageFile);AlwaysRunEvenIfPackageFileIsEmpty"
-          Outputs="$(NuSpecPath)"
           DependsOnTargets="GetPackageDependencies;GetPackageFiles;GetSourceFiles">
     <!-- Please Note:
          In order to avoid incremental build issues this target will always run.
