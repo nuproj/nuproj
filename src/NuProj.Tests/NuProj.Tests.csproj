@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DependencyTests.cs" />
+    <Compile Include="GenerateNuSpecTests.cs" />
     <Compile Include="IncrementalBuildTests.cs" />
     <Compile Include="Infrastructure\AssertNu.cs" />
     <Compile Include="Infrastructure\Assets.cs" />

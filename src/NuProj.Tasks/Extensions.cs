@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,6 +79,53 @@ namespace NuProj.Tasks
             }
 
             return value.ToString();
+        }
+
+        public static void UpdateMember<T>(this T target, Expression<Func<T, string>> memberLamda, string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return;
+            }
+
+            var memberSelectorExpression = memberLamda.Body as MemberExpression;
+            if (memberSelectorExpression == null)
+            {
+                throw new InvalidOperationException("Invalid member expression.");
+            }
+            
+            var property = memberSelectorExpression.Member as PropertyInfo;
+            if (property == null)
+            {
+                throw new InvalidOperationException("Invalid member expression.");
+            }
+            
+            property.SetValue(target, value, null);
+        }
+
+        public static void AddRangeToMember<T, TItem>(this T target, Expression<Func<T, List<TItem>>> memberLamda, IEnumerable<TItem> value)
+        {
+            if (value == null || value.Count() == 0)
+            {
+                return;
+            }
+            
+            var memberSelectorExpression = memberLamda.Body as MemberExpression;
+            if (memberSelectorExpression == null)
+            {
+                throw new InvalidOperationException("Invalid member expression.");
+            }
+
+            var property = memberSelectorExpression.Member as PropertyInfo;
+            if (property == null)
+            {
+                throw new InvalidOperationException("Invalid member expression.");
+            }
+
+            var list = (List<TItem>)property.GetValue(target) ?? new List<TItem>();
+            list.AddRange(value);
+            
+            property.SetValue(target, list, null);
         }
     }
 }
