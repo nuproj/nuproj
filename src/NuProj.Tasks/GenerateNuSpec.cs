@@ -174,9 +174,9 @@ namespace NuProj.Tasks
             return (from f in Files.NullAsEmpty()
                     select new ManifestFile
                     {
-                        Source = f.GetMetadata("FullPath"),
-                        Target = f.GetMetadata("TargetPath"),
-                        Exclude = f.GetMetadata("Exclude"),
+                        Source = f.GetMetadata(Metadata.FileSource),
+                        Target = f.GetMetadata(Metadata.FileTarget),
+                        Exclude = f.GetMetadata(Metadata.FileExclude),
                     }).ToList();
         }
 

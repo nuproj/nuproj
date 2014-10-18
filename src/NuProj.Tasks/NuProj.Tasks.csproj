@@ -60,6 +60,7 @@
     <Compile Include="GenerateNuSpec.cs" />
     <Compile Include="AssignSourceTargetPaths.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Metadata.cs" />
     <Compile Include="NuGetPack.cs" />
     <Compile Include="ReadPackagesConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
