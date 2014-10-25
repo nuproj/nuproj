@@ -7,9 +7,7 @@ namespace NuProj.Tests.Infrastructure
 {
     public class ManifestFileComparer : IEqualityComparer<ManifestFile>
     {
-        private static ManifestFileComparer _ordinal = new ManifestFileComparer(StringComparer.Ordinal);
-
-        private static ManifestFileComparer _ordinalIgnoreCase = new ManifestFileComparer(StringComparer.OrdinalIgnoreCase);
+        private static ManifestFileComparer _instance = new ManifestFileComparer(StringComparer.OrdinalIgnoreCase);
 
         private StringComparer _stringComparer;
 
@@ -23,19 +21,11 @@ namespace NuProj.Tests.Infrastructure
             _stringComparer = stringComparer;
         }
 
-        public static ManifestFileComparer Ordinal
+        public static ManifestFileComparer Instance
         {
             get
             {
-                return _ordinal;
-            }
-        }
-
-        public static ManifestFileComparer OrdinalIgnoreCase
-        {
-            get
-            {
-                return _ordinalIgnoreCase;
+                return _instance;
             }
         }
 

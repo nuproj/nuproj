@@ -100,7 +100,7 @@ namespace NuProj.Tests
 
                 Assert.Equal(expectedFiles,
                     manifest.Files,
-                    ManifestFileComparer.OrdinalIgnoreCase);
+                    ManifestFileComparer.Instance);
             }
         }
 
@@ -182,19 +182,19 @@ namespace NuProj.Tests
 
                 Assert.Equal(expectedFrameworkAssemblies,
                     manifest.Metadata.FrameworkAssemblies,
-                    ManifestFrameworkAssemblyComparer.OrdinalIgnoreCase);
+                    ManifestFrameworkAssemblyComparer.Instance);
 
                 Assert.Equal(expectedDependencySets,
                     manifest.Metadata.DependencySets,
-                    ManifestDependencySetComparer.OrdinalIgnoreCase);
+                    ManifestDependencySetComparer.Instance);
 
                 Assert.Equal(expectedReferenceSets,
                     manifest.Metadata.ReferenceSets,
-                    ManifestReferenceSetComparer.OrdinalIgnoreCase);
+                    ManifestReferenceSetComparer.Instance);
 
                 Assert.Equal(expectedFiles,
                     manifest.Files,
-                    ManifestFileComparer.OrdinalIgnoreCase);
+                    ManifestFileComparer.Instance);
             }
         }
     }

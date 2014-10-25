@@ -6,9 +6,7 @@ namespace NuProj.Tests.Infrastructure
 {
     public class ManifestReferenceSetComparer : IEqualityComparer<ManifestReferenceSet>
     {
-        private static ManifestReferenceSetComparer _ordinal = new ManifestReferenceSetComparer(StringComparer.Ordinal);
-
-        private static ManifestReferenceSetComparer _ordinalIgnoreCase = new ManifestReferenceSetComparer(StringComparer.OrdinalIgnoreCase);
+        private static ManifestReferenceSetComparer _instance = new ManifestReferenceSetComparer(StringComparer.OrdinalIgnoreCase);
 
         private ManifestReferenceComparer _manifestReferenceComparer;
 
@@ -25,19 +23,11 @@ namespace NuProj.Tests.Infrastructure
             _manifestReferenceComparer = new ManifestReferenceComparer(stringComparer);
         }
 
-        public static ManifestReferenceSetComparer Ordinal
+        public static ManifestReferenceSetComparer Instance
         {
             get
             {
-                return _ordinal;
-            }
-        }
-
-        public static ManifestReferenceSetComparer OrdinalIgnoreCase
-        {
-            get
-            {
-                return _ordinalIgnoreCase;
+                return _instance;
             }
         }
 
