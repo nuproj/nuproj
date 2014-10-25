@@ -67,7 +67,7 @@ namespace NuProj.Tests.Infrastructure
                 throw new ArgumentNullException("obj");
             }
 
-            return obj.TargetFramework.GetHashCodeNullSafe();
+            return _stringComparer.GetHashCode(obj.TargetFramework ?? "");
         }
     }
 }

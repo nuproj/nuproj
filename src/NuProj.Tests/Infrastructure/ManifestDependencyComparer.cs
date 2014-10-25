@@ -44,7 +44,7 @@ namespace NuProj.Tests.Infrastructure
                 throw new ArgumentNullException("obj");
             }
 
-            return obj.Id.GetHashCodeNullSafe() + obj.Version.GetHashCodeNullSafe();
+            return _stringComparer.GetHashCode(obj.Id ?? "") + _stringComparer.GetHashCode(obj.Version ?? "");
         }
     }
 }
