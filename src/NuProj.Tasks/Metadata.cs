@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NuProj.Tasks
+﻿namespace NuProj.Tasks
 {
     public static class Metadata
     {
-        public const string FileTarget = "TargetPath";
-
+        public const string FileExclude = "Exclude";
+        
         public const string FileSource = "FullPath";
         
-        public const string FileExclude = "Exclude";
+        public const string FileTarget = "TargetPath";
+        
+        public const string TargetFramework = "TargetFramework";
+
+        public const string TargetFrameworkMoniker = "TargetFrameworkMoniker";
+        
+        public const string Version = "Version";
     }
 }

@@ -26,7 +26,7 @@ namespace NuProj.Tasks
         public static FrameworkName GetTargetFramework(this ITaskItem taskItem)
         {
             FrameworkName result = null;
-            var metadataValue = taskItem.GetMetadata("TargetFramework");
+            var metadataValue = taskItem.GetMetadata(Metadata.TargetFramework);
             if (!string.IsNullOrEmpty(metadataValue))
             {
                 result = VersionUtility.ParseFrameworkName(metadataValue);
@@ -39,10 +39,26 @@ namespace NuProj.Tasks
             return result;
         }
 
+        public static FrameworkName GetTargetFrameworkMoniker(this ITaskItem taskItem)
+        {
+            FrameworkName result = null;
+            var metadataValue = taskItem.GetMetadata(Metadata.TargetFrameworkMoniker);
+            if (!string.IsNullOrEmpty(metadataValue))
+            {
+                result = new FrameworkName(metadataValue);
+            }
+            else
+            {
+                result = NullFramework;
+            }
+
+            return result;
+        }
+
         public static IVersionSpec GetVersion(this ITaskItem taskItem)
         {
             IVersionSpec result = null;
-            var metadataValue = taskItem.GetMetadata("Version");
+            var metadataValue = taskItem.GetMetadata(Metadata.Version);
             if (!string.IsNullOrEmpty(metadataValue))
             {
                 VersionUtility.TryParseVersionSpec(metadataValue, out result);

@@ -33,11 +33,11 @@ namespace NuProj.Tasks
         private static ITaskItem ConvertToLibrary(ITaskItem output)
         {
             var fileName = output.ItemSpec;
-            var frameworkName = new FrameworkName(output.GetMetadata("TargetFrameworkMoniker"));
-            var frameworkString = VersionUtility.GetShortFrameworkName(frameworkName);
+            var frameworkNameMoniker = output.GetTargetFrameworkMoniker();
+            var targetFramework = frameworkNameMoniker.GetShortFrameworkName();
             var metadata = output.CloneCustomMetadata();
-            metadata["TargetFramework"] = frameworkString;
-            metadata[Metadata.FileTarget] = Path.Combine(frameworkString, Path.GetFileName(fileName));
+            metadata[Metadata.TargetFramework] = targetFramework;
+            metadata[Metadata.FileTarget] = Path.Combine(targetFramework, Path.GetFileName(fileName));
             return new TaskItem(fileName, metadata);
         }
     }

@@ -46,10 +46,10 @@ namespace NuProj.Tasks
             metadata.Add("RequireReinstallation", requireReinstallation.ToString());
 
             if (version != null)
-                metadata.Add("Version", version.ToString());
+                metadata.Add(Metadata.Version, version.ToString());
 
             if (targetFramework != null)
-                metadata.Add("TargetFramework", VersionUtility.GetShortFrameworkName(targetFramework));
+                metadata.Add(Metadata.TargetFramework, targetFramework.GetShortFrameworkName());
 
             if (versionConstraint != null)
                 metadata.Add("VersionConstraint", versionConstraint.ToString());

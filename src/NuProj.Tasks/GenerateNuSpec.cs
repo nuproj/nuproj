@@ -130,7 +130,6 @@ namespace NuProj.Tasks
                 using (var stream = File.OpenRead(InputFileName))
                 {
                     manifest = Manifest.ReadFrom(stream, false);
-                    manifest.Metadata = manifest.Metadata ?? new ManifestMetadata();
                 }
             }
             else
@@ -139,6 +138,11 @@ namespace NuProj.Tasks
                 {
                     Metadata = new ManifestMetadata(),
                 };
+            }
+
+            if (manifest.Metadata == null)
+            {
+                manifest.Metadata = new ManifestMetadata();
             }
 
             manifestMetadata = manifest.Metadata;
