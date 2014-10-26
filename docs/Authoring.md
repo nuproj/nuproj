@@ -157,7 +157,7 @@ that the file might or might not be in the corresponding lib folder.
 ## Merging Nuspec Template
 
 In addition to using MSBuild properties and items, you can use existing nuspec
-file as `NuSpecTeplate` property. The file will be used to populate default 
+file as `NuSpecTemplate` property. The file will be used to populate default 
 values. Specified MSBuild properties will overwrite the properties. MSBuild
 items will be added to files, framework assemblies, references or dependencies.
 
@@ -169,6 +169,6 @@ items will be added to files, framework assemblies, references or dependencies.
   <Authors>The World</Authors>
   <Owners>$(Authors)</Owners>
   <Description>Hello World</Description>
-  <NuSpecTeplate>HelloWorldTemplate.nupsec</NuSpecTeplate>
+  <NuSpecTemplate>HelloWorldTemplate.nupsec</NuSpecTemplate>
 </PropertyGroup>
 ```

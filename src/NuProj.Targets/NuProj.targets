@@ -365,7 +365,7 @@
 
     INPUTS:
         $(NuSpecPath)                  The path where the NuSpec should be written to.
-        $(NuSpecTeplate)               (Optional) The path to the NuSpec template.
+        $(NuSpecTemplate)               (Optional) The path to the NuSpec template.
 
         $(Id),
         $(Version),
@@ -398,7 +398,7 @@
          However, the task will make sure that it doesn't touch the file if the
          contents it would generate are identical to a previously generated
          nuspec. -->
-    <GenerateNuSpec InputFileName="$(NuSpecTeplate)"
+    <GenerateNuSpec InputFileName="$(NuSpecTemplate)"
                     OutputFileName="$(NuSpecPath)"
                     MinClientVersion="$(MinClientVersion)"
                     Id="$(Id)"
