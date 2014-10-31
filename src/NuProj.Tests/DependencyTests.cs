@@ -95,14 +95,17 @@ namespace NuProj.Tests
 
             if (target == "Rebuild")
             {
-                Assert.Equal(2, warnings.Length);
-                Assert.Equal("Dependency Target Called: Clean", warnings[0].Message);
-                Assert.Equal("Dependency Target Called: Build", warnings[1].Message);
+                Assert.Equal(4, warnings.Length);
+                Assert.Equal("CsProj dependency Target Called: Clean", warnings[0].Message);
+                Assert.Equal("NuProj dependency Target Called: Clean", warnings[1].Message);
+                Assert.Equal("CsProj dependency Target Called: Build", warnings[2].Message);
+                Assert.Equal("NuProj dependency Target Called: Build", warnings[3].Message);
             }
             else
             {
-                Assert.Equal(1, warnings.Length);
-                Assert.Equal("Dependency Target Called: " + target, warnings[0].Message);
+                Assert.Equal(2, warnings.Length);
+                Assert.Equal("CsProj dependency Target Called: " + target, warnings[0].Message);
+                Assert.Equal("NuProj dependency Target Called: " + target, warnings[1].Message);
             }
         }
 

@@ -125,46 +125,46 @@
 
     =================================================================================================================== -->
 
-    <Target Name="_NuProjGetProjectClosure"
-            Returns="@(_ProjectReferenceClosure)">
-      <!-- First let's make sure that the project references have been fully build,
+  <Target Name="_NuProjGetProjectClosure"
+          Returns="@(_ProjectReferenceClosure)">
+    <!-- First let's make sure that the project references have been fully build,
              unless building project references is disabled. -->
 
-      <MSBuild Targets="Build"
-               Condition="'$(BuildProjectReferences)' == 'true'"
-               Projects="@(ProjectReference)"
-               Properties="$(ProjectProperties)"
-               ContinueOnError="WarnAndContinue"/>
+    <MSBuild Targets="Build"
+             Condition="'$(BuildProjectReferences)' == 'true'"
+             Projects="@(ProjectReference)"
+             Properties="$(ProjectProperties)"
+             ContinueOnError="WarnAndContinue"/>
 
-      <!-- Get closure of indirect references -->
-        <MSBuild Projects="@(ProjectReference)"
-                 Targets="_NuProjGetProjectClosure"
-                 Properties="$(ProjectProperties)"
-                 ContinueOnError="WarnAndContinue">
-            <Output TaskParameter="TargetOutputs"
-                    ItemName="_ProjectReferenceClosureWithDuplicates" />
-        </MSBuild>
+    <!-- Get closure of indirect references -->
+    <MSBuild Projects="@(ProjectReference)"
+             Targets="_NuProjGetProjectClosure"
+             Properties="$(ProjectProperties)"
+             ContinueOnError="WarnAndContinue">
+      <Output TaskParameter="TargetOutputs"
+              ItemName="_ProjectReferenceClosureWithDuplicates" />
+    </MSBuild>
 
-        <!-- Remove duplicates from closure -->
-        <RemoveDuplicates Inputs="@(_ProjectReferenceClosureWithDuplicates)">
-            <Output TaskParameter="Filtered"
-                    ItemName="_ProjectReferenceClosureWithoutMetadata"/>
-        </RemoveDuplicates>
+    <!-- Remove duplicates from closure -->
+    <RemoveDuplicates Inputs="@(_ProjectReferenceClosureWithDuplicates)">
+      <Output TaskParameter="Filtered"
+              ItemName="_ProjectReferenceClosureWithoutMetadata"/>
+    </RemoveDuplicates>
 
-        <ItemGroup>
-            <!-- Remove references that are also direct references -->
-            <_ProjectReferenceClosureWithoutMetadata Remove="%(ProjectReference.FullPath)" />
-            <!-- We can now mark all the closure references as indirect -->
-            <_ProjectReferenceClosure Include="@(_ProjectReferenceClosureWithoutMetadata)">
-                <DependencyKind>Indirect</DependencyKind>
-            </_ProjectReferenceClosure>
-            <!-- Now add the direct references -->
-            <_ProjectReferenceClosure Include="%(ProjectReference.FullPath)">
-                <DependencyKind>Direct</DependencyKind>
-            </_ProjectReferenceClosure>
-        </ItemGroup>
+    <ItemGroup>
+      <!-- Remove references that are also direct references -->
+      <_ProjectReferenceClosureWithoutMetadata Remove="%(ProjectReference.FullPath)" />
+      <!-- We can now mark all the closure references as indirect -->
+      <_ProjectReferenceClosure Include="@(_ProjectReferenceClosureWithoutMetadata)">
+        <DependencyKind>Indirect</DependencyKind>
+      </_ProjectReferenceClosure>
+      <!-- Now add the direct references -->
+      <_ProjectReferenceClosure Include="%(ProjectReference.FullPath)">
+        <DependencyKind>Direct</DependencyKind>
+      </_ProjectReferenceClosure>
+    </ItemGroup>
 
-    </Target>
+  </Target>
 
   <!--
     ===================================================================================================================
