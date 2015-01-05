@@ -37,6 +37,7 @@
 
   <PropertyGroup> 
     <AvailablePlatforms>Any CPU,x86,x64,ARM</AvailablePlatforms>
+    <DefaultContentType>Content</DefaultContentType>
   </PropertyGroup>
 
   <!--
