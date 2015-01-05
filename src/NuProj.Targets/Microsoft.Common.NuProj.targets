@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--
+    ===================================================================================================================
+    _NuProjGetProjectClosure
+    ===================================================================================================================
+
+    This target returns the closure of all project references.
+
+    INPUTS:
+        @(_MSBuildProjectReferenceExistent)   The project references that actually exist.
+
+    OUTPUTS:
+        @(_NuProjProjectReferenceClosure)     The closure of all references. Doesn't include duplicates.
+
+    =================================================================================================================== -->
+
+    <Target Name="_NuProjGetProjectClosure"
+            DependsOnTargets="AssignProjectConfiguration;_SplitProjectReferencesByFileExistence"
+            Returns="@(_NuProjProjectReferenceClosure)">
+
+        <!-- Include our project references -->
+        <ItemGroup>
+            <_NuProjProjectReferenceClosureWithDuplicates Include="%(_MSBuildProjectReferenceExistent.FullPath)" />
+        </ItemGroup>
+
+        <!-- Include references from our references -->
+        <MSBuild Projects="@(_MSBuildProjectReferenceExistent)"
+                 Targets="_NuProjGetProjectClosure"
+                 BuildInParallel="$(BuildInParallel)"
+                 Properties="%(_MSBuildProjectReferenceExistent.SetConfiguration); %(_MSBuildProjectReferenceExistent.SetPlatform)"
+                 Condition="'%(_MSBuildProjectReferenceExistent.BuildReference)' == 'true' and '@(ProjectReferenceWithConfiguration)' != '' and '@(_MSBuildProjectReferenceExistent)' != ''"
+                 ContinueOnError="WarnAndContinue"
+                 RemoveProperties="%(_MSBuildProjectReferenceExistent.GlobalPropertiesToRemove)">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="_NuProjProjectReferenceClosureWithDuplicates" />
+        </MSBuild>
+
+        <!-- Remove duplicates -->
+        <RemoveDuplicates Inputs="@(_NuProjProjectReferenceClosureWithDuplicates)">
+            <Output TaskParameter="Filtered"
+                    ItemName="_NuProjProjectReferenceClosure"/>
+        </RemoveDuplicates>
+
+    </Target>
+
+</Project>

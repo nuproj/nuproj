@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using Microsoft.Build.Evaluation;
@@ -23,6 +25,24 @@ namespace NuProj.Tests.Infrastructure
         public static IPackageFile GetFile(this IPackage package, string effectivePath)
         {
             return package.GetFiles().SingleOrDefault(f => string.Equals(f.EffectivePath, effectivePath, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public static IReadOnlyCollection<IPackage> GetPackages(string projectDirectory)
+        {
+            return Directory.GetFiles(projectDirectory, "*.nupkg", SearchOption.AllDirectories)
+                            .Where(f => !IsSymbolPackage(f) && !IsExternalPackage(f))
+                            .Select(GetPackage)
+                            .ToArray();
+        }
+
+        private static bool IsSymbolPackage(string f)
+        {
+            return f.EndsWith("symbols.nupkg", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsExternalPackage(string f)
+        {
+            return f.IndexOf(@"\packages\", StringComparison.OrdinalIgnoreCase) >= 0;
         }
     }
 }

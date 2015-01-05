@@ -13,33 +13,36 @@ using Xunit;
 
 namespace NuProj.Tests
 {
-    public class BasicTests
+    public class BasicTests : IDisposable
     {
+        private Microsoft.Build.Evaluation.Project nuproj;
+
+        public BasicTests()
+        {
+            this.nuproj = Assets.FromTemplate()
+                                .AssignNuProjDirectory()
+                                .ToProject();
+        }
+
+        public void Dispose()
+        {
+            if (this.nuproj != null)
+            {
+                ProjectBuilder.Cleanup(this.nuproj);
+            }
+        }
+
         [Fact]
         public async Task Basic_ProjectTemplateCanBuild()
         {
-            var nuproj = Assets.FromTemplate()
-                               .AssignNuProjDirectory()
-                               .ToProject()
-                               .CreateMockContentFiles();
-            try
-            {
-                var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
-                result.AssertSuccessfulBuild();
-            }
-            finally
-            {
-                ProjectBuilder.Cleanup(nuproj);
-            }
+            nuproj.CreateMockContentFiles();
+            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+            result.AssertSuccessfulBuild();
         }
 
         [Fact]
         public void Basic_NuPkgFileNameBasedOnProjectName()
         {
-            var nuproj = Assets.FromTemplate()
-                               .AssignNuProjDirectory()
-                               .ToProject();
-
             var expectedNuPkgFileName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.nupkg", nuproj.GetPropertyValue("Id"), nuproj.GetPropertyValue("Version"));
             var actualNuPkgPath = nuproj.GetNuPkgPath();
             Assert.Equal(expectedNuPkgFileName, Path.GetFileName(actualNuPkgPath));
@@ -48,37 +51,22 @@ namespace NuProj.Tests
         [Fact]
         public async Task Basic_PackageIncludesContentFiles()
         {
-            var nuproj = Assets.FromTemplate()
-                               .AssignNuProjDirectory()
-                               .ToProject()
-                               .CreateMockContentFiles();
-            try
-            {
-                var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
-                result.AssertSuccessfulBuild();
-                AssertNu.PackageContainsContentItems(nuproj);
-            }
-            finally
-            {
-                ProjectBuilder.Cleanup(nuproj);
-            }
+            nuproj.CreateMockContentFiles();
+            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+            result.AssertSuccessfulBuild();
+            AssertNu.PackageContainsContentItems(nuproj);
         }
 
         [Fact]
         public async Task Basic_NuSpecPropertiesMatchProjectProperties()
         {
-            var nuproj = Assets.FromTemplate()
-                               .AssignNuProjDirectory()
-                               .ToProject()
-                               .CreateMockContentFiles();
-            try
-            {
-                var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
-                result.AssertSuccessfulBuild();
+            nuproj.CreateMockContentFiles();
+            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+            result.AssertSuccessfulBuild();
 
-                var package = nuproj.GetPackage();
+            var package = nuproj.GetPackage();
 
-                var properties = new Dictionary<string, object>
+            var properties = new Dictionary<string, object>
                 {
                     {"Id", package.Id},
                     {"Version", package.Version},
@@ -89,48 +77,32 @@ namespace NuProj.Tests
                     {"LicenseUrl", package.LicenseUrl},
                 };
 
-                foreach (var property in properties)
-                {
-                    var propertyName = property.Key;
-                    var expectedValueText = nuproj.GetPropertyValue(propertyName);
-                    var actualValue = property.Value;
-                    var actualValueText = actualValue == null
-                                            ? string.Empty
-                                            : actualValue is IEnumerable<string>
-                                                ? ((IEnumerable<string>) actualValue).First()
-                                                : actualValue.ToString();
-
-                    Assert.Equal(expectedValueText, actualValueText);
-                }
-            }
-            finally
+            foreach (var property in properties)
             {
-                ProjectBuilder.Cleanup(nuproj);
+                var propertyName = property.Key;
+                var expectedValueText = nuproj.GetPropertyValue(propertyName);
+                var actualValue = property.Value;
+                var actualValueText = actualValue == null
+                                        ? string.Empty
+                                        : actualValue is IEnumerable<string>
+                                            ? ((IEnumerable<string>)actualValue).First()
+                                            : actualValue.ToString();
+
+                Assert.Equal(expectedValueText, actualValueText);
             }
         }
 
         [Fact]
         public async Task Basic_EmptyProjectCannotBuild()
         {
-            var nuproj = Assets.FromTemplate()
-                               .AssignNuProjDirectory()
-                               .ToProject();
+            // This test focuses on a completely empty project.
+            nuproj.RemoveItems(nuproj.GetItems("Content"));
 
-            try
-            {
-                // This test focuses on a completely empty project.
-                nuproj.RemoveItems(nuproj.GetItems("Content"));
+            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
 
-                var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
-
-                // Verify that the build fails and tells the user why.
-                Assert.Equal(BuildResultCode.Failure, result.Result.OverallResult);
-                Assert.NotEqual(0, result.ErrorEvents.Count());
-            }
-            finally
-            {
-                ProjectBuilder.Cleanup(nuproj);
-            }
+            // Verify that the build fails and tells the user why.
+            Assert.Equal(BuildResultCode.Failure, result.Result.OverallResult);
+            Assert.NotEqual(0, result.ErrorEvents.Count());
         }
     }
 }

@@ -35,6 +35,11 @@ namespace NuProj.Tests.Infrastructure
             get { return Path.Combine(NuGetToolPath, "nuget.exe"); }
         }
 
+        public static string MicrosoftCommonNuProjTargetsPath
+        {
+            get { return Path.Combine(NuProjPath, @"Microsoft.Common.NuProj.targets"); }
+        }
+
         public static string ScenariosDirectory
         {
             get { return Path.Combine(ProjectDirectory, "src", "NuProj.Tests", "Scenarios"); }
@@ -49,6 +54,12 @@ namespace NuProj.Tests.Infrastructure
         {
             var solutioDirectory = GetScenarioDirectory(scenarioName);
             return Path.Combine(solutioDirectory, scenarioName + ".sln");
+        }
+
+        public static string GetScenarioFilePath(string scenarioName, string filePath)
+        {
+            var solutionDirectory = GetScenarioDirectory(scenarioName);
+            return Path.Combine(solutionDirectory, filePath);
         }
 
         private static string ComputeProjectDirectory()

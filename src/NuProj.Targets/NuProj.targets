@@ -60,6 +60,38 @@
   </PropertyGroup>
 
   <!--
+      Properties relevant to Visual Studio:
+
+      $(BuildingInsideVisualStudio)       This will indicate whether this project is building inside the IDE. When
+                                          building via MSBuild, this property will not be set.
+
+      $(DesignTimeBuild)                  Visual Studio uses this property to indicate whether it's performing a
+                                          design time build or a full build. A design time build is designed to do
+                                          minimal amount of work; the intent of those builds is to expose information
+                                          around resolved dependencies and properties back to Visual Studio without
+                                          actually producing assets on disk.
+  -->
+
+  <PropertyGroup>
+    <!-- We don't want to build in case we're performing a design time build as we are expected to not
+         produce any assets.
+
+         We also don't want to build the references in cases where we build inside the IDE. The reason
+         is that Visual Studio already built our dependencies. Doing it again can regress performance.
+         However, the real issue is that it impacts correctness as this can result in building the same
+         project simultaneously from different projects.
+
+         Most particularly on the correctness side, this shows up when VS is doing a "rebuild". NuProj
+         will end up causing multiple build breaks being reported because it will re-delete outputs that
+         VS just produced and that other project references that are building in parallel now expect to
+         be there. -->
+    <BuildProjectReferences Condition="'$(BuildProjectReferences)' == '' and ('$(BuildingInsideVisualStudio)' == 'true' or '$(DesignTimeBuild)' == 'true')">false</BuildProjectReferences>
+    <!-- By default we will build (and if applicable, clean) all project references. But this can be used
+         to disable that. -->
+    <BuildProjectReferences Condition="'$(BuildProjectReferences)' == ''">true</BuildProjectReferences>
+  </PropertyGroup>
+
+  <!--
       MSBuildAllProjects is used to keep track of all projects the build depends on.
       We make all targets depending on it to make sure everything rebuilds.
   -->
@@ -116,26 +148,86 @@
 
   <!--
     ===================================================================================================================
+    _NuProjGetProjectClosure
+    ===================================================================================================================
+
+    This target returns the closure of all project references.
+
+    INPUTS:
+        @(_MSBuildProjectReferenceExistent)   The project references that actually exist.
+
+    OUTPUTS:
+        @(_ProjectReferenceClosure)           The closure of all references. Doesn't include duplicates.
+
+    =================================================================================================================== -->
+
+    <Target Name="_NuProjGetProjectClosure"
+            Returns="@(_ProjectReferenceClosure)">
+
+        <!-- Get closure of indirect references -->
+        <MSBuild Projects="@(ProjectReference)"
+                 Targets="_NuProjGetProjectClosure"
+                 Properties="$(ProjectProperties)"
+                 ContinueOnError="WarnAndContinue">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="_ProjectReferenceClosureWithDuplicates" />
+        </MSBuild>
+
+        <!-- Remove duplicates from closure -->
+        <RemoveDuplicates Inputs="@(_ProjectReferenceClosureWithDuplicates)">
+            <Output TaskParameter="Filtered"
+                    ItemName="_ProjectReferenceClosureWithoutMetadata"/>
+        </RemoveDuplicates>
+
+        <ItemGroup>
+            <!-- Remove references that are also direct references -->
+            <_ProjectReferenceClosureWithoutMetadata Remove="%(ProjectReference.FullPath)" />
+            <!-- We can now mark all the closure references as indirect -->
+            <_ProjectReferenceClosure Include="@(_ProjectReferenceClosureWithoutMetadata)">
+                <DependencyKind>Indirect</DependencyKind>
+            </_ProjectReferenceClosure>
+            <!-- Now add the direct references -->
+            <_ProjectReferenceClosure Include="%(ProjectReference.FullPath)">
+                <DependencyKind>Direct</DependencyKind>
+            </_ProjectReferenceClosure>
+        </ItemGroup>
+
+    </Target>
+
+  <!--
+    ===================================================================================================================
     SplitProjectReferences
     ===================================================================================================================
 
     This target will split the project references into NuProj project references and non-NuProj references.
 
     INPUTS:
-        @(ProjectReference)            The project references
+        @(ProjectReference)            The direct project references
+        @(_ProjectReferenceClosure)    The direct and indirect project references
 
     OUTPUTS:
-        @(_NuProjProjectReference)     References to NuProj projects.
-        @(_NonNuProjProjectReference)  References to regular, i.e. non-NuProj projects.
+        @(_NuProjProjectReference)            Direct references to NuProj projects.
+        @(_NonNuProjProjectReference)         Direct references to regular, i.e. non-NuProj projects.
+        @(_NuProjProjectReferenceClosure)     Direct and indirect references to NuProj projects.
+        @(_NonNuProjProjectReferenceClosure)  Direct and indirect references to regular, i.e. non-NuProj projects.
 
     =================================================================================================================== -->
 
-    <Target Name="SplitProjectReferences">
+    <Target Name="SplitProjectReferences"
+            DependsOnTargets="_NuProjGetProjectClosure">
         <ItemGroup>
-            <_NuProjProjectReference Include="@(ProjectReference)"
-                                     Condition="'%(ProjectReference.Extension)' == '.nuproj'" />
-            <_NonNuProjProjectReference Include="@(ProjectReference)"
-                                        Condition="'%(ProjectReference.Extension)' != '.nuproj'" />
+            <!-- Split direct and indirect project dependencies -->
+            <_NuProjProjectReferenceClosure Include="@(_ProjectReferenceClosure)"
+                                            Condition="'%(_ProjectReferenceClosure.Extension)' == '.nuproj'" />
+            <_NonNuProjProjectReferenceClosure Include="@(_ProjectReferenceClosure)"
+                                               Condition="'%(_ProjectReferenceClosure.Extension)' != '.nuproj'" />
+
+            <!-- Split direct project dependencies -->
+            <_NuProjProjectReference Include="@(_NuProjProjectReferenceClosure)"
+                                     Condition="'%(DependencyKind)' == 'Direct'" />
+            <_NonNuProjProjectReference Include="@(_NonNuProjProjectReferenceClosure)"
+                                        Condition="'%(DependencyKind)' == 'Direct'" />
+
         </ItemGroup>
     </Target>
 
@@ -182,9 +274,11 @@
             Inputs="%(_NonNuProjProjectReference.Identity)"
             Outputs="fake">
 
-        <!-- First let's make sure that the project reference has been fully build -->
+        <!-- First let's make sure that the project references have been fully build,
+             unless building project references is disabled. -->
 
         <MSBuild Targets="Build"
+                 Condition="'$(BuildProjectReferences)' == 'true'"
                  Projects="%(_NonNuProjProjectReference.Identity)"
                  Properties="$(ProjectProperties)" />
 
@@ -299,7 +393,7 @@
     </CreateItem>
 
     <!-- We need to special case library files in later phases. In order to make this
-         easier, we add custom metadata 'IsLibrary' that indiates whether the file is
+         easier, we add custom metadata 'IsLibrary' that indicates whether the file is
          targeting the lib folder or not. -->
 
     <ItemGroup>
@@ -356,8 +450,6 @@
     =================================================================================================================== -->
 
   <Target Name="GenerateNuSpec"
-          Inputs="@(PackageFile);AlwaysRunEvenIfPackageFileIsEmpty"
-          Outputs="$(NuSpecPath)"
           DependsOnTargets="GetPackageDependencies;GetPackageFiles;GetSourceFiles">
     <!-- Please Note:
          In order to avoid incremental build issues this target will always run.
@@ -437,7 +529,21 @@
           DependsOnTargets="GetFiles;GetFileDependencies">
 
       <ItemGroup>
+        <!-- We need to ensure that package libraries occur only once in their intended target path.
+             Depending on referenced projects, single library can come from multiple locations,
+             e.g target and intermediate output directories. -->
+        <_RawLibraryTargetPath Include="@(File->'%(TargetPath)\%(FileName)%(Extension)')"
+                         Condition="'%(File.IsLibrary)' == 'True'">
+            <OriginalItemSpec>%(File.Identity)</OriginalItemSpec>
+        </_RawLibraryTargetPath>
+      </ItemGroup>
 
+      <RemoveDuplicates Inputs="@(_RawLibraryTargetPath)">
+        <Output TaskParameter="Filtered"
+            ItemName="_FilteredLibraryTargetPath" />
+      </RemoveDuplicates>
+
+      <ItemGroup>
         <!-- We don't want to package libraries that come from dependencies.
              Please note that we do want to package non-library files regardless
              as we generally don't automatically pick those up from dependencies.
@@ -452,10 +558,8 @@
              Since we want to only filer libraries we'll set the identity to an
              illegal file name if the packaged file isn't a library. -->
 
-        <_FileTargetPath Include="@(File->'%(FileName)%(Extension)')"
-                         Condition="'%(File.IsLibrary)' == 'True'">
-            <OriginalItemSpec>%(File.Identity)</OriginalItemSpec>
-        </_FileTargetPath>
+        <_FileTargetPath Include="@(_FilteredLibraryTargetPath->'%(FileName)%(Extension)')" />
+
         <_FileTargetPath Include="@(File->'::KEEP::')"
                          Condition="'%(File.IsLibrary)' == 'False'">
             <OriginalItemSpec>%(File.Identity)</OriginalItemSpec>
@@ -531,7 +635,7 @@
           Returns="@(NuProjFileDependency)"
           DependsOnTargets="SplitProjectReferences">
       <MSBuild Targets="GetPackageFiles"
-               Projects="@(_NuProjProjectReference)"
+               Projects="@(_NuProjProjectReferenceClosure)"
                Properties="$(ProjectProperties)">
         <Output TaskParameter="TargetOutputs"
                 ItemName="NuProjFileDependency" />
@@ -574,8 +678,10 @@
           DependsOnTargets="GetNuProjPackageDependencies;GetNuGetPackageDependencies"
           Returns="@(Dependency)">
     <ItemGroup>
-      <Dependency Include="@(NuProjDependency)" />
-      <Dependency Include="@(NuGetDependency)" />
+      <Dependency Include="@(NuProjDependency)"
+                  Condition="'%(NuProjDependency.DependencyKind)' == 'Direct'" />
+      <Dependency Include="@(NuGetDependency)"
+                  Condition="'%(NuGetDependency.DependencyKind)' == 'Direct'" />
     </ItemGroup>
   </Target>
 
@@ -584,22 +690,29 @@
     GetNuProjPackageDependencies
     ===================================================================================================================
 
-    Get the direct package dependencies that come from other .nuproj files.
+    Get the direct and indirect package dependencies that come from other .nuproj files.
 
     OUTPUTS:
-        @(NuProjDependency)               The NuGet dependencies of this package.
+        @(NuProjDependency)               The closure of NuGet dependencies of this package.
 
     =================================================================================================================== -->
 
   <Target Name="GetNuProjPackageDependencies"
           Returns="@(NuProjDependency)"
+          Inputs="%(_NuProjProjectReferenceClosure.DependencyKind)"
+          Outputs="fake"
           DependsOnTargets="SplitProjectReferences">
       <MSBuild Targets="GetPackageIdentity"
-               Projects="@(_NuProjProjectReference)"
+               Projects="@(_NuProjProjectReferenceClosure)"
                Properties="$(ProjectProperties)">
         <Output TaskParameter="TargetOutputs"
-                ItemName="NuProjDependency" />
+                ItemName="_NuProjDependency" />
       </MSBuild>
+      <ItemGroup>
+          <NuProjDependency Include="@(_NuProjDependency)">
+              <DependencyKind>%(_NuProjProjectReferenceClosure.DependencyKind)</DependencyKind>
+          </NuProjDependency>
+      </ItemGroup>
   </Target>
 
   <!--
@@ -607,31 +720,42 @@
     GetNuGetPackageDependencies
     ===================================================================================================================
 
-    Get the direct package dependencies that come from regular, i.e. non-.nuproj NuGet dependencies.
+    Get the direct and indirect package dependencies that come from regular, i.e. non-.nuproj NuGet dependencies.
 
     OUTPUTS:
-        @(NuGetDependency)               The NuGet dependencies of this package.
+        @(NuGetDependency)               The closure of NuGet dependencies of this package.
 
     =================================================================================================================== -->
 
   <Target Name="GetNuGetPackageDependencies"
+          Inputs="%(_ProjectReferenceClosure.DependencyKind)"
+          Outputs="fake"
           Returns="@(NuGetDependency)">
-      <ItemGroup>
-          <_ProjectReferenceConfigs Include="@(ProjectReference)">
-              <SpecificForProject Condition=" '$(OS)' == 'Windows_NT'">%(ProjectReference.RootDir)%(ProjectReference.Directory)packages.$([System.String]::Copy('%(ProjectReference.Filename)').Replace(' ','_')).config</SpecificForProject>
-              <SpecificForProject Condition=" '$(OS)' != 'Windows_NT'">%(ProjectReference.RootDir)%(ProjectReference.Directory)packages.%(ProjectReference.Filename).config</SpecificForProject>
-              <DefaultInDirectory>%(ProjectReference.RootDir)%(ProjectReference.Directory)packages.config</DefaultInDirectory>
-          </_ProjectReferenceConfigs>
-          <_PackagesConfig Include="%(_ProjectReferenceConfigs.SpecificForProject)"
-                           Condition="Exists(%(_ProjectReferenceConfigs.SpecificForProject))"/>
-          <_PackagesConfig Include="%(_ProjectReferenceConfigs.DefaultInDirectory)"
-                           Condition="Exists(%(_ProjectReferenceConfigs.DefaultInDirectory)) And !Exists(%(_ProjectReferenceConfigs.SpecificForProject))"/>
-      </ItemGroup>
-      <ReadPackagesConfig PackagesConfigPath="%(_PackagesConfig.Identity)"
-                          Condition="'%(_PackagesConfig.Identity)' != ''">
-        <Output TaskParameter="Packages"
-                ItemName="NuGetDependency" />
+
+      <!-- Read each project's packages.config file. -->
+      <ReadPackagesConfig ProjectPath="%(_ProjectReferenceClosure.FullPath)"
+                          Condition="'%(_ProjectReferenceClosure.FullPath)' != ''">
+        <Output TaskParameter="PackageReferences"
+                ItemName="_PackageReference" />
       </ReadPackagesConfig>
+
+      <!-- Unfortunately, we can't use %(_ProjectReferenceClosure.DependencyKind) to
+           define the metadata in the declaration of NuGetDependency.DependencyKind.
+           So we simply capture the current batch in a property. -->
+      <PropertyGroup>
+        <_ProjectReferenceClosureDependencyKind>%(_ProjectReferenceClosure.DependencyKind)</_ProjectReferenceClosureDependencyKind>
+      </PropertyGroup>
+
+      <!-- Turn all dependencies into NuGetDependency items with appropriate metadata. -->
+      <ItemGroup Condition="'@(_PackageReference)' != ''">
+        <NuGetDependency Include="@(_PackageReference)"
+                         Condition="!%(IsDevelopmentDependency)"
+                         RemoveMetadata="IsDevelopmentDependency;RequireReinstallation;VersionConstraint">
+          <Version Condition="'%(_PackageReference.VersionConstraint)' != ''">%(_PackageReference.VersionConstraint)</Version>
+          <DependencyKind>$(_ProjectReferenceClosureDependencyKind)</DependencyKind>
+        </NuGetDependency>
+      </ItemGroup>
+
   </Target>
 
   <!--
@@ -652,7 +776,7 @@
               ItemName="_SourceFile" />
     </ReadPdbSourceFiles>
     <!-- Some compilers (like VB) have source files listed that don't actually exist.
-         Since we can only package existing files we'll need to exlude those files. -->
+         Since we can only package existing files we'll need to exclude those files. -->
     <ItemGroup>
       <_SourceFile Remove="@(_SourceFile)"
                    Condition="!Exists(%(_SourceFile.Identity))" />
@@ -671,7 +795,7 @@
     ===================================================================================================================
 
     Returns an item whose identity is the $(Id). The version is included in custom metadata item Version. This format
-    is identitcal to the one used to describe package dependencies.
+    is identical to the one used to describe package dependencies.
 
     OUTPUTS:
         $(_PackageIdentity)               The Id and Version of this package
@@ -697,15 +821,26 @@
     =================================================================================================================== -->
 
   <Target Name="Clean">
+
+    <!-- We should also clear our references.
+
+         Note: We should forward calling the Clear target when building from the command line.
+               Assuming, of course, we're not suppressing building project references. -->
+
     <MSBuild Targets="Clean"
+             Condition="'$(BuildProjectReferences)' == 'true'"
              Projects="@(ProjectReference)"
              Properties="$(ProjectProperties)" />
+
+    <!-- Delete our outputs and intermediates. -->
+
     <ItemGroup>
       <_ToBeDeleted Include="$(NuSpecPath)" />
       <_ToBeDeleted Include="$(NuGetOutputPath)" />
       <_ToBeDeleted Include="$(NuGetSymbolsOutputPath)" />
     </ItemGroup>
     <Delete Files="@(_ToBeDeleted)" />
+
   </Target>
 
   <Target Name="Build" DependsOnTargets="CreatePackage">
