@@ -2,10 +2,7 @@
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Designers;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace NuProj.ProjectSystem
 {
@@ -30,7 +27,7 @@ namespace NuProj.ProjectSystem
         [Import]
         public ConfiguredProject ActiveConfiguredProject
         {
-            get { return this.NuProjActiveConfiguredProject.Value.ConfiguredProject; }
+            get { return NuProjActiveConfiguredProject.Value.ConfiguredProject; }
         }
     }
 }
