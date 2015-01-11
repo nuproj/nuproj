@@ -17,6 +17,11 @@
     <Authors>The World</Authors>
     <Owners>$(Authors)</Owners>
     <Description>Hello World</Description>
+    <!-- Optional nuspec template -->
+    <!-- 
+    <NuSpecTeplate></NuSpecTeplate>
+    -->
+
     <!-- Optional information -->
     <!--
     <ReleaseNotes></ReleaseNotes>
