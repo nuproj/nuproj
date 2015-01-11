@@ -1,17 +1,29 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.Build.Framework;
-using NuGet;
+
 using NuProj.Tests.Infrastructure;
+
 using Xunit;
 
 namespace NuProj.Tests
 {
     public class DependencyTests
     {
+        [Fact]
+        public async Task Dependency_NoDependencies_Fails()
+        {
+            var scenarioDirectory = Assets.GetScenarioDirectory("Dependency_NoDependencies_Fails");
+            var solutionPath = Assets.GetScenarioSolutionPath("Dependency_NoDependencies_Fails");
+            var result = await MSBuild.RebuildAsync(solutionPath);
+            var error = result.ErrorEvents.Single();
+
+            var expectedMessage = string.Format(@"Failed to build package. Ensure '{0}\NuGetPackage1\obj\Debug\NuGetPackage1.nuspec' includes assembly files. For help on building symbols package, visit http://docs.nuget.org/.", scenarioDirectory);
+            var actualMessage = error.Message;
+
+            Assert.Equal(expectedMessage, actualMessage);
+        }
+
         [Fact]
         public async Task Dependency_Content_IsNotFiltered()
         {
