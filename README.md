@@ -2,8 +2,8 @@
 
 [![dev version][build-status-img]][build-status-url] [![Issue Stats][pull-requests-img]][pull-requests-url] [![Issue Stats][issues-closed-img]][issues-closed-url]
 
-[build-status-img]: http://img.shields.io/appveyor/ci/terrajobst/nquery-vnext.svg?style=flat
-[build-status-url]: https://ci.appveyor.com/project/terrajobst/nquery-vnext
+[build-status-img]: http://img.shields.io/appveyor/ci/terrajobst/nuproj.svg?style=flat
+[build-status-url]: https://ci.appveyor.com/project/terrajobst/nuproj
 
 [pull-requests-img]: http://www.issuestats.com/github/terrajobst/nuproj/badge/pr
 [pull-requests-url]: http://www.issuestats.com/github/terrajobst/nuproj
