@@ -49,13 +49,13 @@
   </Target>
   -->
   <Target Name="Clean">
-    <Warning Text="Dependency Target Called: Clean" />
+    <Warning Text="CsProj dependency Target Called: Clean" />
   </Target>
   <Target Name="Build">
-    <Warning Text="Dependency Target Called: Build" />
+    <Warning Text="CsProj dependency Target Called: Build" />
   </Target>
   <Target Name="Rebuild">
-    <Warning Text="Dependency Target Called: Rebuild" />
+    <Warning Text="CsProj dependency Target Called: Rebuild" />
   </Target>
 
 </Project>

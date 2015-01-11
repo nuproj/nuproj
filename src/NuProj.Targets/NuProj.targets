@@ -125,38 +125,46 @@
 
     =================================================================================================================== -->
 
-    <Target Name="_NuProjGetProjectClosure"
-            Returns="@(_ProjectReferenceClosure)">
+  <Target Name="_NuProjGetProjectClosure"
+          Returns="@(_ProjectReferenceClosure)">
+    <!-- First let's make sure that the project references have been fully build,
+             unless building project references is disabled. -->
 
-        <!-- Get closure of indirect references -->
-        <MSBuild Projects="@(ProjectReference)"
-                 Targets="_NuProjGetProjectClosure"
-                 Properties="$(ProjectProperties)"
-                 ContinueOnError="WarnAndContinue">
-            <Output TaskParameter="TargetOutputs"
-                    ItemName="_ProjectReferenceClosureWithDuplicates" />
-        </MSBuild>
+    <MSBuild Targets="Build"
+             Condition="'$(BuildProjectReferences)' == 'true'"
+             Projects="@(ProjectReference)"
+             Properties="$(ProjectProperties)"
+             ContinueOnError="WarnAndContinue"/>
 
-        <!-- Remove duplicates from closure -->
-        <RemoveDuplicates Inputs="@(_ProjectReferenceClosureWithDuplicates)">
-            <Output TaskParameter="Filtered"
-                    ItemName="_ProjectReferenceClosureWithoutMetadata"/>
-        </RemoveDuplicates>
+    <!-- Get closure of indirect references -->
+    <MSBuild Projects="@(ProjectReference)"
+             Targets="_NuProjGetProjectClosure"
+             Properties="$(ProjectProperties)"
+             ContinueOnError="WarnAndContinue">
+      <Output TaskParameter="TargetOutputs"
+              ItemName="_ProjectReferenceClosureWithDuplicates" />
+    </MSBuild>
 
-        <ItemGroup>
-            <!-- Remove references that are also direct references -->
-            <_ProjectReferenceClosureWithoutMetadata Remove="%(ProjectReference.FullPath)" />
-            <!-- We can now mark all the closure references as indirect -->
-            <_ProjectReferenceClosure Include="@(_ProjectReferenceClosureWithoutMetadata)">
-                <DependencyKind>Indirect</DependencyKind>
-            </_ProjectReferenceClosure>
-            <!-- Now add the direct references -->
-            <_ProjectReferenceClosure Include="%(ProjectReference.FullPath)">
-                <DependencyKind>Direct</DependencyKind>
-            </_ProjectReferenceClosure>
-        </ItemGroup>
+    <!-- Remove duplicates from closure -->
+    <RemoveDuplicates Inputs="@(_ProjectReferenceClosureWithDuplicates)">
+      <Output TaskParameter="Filtered"
+              ItemName="_ProjectReferenceClosureWithoutMetadata"/>
+    </RemoveDuplicates>
 
-    </Target>
+    <ItemGroup>
+      <!-- Remove references that are also direct references -->
+      <_ProjectReferenceClosureWithoutMetadata Remove="%(ProjectReference.FullPath)" />
+      <!-- We can now mark all the closure references as indirect -->
+      <_ProjectReferenceClosure Include="@(_ProjectReferenceClosureWithoutMetadata)">
+        <DependencyKind>Indirect</DependencyKind>
+      </_ProjectReferenceClosure>
+      <!-- Now add the direct references -->
+      <_ProjectReferenceClosure Include="%(ProjectReference.FullPath)">
+        <DependencyKind>Direct</DependencyKind>
+      </_ProjectReferenceClosure>
+    </ItemGroup>
+
+  </Target>
 
   <!--
     ===================================================================================================================
@@ -215,15 +223,7 @@
             Inputs="%(_NonNuProjProjectReference.Identity)"
             Outputs="fake">
 
-        <!-- First let's make sure that the project references have been fully build,
-             unless building project references is disabled. -->
-
-        <MSBuild Targets="Build"
-                 Condition="'$(BuildProjectReferences)' == 'true'"
-                 Projects="%(_NonNuProjProjectReference.Identity)"
-                 Properties="$(ProjectProperties)" />
-
-        <!-- Now we can ask for the output and all dependencies. -->
+        <!-- Ask for the output and all dependencies. -->
 
         <MSBuild Targets="$(ProjectOutputGroups)"
                  Projects="%(_NonNuProjProjectReference.Identity)"
@@ -596,6 +596,7 @@
     =================================================================================================================== -->
 
   <Target Name="GetNuGetFileDependencies"
+          DependsOnTargets="GetNuGetPackageDependencies"
           Returns="@(NuGetFileDependency)">
       <ItemGroup>
         <NuGetFileDependency Include="%(NuGetDependency.PackageDirectoryPath)\**\*"
