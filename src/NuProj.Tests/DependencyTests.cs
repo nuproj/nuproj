@@ -13,12 +13,11 @@ namespace NuProj.Tests
         [Fact]
         public async Task Dependency_NoDependencies_Fails()
         {
-            var scenarioDirectory = Assets.GetScenarioDirectory("Dependency_NoDependencies_Fails");
             var solutionPath = Assets.GetScenarioSolutionPath("Dependency_NoDependencies_Fails");
             var result = await MSBuild.RebuildAsync(solutionPath);
             var error = result.ErrorEvents.Single();
 
-            var expectedMessage = string.Format(@"Failed to build package. Ensure '{0}\NuGetPackage1\obj\Debug\NuGetPackage1.nuspec' includes assembly files. For help on building symbols package, visit http://docs.nuget.org/.", scenarioDirectory);
+            var expectedMessage = "Cannot create a package that has no dependencies nor content.";
             var actualMessage = error.Message;
 
             Assert.Equal(expectedMessage, actualMessage);
