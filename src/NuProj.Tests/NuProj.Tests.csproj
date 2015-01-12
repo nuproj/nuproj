@@ -84,6 +84,8 @@
     <Compile Include="Infrastructure\ManifestFrameworkAssemblyComparer.cs" />
     <Compile Include="Infrastructure\ManifestReferenceComparer.cs" />
     <Compile Include="Infrastructure\ManifestReferenceSetComparer.cs" />
+    <Compile Include="Infrastructure\PackageDependencyComparer.cs" />
+    <Compile Include="Infrastructure\PackageDependencySetComparer.cs" />
     <Compile Include="Infrastructure\Scenario.cs" />
     <Compile Include="Infrastructure\AssertTaskItem.cs" />
     <Compile Include="PackageIdentityTests.cs" />
