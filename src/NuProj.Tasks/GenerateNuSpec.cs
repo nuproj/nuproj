@@ -14,6 +14,8 @@ namespace NuProj.Tasks
     {
         private const string NuSpecXmlNamespace = @"http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd";
 
+        public string InputFileName { get; set; }
+
         [Required]
         public string OutputFileName { get; set; }
 
@@ -121,33 +123,52 @@ namespace NuProj.Tasks
 
         private Manifest CreateManifest()
         {
-            var manifestMetadata = new ManifestMetadata();
-            manifestMetadata.Authors = Authors;
-            manifestMetadata.Copyright = Copyright;
-            manifestMetadata.DependencySets = GetDependencySets();
-            manifestMetadata.Description = Description;
-            manifestMetadata.DevelopmentDependency = DevelopmentDependency;
-            manifestMetadata.FrameworkAssemblies = GetFrameworkAssemblies();
-            manifestMetadata.IconUrl = IconUrl;
-            manifestMetadata.Id = Id;
-            manifestMetadata.Language = Language;
-            manifestMetadata.LicenseUrl = LicenseUrl;
-            manifestMetadata.MinClientVersionString = MinClientVersion;
-            manifestMetadata.Owners = Owners;
-            manifestMetadata.ProjectUrl = ProjectUrl;
-            manifestMetadata.ReferenceSets = GetReferenceSets();
-            manifestMetadata.ReleaseNotes = ReleaseNotes;
-            manifestMetadata.RequireLicenseAcceptance = RequireLicenseAcceptance;
-            manifestMetadata.Summary = Summary;
-            manifestMetadata.Tags = Tags;
-            manifestMetadata.Title = Title;
-            manifestMetadata.Version = Version;
-
-            var manifest = new Manifest()
+            Manifest manifest;
+            ManifestMetadata manifestMetadata;
+            if (!string.IsNullOrEmpty(InputFileName))
             {
-                Metadata = manifestMetadata,
-                Files = GetManifestFiles()
-            };
+                using (var stream = File.OpenRead(InputFileName))
+                {
+                    manifest = Manifest.ReadFrom(stream, false);
+                }
+            }
+            else
+            {
+                manifest = new Manifest()
+                {
+                    Metadata = new ManifestMetadata(),
+                };
+            }
+
+            if (manifest.Metadata == null)
+            {
+                manifest.Metadata = new ManifestMetadata();
+            }
+
+            manifestMetadata = manifest.Metadata;
+
+            manifestMetadata.UpdateMember(x => x.Authors, Authors);
+            manifestMetadata.UpdateMember(x => x.Copyright, Copyright);
+            manifestMetadata.AddRangeToMember(x => x.DependencySets, GetDependencySets());
+            manifestMetadata.UpdateMember(x => x.Description, Description);
+            manifestMetadata.DevelopmentDependency |= DevelopmentDependency;
+            manifestMetadata.AddRangeToMember(x => x.FrameworkAssemblies, GetFrameworkAssemblies());
+            manifestMetadata.UpdateMember(x => x.IconUrl, IconUrl);
+            manifestMetadata.UpdateMember(x => x.Id, Id);
+            manifestMetadata.UpdateMember(x => x.Language, Language);
+            manifestMetadata.UpdateMember(x => x.LicenseUrl, LicenseUrl);
+            manifestMetadata.UpdateMember(x => x.MinClientVersionString, MinClientVersion);
+            manifestMetadata.UpdateMember(x => x.Owners, Owners);
+            manifestMetadata.UpdateMember(x => x.ProjectUrl, ProjectUrl);
+            manifestMetadata.AddRangeToMember(x => x.ReferenceSets, GetReferenceSets());
+            manifestMetadata.UpdateMember(x => x.ReleaseNotes, ReleaseNotes);
+            manifestMetadata.RequireLicenseAcceptance |= RequireLicenseAcceptance;
+            manifestMetadata.UpdateMember(x => x.Summary, Summary);
+            manifestMetadata.UpdateMember(x => x.Tags, Tags);
+            manifestMetadata.UpdateMember(x => x.Title, Title);
+            manifestMetadata.UpdateMember(x => x.Version, Version);
+
+            manifest.AddRangeToMember(x => x.Files, GetManifestFiles());
 
             return manifest;
         }
@@ -157,9 +178,9 @@ namespace NuProj.Tasks
             return (from f in Files.NullAsEmpty()
                     select new ManifestFile
                     {
-                        Source = f.GetMetadata("FullPath"),
-                        Target = f.GetMetadata("TargetPath"),
-                        Exclude = f.GetMetadata("Exclude"),
+                        Source = f.GetMetadata(Metadata.FileSource),
+                        Target = f.GetMetadata(Metadata.FileTarget),
+                        Exclude = f.GetMetadata(Metadata.FileExclude),
                     }).ToList();
         }
 

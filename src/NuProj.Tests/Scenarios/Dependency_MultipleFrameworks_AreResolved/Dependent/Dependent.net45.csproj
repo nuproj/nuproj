@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FEE2829C-B9D6-4E3C-8E46-45B9EFCDEA80}</ProjectGuid>
+    <ProjectGuid>{87D68DB5-2C90-4334-B08F-CBAFF4F5EE1F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClassLibrary</RootNamespace>
-    <AssemblyName>ClassLibrary</AssemblyName>
+    <RootNamespace>Dependent</RootNamespace>
+    <AssemblyName>Dependent</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>obj\Debug\net45\</OutputPath>
+    <BaseIntermediateOutputPath>bin\Debug\net45\</BaseIntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +25,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Release\net45\</OutputPath>
+    <BaseIntermediateOutputPath>obj\Release\net45\</BaseIntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -42,20 +44,18 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dependency\Dependency.net45.csproj">
+      <Project>{19e107a3-5d26-4614-8982-b1fe5bacee31}</Project>
+      <Name>Dependency.net45</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
+  <Target Name="AfterBuild">
+  </Target>
   -->
-  <Target Name="Clean">
-    <Warning Text="CsProj dependency Target Called: Clean" />
-  </Target>
-  <Target Name="Build">
-    <Warning Text="CsProj dependency Target Called: Build" />
-  </Target>
-  <Target Name="Rebuild">
-    <Warning Text="CsProj dependency Target Called: Rebuild" />
-  </Target>
-
 </Project>

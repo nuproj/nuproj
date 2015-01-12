@@ -11,36 +11,36 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>5193e1cf-6399-4bd7-992d-8a3ab85b9570</ProjectGuid>
+    <ProjectGuid>6a1ca851-c20e-4d96-a185-c8d8a99dfb47</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>NuGetPackage</Id>
+    <Id>Dependent</Id>
     <Version>1.0.0</Version>
-    <Title>NuGetPackage</Title>
-    <Authors>Immo</Authors>
-    <Owners>Immo</Owners>
-    <Summary>NuGetPackage</Summary>
-    <Description>NuGetPackage</Description>
+    <Title>Dependent</Title>
+    <Authors>kovalikp</Authors>
+    <Owners>kovalikp</Owners>
+    <Summary>Dependent</Summary>
+    <Description>Dependent</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
     </ProjectUrl>
     <LicenseUrl>
     </LicenseUrl>
-    <Copyright>Copyright © Immo</Copyright>
-    <Tags>NuGetPackage</Tags>
-    <GenerateSymbolPackage>False</GenerateSymbolPackage>
+    <Copyright>Copyright © kovalikp</Copyright>
+    <Tags>Dependent</Tags>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
-    <ProjectReference Include="..\NuGetDependency\NuGetDependency.nuproj" />
+    <ProjectReference Include="..\Dependency.nuget\Dependency.nuget.nuproj" />
+    <ProjectReference Include="..\Dependent\Dependent.net40.csproj" />
+    <ProjectReference Include="..\Dependent\Dependent.net45.csproj" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>

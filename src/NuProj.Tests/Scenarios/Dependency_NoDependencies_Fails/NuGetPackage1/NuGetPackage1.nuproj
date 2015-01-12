@@ -11,20 +11,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>5193e1cf-6399-4bd7-992d-8a3ab85b9570</ProjectGuid>
+    <ProjectGuid>46a70c2d-6021-4dde-a2b2-8806c84ab60e</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>NuGetPackage</Id>
+    <Id>NuGetPackage1</Id>
     <Version>1.0.0</Version>
-    <Title>NuGetPackage</Title>
+    <Title>NuGetPackage1</Title>
     <Authors>Immo</Authors>
     <Owners>Immo</Owners>
-    <Summary>NuGetPackage</Summary>
-    <Description>NuGetPackage</Description>
+    <Summary>NuGetPackage1</Summary>
+    <Description>NuGetPackage1</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
@@ -32,15 +32,7 @@
     <LicenseUrl>
     </LicenseUrl>
     <Copyright>Copyright © Immo</Copyright>
-    <Tags>NuGetPackage</Tags>
-    <GenerateSymbolPackage>False</GenerateSymbolPackage>
+    <Tags>NuGetPackage1</Tags>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
-    <ProjectReference Include="..\NuGetDependency\NuGetDependency.nuproj" />
-  </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>
