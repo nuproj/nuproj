@@ -8,7 +8,7 @@ you need to override the `NuProjTargetsPath` property:
 
 ```xml
 <PropertyGroup>
-    <MyNuProjPath>$(MyCheckinRoot)packages\NuProj.0.9.2\tools\</MyNuProjPath>
+    <MyNuProjPath>$(MyCheckinRoot)packages\NuProj.0.9.3\tools\</MyNuProjPath>
     <NuProjTargetsPath>$(MyNuProjPath)NuProj.targets</NuProjTargetsPath>
     <!--
     <NuProjTasksPath>$(MyNuProjPath)NuProj.Tasks.dll</NuProjTasksPath>
