@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -52,6 +53,19 @@ namespace NuProj.Tasks
                 result = NullFramework;
             }
 
+            return result;
+        }
+
+        public static PackageDirectory GetPackageDirectory(this ITaskItem taskItem)
+        {
+            var packageDirectoryName = taskItem.GetMetadata(Metadata.PackageDirectory);
+            if (string.IsNullOrEmpty(packageDirectoryName))
+            {
+                return PackageDirectory.Libraries;
+            }
+
+            PackageDirectory result;
+            Enum.TryParse(packageDirectoryName, true, out result);
             return result;
         }
 
@@ -142,6 +156,25 @@ namespace NuProj.Tasks
             list.AddRange(value);
             
             property.SetValue(target, list, null);
+        }
+
+        public static string Combine(this PackageDirectory packageDirectory, string targetFramework, string fileName)
+        { 
+            switch (packageDirectory)
+            {
+                case PackageDirectory.Root:
+                    return fileName;
+                case PackageDirectory.Content:
+                    return Path.Combine(Constants.ContentDirectory, fileName);
+                case PackageDirectory.Build:
+                    return Path.Combine(Constants.BuildDirectory, targetFramework, fileName);
+                case PackageDirectory.Libraries:
+                    return Path.Combine(Constants.LibDirectory, targetFramework, fileName);
+                case PackageDirectory.Tools:
+                    return Path.Combine(Constants.ToolsDirectory, targetFramework, fileName);
+                default:
+                    return fileName;
+            }
         }
     }
 }

@@ -17,12 +17,12 @@ namespace NuProj.Tasks
         public ITaskItem[] OutputsWithTargetFrameworkInformation { get; set; }
 
         [Output]
-        public ITaskItem[] Libraries { get; set; }
+        public ITaskItem[] PackageFiles { get; set; }
 
         public override bool Execute()
         {
             var seenPackagePaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            Libraries = (from item in OutputsWithTargetFrameworkInformation.Select(ConvertToLibrary)
+            PackageFiles = (from item in OutputsWithTargetFrameworkInformation.Select(ConvertToPackageFile)
                          let packagePath = item.GetMetadata(Metadata.FileTarget)
                          where seenPackagePaths.Add(packagePath)
                          select item).ToArray();
@@ -30,14 +30,16 @@ namespace NuProj.Tasks
             return true;
         }
 
-        private static ITaskItem ConvertToLibrary(ITaskItem output)
+        private static ITaskItem ConvertToPackageFile(ITaskItem output)
         {
             var fileName = output.ItemSpec;
             var frameworkNameMoniker = output.GetTargetFrameworkMoniker();
+            var packageDirectory = output.GetPackageDirectory();
             var targetFramework = frameworkNameMoniker.GetShortFrameworkName();
             var metadata = output.CloneCustomMetadata();
             metadata[Metadata.TargetFramework] = targetFramework;
-            metadata[Metadata.FileTarget] = Path.Combine(targetFramework, Path.GetFileName(fileName));
+            metadata[Metadata.PackageDirectory] = packageDirectory.ToString();
+            metadata[Metadata.FileTarget] = packageDirectory.Combine(targetFramework, Path.GetFileName(fileName));
             return new TaskItem(fileName, metadata);
         }
     }

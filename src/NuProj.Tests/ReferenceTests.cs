@@ -43,6 +43,28 @@ namespace NuProj.Tests
             var files = package.GetFiles().Select(f => f.Path);
             Assert.Equal(expectedFileNames, files);
         }
+
+        [Theory]
+        [InlineData("PackageToBuild", new[] { @"build\net45\Tool.dll" })]
+        [InlineData("PackageToLib", new[] { @"lib\net45\Tool.dll" })]
+        [InlineData("PackageToRoot", new[] { @"Tool.dll", @"Tool.pdb" })]
+        [InlineData("PackageToTools", new[] { @"tools\net45\Tool.dll" })]
+        [InlineData("PackageDependencyToTools", new[] { @"tools\net45\Tool.dll" })]
+        [InlineData("PackageClosureToTools", new[] { @"tools\net45\Tool.dll", @"tools\net45\ToolWithClosure.dll" })]
+        public async Task References_PackageDirectory_ToolIsPackaged(string packageId, string[] expectedFiles)
+        {
+            var package = await Scenario.RestoreAndBuildSinglePackage("References_PackageDirectory", packageId);
+            var files = package.GetFiles().Select(f => f.Path);
+            Assert.Equal(expectedFiles.OrderBy(x => x), files.OrderBy(x => x));
+        }
+
+        [Theory]
+        [InlineData("PackageToContent")]
+        public async Task References_PackageDirectory_Fails(string packageId)
+        {
+            await Scenario.RestoreAndFailBuild("References_PackageDirectory", packageId);
+        }
+
     }
 }
     

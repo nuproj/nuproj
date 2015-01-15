@@ -18,9 +18,9 @@
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>A</Id>
+    <Id>A.nuget</Id>
     <Version>1.0.0</Version>
-    <Title>B.nuget</Title>
+    <Title>A.nuget</Title>
     <Authors>nuproj</Authors>
     <Owners>nuproj</Owners>
     <Summary>A</Summary>
