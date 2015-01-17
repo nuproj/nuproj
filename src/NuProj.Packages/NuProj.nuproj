@@ -24,13 +24,27 @@ There is also a Visual Studio which you find under http://bit.ly/NuProjVS.</Desc
   </PropertyGroup>
 
   <ItemGroup>
-    <Tool Include="$(BasePath)raw\NuProj.Tasks.dll" />
-    <Tool Include="$(BasePath)raw\Additional\NuProj.props" />
-    <Tool Include="$(BasePath)raw\Additional\NuProj.targets" />
-    <Tool Include="$(BasePath)raw\Additional\Microsoft.Common.NuProj.targets" />
-    <Tool Include="..\packages\NuGet.CommandLine.2.8.2\tools\NuGet.exe" />
-    <Tool Include="..\packages\NuGet.Core*\lib\net40-Client\NuGet.Core.dll" />
-    <Tool Include="..\packages\Microsoft.Web.Xdt*\lib\net40\Microsoft.Web.XmlTransform.dll" />
+    <Content Include="$(BasePath)raw\NuProj.Tasks.dll">
+      <Link>tools\NuProj.Tasks.dll</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\NuProj.props">
+      <Link>tools\NuProj.props</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\NuProj.targets">
+      <Link>tools\NuProj.targets</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\Microsoft.Common.NuProj.targets">
+      <Link>tools\Microsoft.Common.NuProj.targets</Link>
+    </Content>
+    <Content Include="..\packages\NuGet.CommandLine.2.8.2\tools\NuGet.exe">
+      <Link>tools\NuGet.exe</Link>
+    </Content>
+    <Content Include="..\packages\NuGet.Core*\lib\net40-Client\NuGet.Core.dll">
+      <Link>tools\NuGet.Core.dll</Link>
+    </Content>
+    <Content Include="..\packages\Microsoft.Web.Xdt*\lib\net40\Microsoft.Web.XmlTransform.dll">
+      <Link>tools\Microsoft.Web.XmlTransform.dll</Link>
+    </Content>
   </ItemGroup>
 
   <Import Project="$(NuProjPath)\NuProj.targets" />
