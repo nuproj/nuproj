@@ -448,6 +448,7 @@
              Condition="!Exists('$(OutDir)')" />
     <NuGetPack OutputDirectory="$(OutDir)"
                NoPackageAnalysis="$(NoPackageAnalysis)"
+               NoDefaultExcludes="$(NoDefaultExcludes)"
                Symbols="$(GenerateSymbolPackage)"
                ToolPath="$(NuGetToolPath)"
                ToolExe="$(NuGetToolExe)"
