@@ -23,7 +23,7 @@ namespace NuProj.Tasks
         {
             var seenPackagePaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             Libraries = (from item in OutputsWithTargetFrameworkInformation.Select(ConvertToLibrary)
-                         let packagePath = item.GetMetadata("TargetPath")
+                         let packagePath = item.GetMetadata(Metadata.FileTarget)
                          where seenPackagePaths.Add(packagePath)
                          select item).ToArray();
 
@@ -33,11 +33,11 @@ namespace NuProj.Tasks
         private static ITaskItem ConvertToLibrary(ITaskItem output)
         {
             var fileName = output.ItemSpec;
-            var frameworkName = new FrameworkName(output.GetMetadata("TargetFrameworkMoniker"));
-            var frameworkString = VersionUtility.GetShortFrameworkName(frameworkName);
+            var frameworkNameMoniker = output.GetTargetFrameworkMoniker();
+            var targetFramework = frameworkNameMoniker.GetShortFrameworkName();
             var metadata = output.CloneCustomMetadata();
-            metadata["TargetFramework"] = frameworkString;
-            metadata["TargetPath"] = Path.Combine(frameworkString, Path.GetFileName(fileName));
+            metadata[Metadata.TargetFramework] = targetFramework;
+            metadata[Metadata.FileTarget] = Path.Combine(targetFramework, Path.GetFileName(fileName));
             return new TaskItem(fileName, metadata);
         }
     }

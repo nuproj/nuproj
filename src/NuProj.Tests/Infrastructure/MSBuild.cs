@@ -128,7 +128,8 @@ namespace NuProj.Tests.Infrastructure
             public static readonly ImmutableDictionary<string, string> Default = Empty
                 .Add("NuProjPath", Assets.NuProjPath)
                 .Add("NuProjTasksPath", Assets.NuProjTasksPath)
-                .Add("NuGetToolPath", Assets.NuGetToolPath);
+                .Add("NuGetToolPath", Assets.NuGetToolPath)
+                .Add("CustomAfterMicrosoftCommonTargets", Assets.MicrosoftCommonNuProjTargetsPath);
 
             /// <summary>
             /// The project will build in the same manner as if it were building inside Visual Studio.
@@ -153,6 +154,11 @@ namespace NuProj.Tests.Infrastructure
             public IEnumerable<BuildErrorEventArgs> ErrorEvents
             {
                 get { return LogEvents.OfType<BuildErrorEventArgs>(); }
+            }
+
+            public IEnumerable<BuildWarningEventArgs> WarningEvents
+            {
+                get { return LogEvents.OfType<BuildWarningEventArgs>(); }
             }
 
             public IReadOnlyList<string> LogLines { get; private set; }

@@ -9,7 +9,7 @@ namespace NuProj.ProjectSystem
 {
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
-    [Guid(NuProjPackage.PackageGuid)]
+    [Guid(PackageGuid)]
     internal sealed class NuProjPackage : Package
     {
         public const string PackageGuid = "267c66da-0c67-4933-9ae7-a20c53608e49";

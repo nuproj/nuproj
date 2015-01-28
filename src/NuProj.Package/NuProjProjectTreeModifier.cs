@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 
+using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Designers;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Utilities.Designers;
@@ -15,6 +16,9 @@ namespace NuProj.ProjectSystem
 #endif
     internal sealed class NuProjProjectTreeModifier : IProjectTreeModifier
     {
+        [Import]
+        public UnconfiguredProject UnconfiguredProject { get; set; }
+
         public IProjectTree ApplyModifications(IProjectTree tree, IProjectTreeProvider projectTreeProvider)
         {
 #if Dev12

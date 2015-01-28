@@ -6,11 +6,11 @@
 [assembly: AssemblyTrademark("")]
 
 [assembly : AssemblyMetadata("PreRelease", "Beta")]
-[assembly : AssemblyMetadata("ProjectUrl", "http://github.com/terrajobst/nuproj")]
-[assembly : AssemblyMetadata("LicenseUrl", "https://raw.githubusercontent.com/terrajobst/nuproj/master/LICENSE")]
+[assembly : AssemblyMetadata("ProjectUrl", "http://nuproj.net")]
+[assembly : AssemblyMetadata("LicenseUrl", "http://nuproj.net/LICENSE")]
 
 // NOTE: When updating the version, you also need to update the Identity/@Version
 //       attribtute in src\NuProj.Package\source.extension.vsixmanifest.
 
-[assembly: AssemblyVersion("0.9.2.0")]
-[assembly: AssemblyFileVersion("0.9.2.0")]
+[assembly: AssemblyVersion("0.9.3.0")]
+[assembly: AssemblyFileVersion("0.9.3.0")]

@@ -3,22 +3,23 @@
 
     <ItemType Name="None"
               DisplayName="None" />
+
     <ItemType Name="Content"
               DisplayName="Content" />
 
     <ContentType Name="Text"
                  DisplayName="Text file"
-                 ItemType="None">
+                 ItemType="Content">
     </ContentType>
 
     <ContentType Name="XML"
                  DisplayName="Xml file"
-                 ItemType="None">
+                 ItemType="Content">
     </ContentType>
 
     <ContentType Name="HTML"
                  DisplayName="Html file"
-                 ItemType="None">
+                 ItemType="Content">
     </ContentType>
 
     <ContentType Name="CSS"
@@ -76,5 +77,6 @@
                    ContentType="ClassDiagram" />
     <FileExtension Name=".licenses"
                    ContentType="Licenses" />
+
 </ProjectSchemaDefinitions>
 

@@ -13,30 +13,38 @@
     <DirectoryRef Id="TARGETDIR">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="MSBuild" Name="MSBuild">
-          <Directory Id="NuProj" Name="NuProj">
-            <Directory Id="Rules" Name="Rules" />
+          <Directory Id="INSTALLDIR" Name="NuProj">
+              <Directory Id="Rules" Name="Rules" />
+          </Directory>
+          <Directory Id="MSBuild120" Name="12.0">
+            <Directory Id="Microsoft.Common.Targets.120" Name="Microsoft.Common.Targets">
+              <Directory Id="Microsoft.Common.Targets.ImportAfter.120" Name="ImportAfter" />
+            </Directory>
           </Directory>
         </Directory>
       </Directory>
     </DirectoryRef>
 
-    <ComponentGroup Id="MSBuildIntegration" Directory="NuProj">
-      <Component>
+    <ComponentGroup Id="MSBuildIntegration">
+      <Component Directory="INSTALLDIR">
         <File Source="$(var.SolutionDir)packages\NuGet.CommandLine.2.8.2\tools\NuGet.exe" />
       </Component>
-      <Component>
+      <Component Directory="INSTALLDIR">
         <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuProj.targets" />
       </Component>
-      <Component>
+      <Component Directory="INSTALLDIR">
         <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuProj.props" />
       </Component>
-      <Component>
+      <Component Directory="Microsoft.Common.Targets.ImportAfter.120">
+        <File Source="$(var.NuProj.Tasks.TargetDir)Additional\Microsoft.Common.NuProj.targets" />
+      </Component>
+      <Component Directory="INSTALLDIR">
         <File Source="$(var.NuProj.Tasks.TargetDir)NuProj.Tasks.dll" />
       </Component>
-      <Component>
+      <Component Directory="INSTALLDIR">
         <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.Core.dll" />
       </Component>
-      <Component>
+      <Component Directory="INSTALLDIR">
         <File Source="$(var.NuProj.Tasks.TargetDir)Microsoft.Web.XmlTransform.dll" />
       </Component>
     </ComponentGroup>

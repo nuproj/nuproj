@@ -8,13 +8,18 @@ you need to override the `NuProjTargetsPath` property:
 
 ```xml
 <PropertyGroup>
-    <MyNuProjPath>$(MyCheckinRoot)packages\NuProj.0.9.2\tools\</MyNuProjPath>
+    <MyNuProjPath>$(MyCheckinRoot)packages\NuProj.0.9.3\tools\</MyNuProjPath>
     <NuProjTargetsPath>$(MyNuProjPath)NuProj.targets</NuProjTargetsPath>
     <!--
     <NuProjTasksPath>$(MyNuProjPath)NuProj.Tasks.dll</NuProjTasksPath>
     <NuGetToolPath>$(MyNuProjPath)</NuGetToolPath>
     <NuGetToolExe>NuGet.exe</NuGetToolExe>
     -->
+    <!-- This is required in order to get access to indirect dependencies.
+         If you're already having a custom targets file that you inject
+         into Microsoft.Common.targets, omit this line and instead import
+         Microsoft.Common.NuProj.targets into your targets file. -->
+    <CustomAfterMicrosoftCommonTargets>$(MyNuProjPath)Microsoft.Common.NuProj.targets</CustomAfterMicrosoftCommonTargets>
 </PropertyGroup>
 ```
 

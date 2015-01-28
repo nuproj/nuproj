@@ -13,6 +13,7 @@
 
   <Target Name="Build">
     <xunit Assemblies="@(TestAssembly)"
+           ParallelizeTestCollections="False"
            Verbose="True" />
   </Target>
 
