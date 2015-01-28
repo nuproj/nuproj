@@ -16,6 +16,9 @@ namespace NuProj.ProjectSystem
         public static readonly ImmutableHashSet<string> ProjectSystem = Empty.CapabilitiesSet.Union(new[]
         {
             NuProj,
+#if !Dev12
+            ProjectCapabilities.ProjectConfigurationsDeclaredAsItems,
+#endif
             ProjectCapabilities.ReferencesFolder,
         });
     }

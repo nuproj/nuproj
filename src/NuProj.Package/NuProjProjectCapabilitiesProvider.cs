@@ -8,9 +8,13 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace NuProj.ProjectSystem
 {
-#if Dev12 // Dev14 doesn't need this -- not sure Dev12 does either.
+#if Dev12
     [Export(typeof(IProjectCapabilitiesProvider))]
-    [SupportsFileExtension("." + NuProjPackage.ProjectExtension )]
+#else
+    [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectCapabilitiesProvider))]
+    [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
+#endif
+    [SupportsFileExtension("." + NuProjPackage.ProjectExtension)]
     internal sealed class NuProjProjectCapabilitiesProvider : IProjectCapabilitiesProvider
     {
         /// <summary>
@@ -22,5 +26,4 @@ namespace NuProj.ProjectSystem
             return Task.FromResult<IEnumerable<string>>(NuProjCapabilities.ProjectSystem);
         }
     }
-#endif
 }
