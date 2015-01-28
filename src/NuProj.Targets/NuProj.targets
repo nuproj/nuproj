@@ -32,7 +32,8 @@
       <Context>;BrowseObject</Context>
     </PropertyPageSchema>
 
-    <ProjectCapability Include="ProjectReferences" />
+    <ProjectCapability Include="ProjectReferences;ReferencesFolder" />
+    <ProjectCapability Include="NuProj" />
   </ItemGroup>
 
   <PropertyGroup> 
