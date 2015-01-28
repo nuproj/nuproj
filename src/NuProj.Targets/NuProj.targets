@@ -33,6 +33,7 @@
     </PropertyPageSchema>
 
     <ProjectCapability Include="ProjectReferences;ReferencesFolder" />
+    <ProjectCapability Include="ProjectConfigurationsDeclaredAsItems" />
     <ProjectCapability Include="NuProj" />
   </ItemGroup>
 
