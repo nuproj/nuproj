@@ -16,12 +16,17 @@
 
       These properties aren't passed to NuGet.exe - they're implicit. However, we need to know the output paths
       at several occasions (e.g. incremental build or clean up) so we want a central spot to capture those.
+
+      We set these properties in a Target so that other targets that determine what $(Version)
+      should be can run first.
   -->
 
-  <PropertyGroup>
-    <NuGetOutputPath>$([System.IO.Path]::GetFullPath('$(OutDir)$(Id).$(Version).nupkg'))</NuGetOutputPath>
-    <NuGetSymbolsOutputPath>$(OutDir)$(Id).$(Version).symbols.nupkg</NuGetSymbolsOutputPath>
-  </PropertyGroup>
+  <Target Name="EstablishNuGetPaths" DependsOnTargets="$(VersionDependsOn)">
+    <PropertyGroup>
+      <NuGetOutputPath>$([System.IO.Path]::GetFullPath('$(OutDir)$(Id).$(Version).nupkg'))</NuGetOutputPath>
+      <NuGetSymbolsOutputPath>$(OutDir)$(Id).$(Version).symbols.nupkg</NuGetSymbolsOutputPath>
+    </PropertyGroup>
+  </Target>
 
   <!--
       Properties relevant to Visual Studio:
@@ -392,7 +397,7 @@
     =================================================================================================================== -->
 
   <Target Name="GenerateNuSpec"
-          DependsOnTargets="GetPackageDependencies;GetPackageFiles;GetSourceFiles">
+          DependsOnTargets="GetPackageDependencies;GetPackageFiles;GetSourceFiles;$(VersionDependsOn)">
     <!-- Please Note:
          In order to avoid incremental build issues this target will always run.
          However, the task will make sure that it doesn't touch the file if the
@@ -443,7 +448,7 @@
                   $(NuSpecPath);
                   @(File)"
           Outputs="$(NuGetOutputPath)"
-          DependsOnTargets="GenerateNuSpec">
+          DependsOnTargets="GenerateNuSpec;EstablishNuGetPaths">
     <MakeDir Directories="$(OutDir)"
              Condition="!Exists('$(OutDir)')" />
     <NuGetPack OutputDirectory="$(OutDir)"
@@ -469,7 +474,7 @@
 
   <Target Name="GetPackageFiles"
           Returns="@(PackageFile)"
-          DependsOnTargets="GetFiles;GetFileDependencies">
+          DependsOnTargets="GetFiles;GetFileDependencies;$(VersionDependsOn)">
 
       <ItemGroup>
         <!-- We need to ensure that package libraries occur only once in their intended target path.
@@ -797,7 +802,8 @@
     =================================================================================================================== -->
 
   <Target Name="GetPackageIdentity"
-          Returns="@(_PackageIdentity)">
+          Returns="@(_PackageIdentity)"
+          DependsOnTargets="$(VersionDependsOn)">
     <ItemGroup>
       <_PackageIdentity Include="$(Id)">
         <Version>$(Version)</Version>
@@ -814,7 +820,7 @@
 
     =================================================================================================================== -->
 
-  <Target Name="Clean">
+  <Target Name="Clean" DependsOnTargets="EstablishNuGetPaths">
 
     <!-- We should also clear our references.
 
