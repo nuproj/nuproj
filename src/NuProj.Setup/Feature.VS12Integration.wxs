@@ -7,7 +7,7 @@
     <PropertyRef Id="VS2013_PROJECTTEMPLATES_DIR" />
     <CustomActionRef Id="VS2013Setup" />
 
-    <Feature Id="VSIntegration"
+    <Feature Id="VS12Integration"
              Title="Visual Studio Integration"
              AllowAdvertise="no"
              Level="0">

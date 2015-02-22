@@ -25,7 +25,7 @@
     <Directory Id="TARGETDIR" Name="SourceDir" />
 
     <FeatureRef Id="MSBuildIntegration" />
-    <FeatureRef Id="VSIntegration" />
+    <FeatureRef Id="VS12Integration" />
 
     <Icon Id="NuProjIcon" SourceFile="$(var.SolutionDir)Icons\NuProj.ico" />
 

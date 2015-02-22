@@ -24,7 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Feature.BuildIntegration.wxs" />
-    <Compile Include="Feature.VSIntegration.wxs" />
+    <Compile Include="Feature.VS12Integration.wxs" />
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
