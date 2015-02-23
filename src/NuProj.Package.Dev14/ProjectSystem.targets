@@ -51,7 +51,6 @@
          RuleInjection="%(XamlPropertyRule.RuleInjection)"
          RuleInjectionContextName="%(XamlPropertyRule.RuleInjectionCatalog)"
          ProjectPropertiesContext="%(XamlPropertyRule.ProjectPropertiesContext)"
-         IPropertyPagesCatalogTypeName="%(XamlPropertyRule.IPropertyPagesCatalogTypeName)"
          IRuleTypeName="%(XamlPropertyRule.IRuleTypeName)"
          ConfiguredProjectTypeName="%(XamlPropertyRule.ConfiguredProjectTypeName)"
          IEvaluatedPropertyTypeName="%(XamlPropertyRule.IEvaluatedPropertyTypeName)"
