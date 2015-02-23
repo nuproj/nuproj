@@ -22,6 +22,7 @@
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <DeployExtension>false</DeployExtension>
   </PropertyGroup>
   <PropertyGroup>
     <StartAction>Program</StartAction>
