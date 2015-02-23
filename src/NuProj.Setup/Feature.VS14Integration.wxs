@@ -17,12 +17,12 @@
     </Feature>
 
     <DirectoryRef Id="TARGETDIR">
-      <Directory Id="VS14_EXTENSIONS_DIR">
+      <Directory Id="VS14_EXTENSIONS_DIR" Name="VS14_EXTENSIONS_DIR">
         <Directory Id="VS140.NuGet" Name="NuGet">
           <Directory Id="VS140.NuProj" Name="NuProj" />
         </Directory>
       </Directory>
-      <Directory Id="VS14_PROJECTTEMPLATES_DIR">
+      <Directory Id="VS14_PROJECTTEMPLATES_DIR" Name="VS14_PROJECTTEMPLATES_DIR">
         <Directory Id="VS140.ProjectTemplates.NuGet" Name="NuProj" />
       </Directory>
     </DirectoryRef>
