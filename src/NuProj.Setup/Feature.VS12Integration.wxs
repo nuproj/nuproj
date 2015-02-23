@@ -8,7 +8,7 @@
     <CustomActionRef Id="VS2013Setup" />
 
     <Feature Id="VS12Integration"
-             Title="Visual Studio Integration"
+             Title="Visual Studio 2013 Integration"
              AllowAdvertise="no"
              Level="0">
       <Condition Level="1">VS2013_ROOT_FOLDER</Condition>

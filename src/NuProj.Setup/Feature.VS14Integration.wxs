@@ -8,7 +8,7 @@
     <CustomActionRef Id="VS14Setup" />
 
     <Feature Id="VS14Integration"
-             Title="Visual Studio Integration"
+             Title="Visual Studio 2015 Integration"
              AllowAdvertise="no"
              Level="0">
       <Condition Level="1">VS14_ROOT_FOLDER</Condition>
