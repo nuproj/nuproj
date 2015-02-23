@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 
+#if !Dev12
+using Microsoft.VisualStudio.Imaging;
+#endif
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Designers;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -25,7 +28,8 @@ namespace NuProj.ProjectSystem
             if (tree.Capabilities.Contains(ProjectTreeCapabilities.ProjectRoot))
                 tree = tree.SetIcon(Resources.NuProj);
 #else
-            // TODO: code here
+            if (tree.Capabilities.Contains(ProjectTreeCapabilities.ProjectRoot))
+                tree = tree.SetIcon(KnownMonikers.NuGet.ToProjectSystemType());
 #endif
 
             return tree;
