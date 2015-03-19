@@ -514,6 +514,12 @@
         <_FileDependencyTargetPath Include="@(FileDependency->'%(FileName)%(Extension)')" />
         <_FileTargetPath Remove="@(_FileDependencyTargetPath)" />
 
+        <!-- Remove references that request to be excluded. -->
+
+        <_FileTargetPath
+            Remove="@(_FileTargetPath)"
+            Condition=" '%(_FileTargetPath.ExcludeFromNuPkg)' == 'true' " />
+
         <!-- In order to produce the final list we have to restore the original
              identity. -->
 
