@@ -45,12 +45,12 @@ namespace NuProj.Tests
         }
 
         [Theory]
-        [InlineData("PackageToBuild", new[] { @"build\net45\Tool.dll" })]
+        [InlineData("PackageToBuild", new[] { @"build\Tool.dll" })]
         [InlineData("PackageToLib", new[] { @"lib\net45\Tool.dll" })]
         [InlineData("PackageToRoot", new[] { @"Tool.dll", @"Tool.pdb" })]
-        [InlineData("PackageToTools", new[] { @"tools\net45\Tool.dll" })]
-        [InlineData("PackageDependencyToTools", new[] { @"tools\net45\Tool.dll" })]
-        [InlineData("PackageClosureToTools", new[] { @"tools\net45\Tool.dll", @"tools\net45\ToolWithClosure.dll" })]
+        [InlineData("PackageToTools", new[] { @"tools\Tool.dll" })]
+        [InlineData("PackageDependencyToTools", new[] { @"tools\Tool.dll" })]
+        [InlineData("PackageClosureToTools", new[] { @"tools\Tool.dll", @"tools\ToolWithClosure.dll" })]
         public async Task References_PackageDirectory_ToolIsPackaged(string packageId, string[] expectedFiles)
         {
             var package = await Scenario.RestoreAndBuildSinglePackage("References_PackageDirectory", packageId);

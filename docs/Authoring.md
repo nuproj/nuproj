@@ -165,7 +165,7 @@ Please note that the reference item doesn't support the `TargetFramework`
 metadata. Instead, NuGet will only add the references if the file is also
 packaged in the corresponding lib folder. If it's not the reference is simply
 ignored. In other words, the target framework is already controlled by the fact
-that the file might or might not be in the corr                 esponding lib folder.
+that the file might or might not be in the corresponding lib folder.
 
 ## Merging Nuspec Template
 
