@@ -62,9 +62,9 @@ namespace NuProj.Tests
             var package = await Scenario.RestoreAndBuildSinglePackage("Dependency_IndirectDependencies_AreNotPackaged", "A");
             var files = package.GetFiles();
 
-            Assert.None(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
-            Assert.None(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
-            Assert.None(files, x => x.Path.Contains("B3.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("B3.dll"));
         }
 
         [Fact]
@@ -73,9 +73,9 @@ namespace NuProj.Tests
             var package = await Scenario.RestoreAndBuildSinglePackage("Dependency_DirectDependencies_AreNotPackaged", "A");
             var files = package.GetFiles();
 
-            Assert.None(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
-            Assert.None(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
-            Assert.None(files, x => x.Path.Contains("B3.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("B3.dll"));
         }
 
         [Fact]

@@ -152,7 +152,7 @@ namespace NuProj.Tests
                             new ManifestDependency
                             {
                                 Id = "NuGet.Core",
-                                Version = "2.8.2"
+                                Version = "2.8.5"
                             }
                         }
                     }
