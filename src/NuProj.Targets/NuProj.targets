@@ -161,8 +161,8 @@
         <DependencyKind>Indirect</DependencyKind>
         <PackageDirectory>%(ProjectReference.PackageDirectory)</PackageDirectory>
       </_ProjectReferenceClosure>
-      <!-- Now add the direct references -->
-      <_ProjectReferenceClosure Include="%(ProjectReference.FullPath)">
+      <!-- Now add the direct references, preserving metadata -->
+      <_ProjectReferenceClosure Include="@(ProjectReference->'%(FullPath)')">
         <DependencyKind>Direct</DependencyKind>
         <PackageDirectory>%(ProjectReference.PackageDirectory)</PackageDirectory>
       </_ProjectReferenceClosure>
@@ -447,6 +447,7 @@
              Condition="!Exists('$(OutDir)')" />
     <NuGetPack OutputDirectory="$(OutDir)"
                NoPackageAnalysis="$(NoPackageAnalysis)"
+               NoDefaultExcludes="$(NoDefaultExcludes)"
                Symbols="$(GenerateSymbolPackage)"
                ToolPath="$(NuGetToolPath)"
                ToolExe="$(NuGetToolExe)"

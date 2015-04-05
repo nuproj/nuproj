@@ -17,6 +17,8 @@ namespace NuProj.Tasks
 
         public bool NoPackageAnalysis { get; set; }
 
+        public bool NoDefaultExcludes { get; set; }
+
         public bool ExcludeEmptyDirectories { get; set; }
 
         protected override string ToolName
@@ -41,6 +43,9 @@ namespace NuProj.Tasks
 
             if (NoPackageAnalysis)
                 builder.AppendSwitch("-NoPackageAnalysis");
+
+            if (NoDefaultExcludes)
+                builder.AppendSwitch("-NoDefaultExcludes");
 
             if (ExcludeEmptyDirectories)
                 builder.AppendSwitch("-ExcludeEmptyDirectories");
