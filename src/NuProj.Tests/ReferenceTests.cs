@@ -51,20 +51,13 @@ namespace NuProj.Tests
         [InlineData("PackageToTools", new[] { @"tools\Tool.dll" })]
         [InlineData("PackageDependencyToTools", new[] { @"tools\Tool.dll" })]
         [InlineData("PackageClosureToTools", new[] { @"tools\Tool.dll", @"tools\ToolWithClosure.dll" })]
+        [InlineData("PackageToContent", new[] { @"content\Tool.dll", @"content\Tool.pdb" })]
         public async Task References_PackageDirectory_ToolIsPackaged(string packageId, string[] expectedFiles)
         {
             var package = await Scenario.RestoreAndBuildSinglePackage("References_PackageDirectory", packageId);
             var files = package.GetFiles().Select(f => f.Path);
             Assert.Equal(expectedFiles.OrderBy(x => x), files.OrderBy(x => x));
         }
-
-        [Theory]
-        [InlineData("PackageToContent")]
-        public async Task References_PackageDirectory_Fails(string packageId)
-        {
-            await Scenario.RestoreAndFailBuild("References_PackageDirectory", packageId);
-        }
-
     }
 }
     

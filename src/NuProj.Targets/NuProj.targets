@@ -99,6 +99,12 @@
     </ProjectProperties>
   </PropertyGroup>
 
+  <ItemDefinitionGroup>
+    <ProjectReference>
+      <PackageDirectory>Libraries</PackageDirectory>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+
   <!--
       CUSTOM TASKS
   -->
@@ -159,12 +165,10 @@
       <!-- We can now mark all the closure references as indirect -->
       <_ProjectReferenceClosure Include="@(_ProjectReferenceClosureWithoutMetadata)">
         <DependencyKind>Indirect</DependencyKind>
-        <PackageDirectory>%(ProjectReference.PackageDirectory)</PackageDirectory>
       </_ProjectReferenceClosure>
       <!-- Now add the direct references, preserving metadata -->
       <_ProjectReferenceClosure Include="@(ProjectReference->'%(FullPath)')">
         <DependencyKind>Direct</DependencyKind>
-        <PackageDirectory>%(ProjectReference.PackageDirectory)</PackageDirectory>
       </_ProjectReferenceClosure>
     </ItemGroup>
 
@@ -230,7 +234,7 @@
         <!-- Ask for the output and all dependencies. -->
 
         <MSBuild Targets="$(ProjectOutputGroups)"
-                 Projects="%(_NonNuProjProjectReference.Identity)"
+                 Projects="@(_NonNuProjProjectReference)"
                  Properties="$(ProjectProperties)">
             <Output TaskParameter="TargetOutputs"
                     ItemName="_NonNuProjProjectOutput" />
@@ -243,7 +247,7 @@
              get the directory name. -->
 
         <MSBuild Targets="GetTargetPath"
-                 Projects="%(_NonNuProjProjectReference.Identity)"
+                 Projects="@(_NonNuProjProjectReference)"
                  Properties="$(ProjectProperties)">
             <Output TaskParameter="TargetOutputs"
                     PropertyName="_NonNuProjProjectTargetPath" />
@@ -265,7 +269,7 @@
              NuGet package we need need to know the target framework moniker. -->
 
         <MSBuild Targets="GetTargetFrameworkMoniker"
-                 Projects="%(_NonNuProjProjectReference.Identity)"
+                 Projects="@(_NonNuProjProjectReference)"
                  Properties="$(ProjectProperties)">
           
             <Output TaskParameter="TargetOutputs"
@@ -275,7 +279,7 @@
         <!-- In order to add custom metadata, we need to create a new item list -->
 
         <CreateItem Include="@(_NonNuProjProjectOutput)"
-                    AdditionalMetadata="TargetFrameworkMoniker=$(_NonNuProjProjectTargetFrameworkMoniker);PackageDirectory=%(_NonNuProjProjectReference.PackageDirectory)">
+                    AdditionalMetadata="TargetFrameworkMoniker=$(_NonNuProjProjectTargetFrameworkMoniker)">
             <Output TaskParameter="Include"
                     ItemName="_NonNuProjProjectOutputWithTargetFrameworkMoniker"/>
         </CreateItem>
@@ -341,7 +345,7 @@
                           Condition="'%(File.TargetPath)' == 'lib' OR
                                      $([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib\')) OR
                                      $([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib/'))">
-        <PackageDirectory>Library</PackageDirectory>
+        <PackageDirectory>Libraries</PackageDirectory>
       </_FileWithIsLibrary>
       <_FileWithIsLibrary Include="@(File)"
                           Condition="'%(File.TargetPath)' != 'lib' AND
@@ -476,7 +480,7 @@
              Depending on referenced projects, single library can come from multiple locations,
              e.g target and intermediate output directories. -->
         <_RawLibraryTargetPath Include="@(File->'%(TargetPath)\%(FileName)%(Extension)')"
-                         Condition="'%(File.PackageDirectory)' == 'Library'">
+                         Condition="'%(File.PackageDirectory)' == 'Libraries'">
             <OriginalItemSpec>%(File.Identity)</OriginalItemSpec>
         </_RawLibraryTargetPath>
       </ItemGroup>
@@ -504,7 +508,7 @@
         <_FileTargetPath Include="@(_FilteredLibraryTargetPath->'%(FileName)%(Extension)')" />
 
         <_FileTargetPath Include="@(File->'::KEEP::')"
-                         Condition="'%(File.PackageDirectory)' != 'Library'">
+                         Condition="'%(File.PackageDirectory)' != 'Libraries'">
             <OriginalItemSpec>%(File.Identity)</OriginalItemSpec>
         </_FileTargetPath>
 
@@ -641,7 +645,7 @@
       
       <!-- Get files that are library and have assigned target framework (so no debug symbols files). -->
       <_DependencyFile Include="@(File)" 
-                       Condition="'%(File.PackageDirectory)' == 'Library' 
+                       Condition="'%(File.PackageDirectory)' == 'Libraries' 
                          and '%(File.TargetFramework)' != '' 
                          and '%(File.NuProjPackageId)' == '%(NuProjDependency.Identity)'"/>
       
