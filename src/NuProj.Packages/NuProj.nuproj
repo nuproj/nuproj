@@ -36,7 +36,7 @@ There is also a Visual Studio which you find under http://bit.ly/NuProjVS.</Desc
     <Content Include="$(BasePath)raw\Additional\Microsoft.Common.NuProj.targets">
       <Link>tools\Microsoft.Common.NuProj.targets</Link>
     </Content>
-    <Content Include="..\packages\NuGet.CommandLine.2.8.2\tools\NuGet.exe">
+    <Content Include="..\packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe">
       <Link>tools\NuGet.exe</Link>
     </Content>
     <Content Include="..\packages\NuGet.Core*\lib\net40-Client\NuGet.Core.dll">

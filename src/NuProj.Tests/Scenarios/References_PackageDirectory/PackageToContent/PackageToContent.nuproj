@@ -33,6 +33,8 @@
     </LicenseUrl>
     <Copyright>Copyright © kovalikp</Copyright>
     <Tags>PackageToContent</Tags>
+    <NoPackageAnalysis>True</NoPackageAnalysis>
+    <GenerateSymbolPackage>False</GenerateSymbolPackage>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tool\Tool.csproj">
