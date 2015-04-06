@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tool\Tool.csproj">
-      <PackageDirectory>Libraries</PackageDirectory>
+      <PackageDirectory>Lib</PackageDirectory>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />

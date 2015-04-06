@@ -10,7 +10,7 @@ namespace NuProj.Tasks
     public enum PackageDirectory
     {
         Root,
-        Libraries,
+        Lib,
         Tools,
         Content,
         Build,

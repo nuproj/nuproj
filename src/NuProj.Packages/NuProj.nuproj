@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
 
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
@@ -24,9 +34,12 @@ There is also a Visual Studio which you find under http://bit.ly/NuProjVS.</Desc
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="$(BasePath)raw\NuProj.Tasks.dll">
-      <Link>tools\NuProj.Tasks.dll</Link>
-    </Content>
+    <ProjectReference Include="..\NuProj.Tasks\NuProj.Tasks.csproj">
+      <PackageDirectory>Tools</PackageDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  
+  <ItemGroup>
     <Content Include="$(BasePath)raw\Additional\NuProj.props">
       <Link>tools\NuProj.props</Link>
     </Content>
@@ -38,12 +51,6 @@ There is also a Visual Studio which you find under http://bit.ly/NuProjVS.</Desc
     </Content>
     <Content Include="..\packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe">
       <Link>tools\NuGet.exe</Link>
-    </Content>
-    <Content Include="..\packages\NuGet.Core*\lib\net40-Client\NuGet.Core.dll">
-      <Link>tools\NuGet.Core.dll</Link>
-    </Content>
-    <Content Include="..\packages\Microsoft.Web.Xdt*\lib\net40\Microsoft.Web.XmlTransform.dll">
-      <Link>tools\Microsoft.Web.XmlTransform.dll</Link>
     </Content>
   </ItemGroup>
 

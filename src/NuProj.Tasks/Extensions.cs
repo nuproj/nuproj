@@ -61,7 +61,7 @@ namespace NuProj.Tasks
             var packageDirectoryName = taskItem.GetMetadata(Metadata.PackageDirectory);
             if (string.IsNullOrEmpty(packageDirectoryName))
             {
-                return PackageDirectory.Libraries;
+                return PackageDirectory.Lib;
             }
 
             PackageDirectory result;
@@ -168,7 +168,7 @@ namespace NuProj.Tasks
                     return Path.Combine(Constants.ContentDirectory, fileName);
                 case PackageDirectory.Build:
                     return Path.Combine(Constants.BuildDirectory, fileName);
-                case PackageDirectory.Libraries:
+                case PackageDirectory.Lib:
                     return Path.Combine(Constants.LibDirectory, targetFramework, fileName);
                 case PackageDirectory.Tools:
                     return Path.Combine(Constants.ToolsDirectory, fileName);
