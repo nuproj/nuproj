@@ -99,9 +99,16 @@
     </ProjectProperties>
   </PropertyGroup>
 
+  <!--
+      ITEM DEFINITIONS
+      
+      Defines default metadata for our items.
+  -->
+  
   <ItemDefinitionGroup>
     <ProjectReference>
       <PackageDirectory>Libraries</PackageDirectory>
+      <TargetFramework></TargetFramework>
     </ProjectReference>
   </ItemDefinitionGroup>
 
@@ -165,6 +172,7 @@
       <!-- We can now mark all the closure references as indirect -->
       <_ProjectReferenceClosure Include="@(_ProjectReferenceClosureWithoutMetadata)">
         <DependencyKind>Indirect</DependencyKind>
+        <PackageDirectory>%(ProjectReference.PackageDirectory)</PackageDirectory>
       </_ProjectReferenceClosure>
       <!-- Now add the direct references, preserving metadata -->
       <_ProjectReferenceClosure Include="@(ProjectReference->'%(FullPath)')">
@@ -726,23 +734,14 @@
     =================================================================================================================== -->
 
   <Target Name="GetNuGetPackageDependencies"
-          Inputs="%(_ProjectReferenceClosure.DependencyKind)"
-          Outputs="fake"
           Returns="@(NuGetDependency)">
 
       <!-- Read each project's packages.config file. -->
-      <ReadPackagesConfig ProjectPath="%(_ProjectReferenceClosure.FullPath)"
-                          Condition="'%(_ProjectReferenceClosure.FullPath)' != ''">
+      <ReadPackagesConfig Projects="@(_ProjectReferenceClosure)"
+                          Condition="'%(PackageDirectory)' == 'Libraries'">
         <Output TaskParameter="PackageReferences"
                 ItemName="_PackageReference" />
       </ReadPackagesConfig>
-
-      <!-- Unfortunately, we can't use %(_ProjectReferenceClosure.DependencyKind) to
-           define the metadata in the declaration of NuGetDependency.DependencyKind.
-           So we simply capture the current batch in a property. -->
-      <PropertyGroup>
-        <_ProjectReferenceClosureDependencyKind>%(_ProjectReferenceClosure.DependencyKind)</_ProjectReferenceClosureDependencyKind>
-      </PropertyGroup>
 
       <!-- Turn all dependencies into NuGetDependency items with appropriate metadata. -->
       <ItemGroup Condition="'@(_PackageReference)' != ''">
@@ -750,7 +749,6 @@
                          Condition="!%(IsDevelopmentDependency)"
                          RemoveMetadata="IsDevelopmentDependency;RequireReinstallation;VersionConstraint">
           <Version Condition="'%(_PackageReference.VersionConstraint)' != ''">%(_PackageReference.VersionConstraint)</Version>
-          <DependencyKind>$(_ProjectReferenceClosureDependencyKind)</DependencyKind>
         </NuGetDependency>
       </ItemGroup>
 

@@ -21,6 +21,10 @@ Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "PackageToContent", "Package
 EndProject
 Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "PackageToRoot", "PackageToRoot\PackageToRoot.nuproj", "{D9CA4431-BFD8-4E53-B3F5-E2C9981435A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolWithDependency", "ToolWithDependency\ToolWithDependency.csproj", "{0F8881D7-6989-41E0-931D-BC02AEEF2DD9}"
+EndProject
+Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "PackageNuGetDependencyToTools", "PackageNuGetDependencyToTools\PackageNuGetDependencyToTools.nuproj", "{D8930C85-E974-4CAF-8A93-716EEAE3B98B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,14 @@ Global
 		{D9CA4431-BFD8-4E53-B3F5-E2C9981435A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9CA4431-BFD8-4E53-B3F5-E2C9981435A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9CA4431-BFD8-4E53-B3F5-E2C9981435A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F8881D7-6989-41E0-931D-BC02AEEF2DD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F8881D7-6989-41E0-931D-BC02AEEF2DD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F8881D7-6989-41E0-931D-BC02AEEF2DD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F8881D7-6989-41E0-931D-BC02AEEF2DD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8930C85-E974-4CAF-8A93-716EEAE3B98B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8930C85-E974-4CAF-8A93-716EEAE3B98B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8930C85-E974-4CAF-8A93-716EEAE3B98B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8930C85-E974-4CAF-8A93-716EEAE3B98B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
