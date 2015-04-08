@@ -3,7 +3,11 @@ using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
+#if Dev12
 using Microsoft.Collections.Immutable;
+#else
+using System.Collections.Immutable;
+#endif
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Designers;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -13,7 +17,11 @@ namespace NuProj.ProjectSystem
 {
     [Export(typeof(IValidProjectReferenceChecker))]
     [OrderPrecedence(1000)]
+#if Dev12
     [PartMetadata(ProjectCapabilities.Requires, NuProjCapabilities.NuProj)]
+#else
+    [AppliesTo(NuProjCapabilities.NuProj)]
+#endif
     internal sealed class NuProjValidProjectReferenceChecker : IValidProjectReferenceChecker
     {
         // This import must be present so that this part applies to a specific project.
@@ -32,7 +40,7 @@ namespace NuProj.ProjectSystem
             if (referencedProjects == null)
                 throw new ArgumentNullException("referencedProjects");
 
-            IImmutableMap<object, SupportedCheckResult> results = ImmutableDictionary<object, SupportedCheckResult>.Empty;
+            var results = ImmutableDictionary<object, SupportedCheckResult>.Empty;
 
             foreach (object referencedProject in referencedProjects)
             {

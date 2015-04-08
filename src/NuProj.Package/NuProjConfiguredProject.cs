@@ -8,7 +8,11 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 namespace NuProj.ProjectSystem
 {
     [Export]
+#if Dev12
     [PartMetadata(ProjectCapabilities.Requires, NuProjCapabilities.NuProj)]
+#else
+    [AppliesTo(NuProjCapabilities.NuProj)]
+#endif
     internal sealed class NuProjConfiguredProject
     {
         [Import]
