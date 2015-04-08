@@ -232,6 +232,15 @@
                     ItemName="_NonNuProjProjectOutput" />
         </MSBuild>
 
+        <!-- Make sure we package the final output path of project references so that any post-compile step
+             applied to the project's output (such as signing) is included in the version we package up. -->
+        <ItemGroup>
+            <_NonNuProjProjectOutput_ToReplace Include="@(_NonNuProjProjectOutput)"
+                                               Condition=" '%(_NonNuProjProjectOutput.FinalOutputPath)' != '' " />
+            <_NonNuProjProjectOutput Remove="@(_NonNuProjProjectOutput_ToReplace)" />
+            <_NonNuProjProjectOutput Include="@(_NonNuProjProjectOutput_ToReplace->'%(FinalOutputPath)')" />
+        </ItemGroup>
+
         <!-- Since the dependencies include platform assemblies, we'll filter
              out all files that don't exist in this project's output folder.
              First we need the project's output folder. The easiest way is
