@@ -1,1 +1,0 @@
-NuGetPackage2008.nuproj|{DA9FB551-C724-11d0-AE1F-00A0C90FFFC3}|NuGet Package MSBuild project|110|Creates an MSBuild project that can build a NuGet package (.nupkg)|0|#6815|0|NuGetPackage.nuproj
