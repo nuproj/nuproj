@@ -95,7 +95,13 @@
   <PropertyGroup>
     <ProjectProperties>
       Configuration=$(Configuration);
-      Platform=$(Platform);
+      Platform=$(Platform)
+    </ProjectProperties>
+
+    <!-- Use 'Microsoft.Common.NuProj.targets' if it's in same directory as this script. 
+         For example when using NuProj NuGet package instead of VS integration.-->
+    <ProjectProperties Condition="Exists('$(MSBuildThisFileDirectory)Microsoft.Common.NuProj.targets') And !$(CustomAfterMicrosoftCommonTargets.Contains('Microsoft.Common.NuProj.targets'))">
+      $(ProjectProperties);CustomAfterMicrosoftCommonTargets=$(MSBuildThisFileDirectory)Microsoft.Common.NuProj.targets
     </ProjectProperties>
   </PropertyGroup>
 
