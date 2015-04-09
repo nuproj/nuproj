@@ -909,13 +909,21 @@
 
   </Target>
 
-  <Target Name="Build" DependsOnTargets="CreatePackage">
+  <Target Name="Build"
+          DependsOnTargets="CreatePackage" 
+          Returns="@(_NuGetOutputFile)">
     <Message Text="$(MSBuildProjectName) -> $(NuGetOutputPath)"
              Importance="high" />
+
+    <ItemGroup>
+      <_NuGetOutputFile Include="$(NuGetOutputPath)" />
+      <_NuGetOutputFile Include="$(NuGetSymbolsOutputPath)" Condition=" '$(GenerateSymbolPackage)' == 'true' " />
+    </ItemGroup>
   </Target>
 
-  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
-
+  <Target Name="Rebuild"
+          DependsOnTargets="Clean;Build"
+          Returns="@(_NuGetOutputFile)" />
   <Import Project="$(CustomAfterNuProjTargets)" Condition="'$(CustomAfterNuProjTargets)' != '' and Exists('$(CustomAfterNuProjTargets)')"/>
 
 </Project>
