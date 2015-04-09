@@ -197,8 +197,8 @@
       <_ProjectReferenceClosure Include="@(_ProjectReferenceClosureWithoutMetadata)">
         <DependencyKind>Indirect</DependencyKind>
       </_ProjectReferenceClosure>
-      <!-- Now add the direct references -->
-      <_ProjectReferenceClosure Include="%(ProjectReference.FullPath)">
+      <!-- Now add the direct references, preserving metadata -->
+      <_ProjectReferenceClosure Include="@(ProjectReference->'%(FullPath)')">
         <DependencyKind>Direct</DependencyKind>
       </_ProjectReferenceClosure>
     </ItemGroup>
