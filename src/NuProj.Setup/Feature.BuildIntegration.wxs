@@ -7,14 +7,24 @@
              Absent="disallow"
              Level="1">
       <ComponentGroupRef Id="MSBuildIntegration" />
+      <ComponentGroupRef Id="Rules" />
     </Feature>
-    <DirectoryRef Id="MSBuild">
-      <Directory Id="MSBuild120" Name="12.0">
-        <Directory Id="Microsoft.Common.Targets.120" Name="Microsoft.Common.Targets">
-          <Directory Id="Microsoft.Common.Targets.ImportAfter.120" Name="ImportAfter" />
+
+    <DirectoryRef Id="TARGETDIR">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="MSBuild" Name="MSBuild">
+          <Directory Id="INSTALLDIR" Name="NuProj">
+              <Directory Id="Rules" Name="Rules" />
+          </Directory>
+          <Directory Id="MSBuild120" Name="12.0">
+            <Directory Id="Microsoft.Common.Targets.120" Name="Microsoft.Common.Targets">
+              <Directory Id="Microsoft.Common.Targets.ImportAfter.120" Name="ImportAfter" />
+            </Directory>
+          </Directory>
         </Directory>
       </Directory>
     </DirectoryRef>
+
     <ComponentGroup Id="MSBuildIntegration">
       <Component Directory="INSTALLDIR">
         <File Source="$(var.SolutionDir)packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe" />
@@ -36,6 +46,35 @@
       </Component>
       <Component Directory="INSTALLDIR">
         <File Source="$(var.NuProj.Tasks.TargetDir)Microsoft.Web.XmlTransform.dll" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="Rules" Directory="Rules">
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\content.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\folder.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\general.browseobject.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\general.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\none.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\ProjectItemsSchema.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\ProjectReference.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\ResolvedProjectReference.xaml" />
+      </Component>
+      <Component>
+        <File Source="$(var.SolutionDir)NuProj.Package\Rules\scc.xaml" />
       </Component>
     </ComponentGroup>
   </Fragment>

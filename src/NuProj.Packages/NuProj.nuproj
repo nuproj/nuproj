@@ -27,7 +27,7 @@ In general, the definition of a NuProj file is very similar to the NuGet .nuspec
 
 Thus, for details you can still refer to the official NuGet documentation.
 
-There is also a Visual Studio which you find under http://bit.ly/NuProjVS.</Description>
+There is also a Visual Studio extension which you find under http://bit.ly/NuProjVS.</Description>
     <Tags>NuGet nupkg MSBuild NuProj</Tags>
     <NoPackageAnalysis>True</NoPackageAnalysis>
     <GenerateSymbolPackage>False</GenerateSymbolPackage>
