@@ -84,6 +84,44 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\NuProj.Package\Rules\content.xaml">
+      <Link>Additional\Rules\content.xaml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Package\Rules\folder.xaml">
+      <Link>Additional\Rules\folder.xaml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Package\Rules\general.browseobject.xaml">
+      <Link>Additional\Rules\general.browseobject.xaml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Package\Rules\general.xaml">
+      <Link>Additional\Rules\general.xaml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Package\Rules\none.xaml">
+      <Link>Additional\Rules\none.xaml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Package\Rules\ProjectItemsSchema.xaml">
+      <Link>Additional\Rules\ProjectItemsSchema.xaml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Package\Rules\ProjectReference.xaml">
+      <Link>Additional\Rules\ProjectReference.xaml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Package\Rules\ResolvedProjectReference.xaml">
+      <Link>Additional\Rules\ResolvedProjectReference.xaml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.Package\Rules\scc.xaml">
+      <Link>Additional\Rules\scc.xaml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
