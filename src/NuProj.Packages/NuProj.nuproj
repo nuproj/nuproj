@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
-  <PropertyGroup>
-    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>9a94ced7-8b2d-4cda-adf8-0a6398568d23</ProjectGuid>
+    <NuProjRulesDir Condition=" '$(NuProjRulesDir)' == '' ">..\NuProj.Package\Rules\</NuProjRulesDir>
+    <NuProjTasksPath Condition=" '$(NuProjTasksPath)' == '' ">..\..\bin\raw\NuProj.Tasks.dll</NuProjTasksPath>
+    <NuGetToolPath Condition=" '$(NuGetToolPath)' == '' ">..\packages\NuGet.CommandLine.2.8.5\tools\</NuGetToolPath>
   </PropertyGroup>
-  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
-
+  <Import Project="..\NuProj.Targets\NuProj.props" />
   <PropertyGroup>
     <Id>NuProj</Id>
     <Title>NuProj</Title>
@@ -17,35 +18,65 @@ In general, the definition of a NuProj file is very similar to the NuGet .nuspec
 
 Thus, for details you can still refer to the official NuGet documentation.
 
-There is also a Visual Studio extension which you find under http://bit.ly/NuProjVS.</Description>
+There is also a Visual Studio extension which you find under http://bit.ly/NuProjVS. </Description>
     <Tags>NuGet nupkg MSBuild NuProj</Tags>
     <NoPackageAnalysis>True</NoPackageAnalysis>
     <GenerateSymbolPackage>False</GenerateSymbolPackage>
   </PropertyGroup>
-
   <ItemGroup>
-    <Tool Include="$(BasePath)raw\NuProj.Tasks.dll" />
-    <Tool Include="$(BasePath)raw\Additional\NuProj.props" />
-    <Tool Include="$(BasePath)raw\Additional\NuProj.targets" />
-    <Tool Include="
-      $(BasePath)raw\Additional\Rules\content.xaml;
-      $(BasePath)raw\Additional\Rules\folder.xaml;
-      $(BasePath)raw\Additional\Rules\general.browseobject.xaml;
-      $(BasePath)raw\Additional\Rules\general.xaml;
-      $(BasePath)raw\Additional\Rules\none.xaml;
-      $(BasePath)raw\Additional\Rules\ProjectItemsSchema.xaml;
-      $(BasePath)raw\Additional\Rules\ProjectReference.xaml;
-      $(BasePath)raw\Additional\Rules\ResolvedProjectReference.xaml;
-      $(BasePath)raw\Additional\Rules\scc.xaml;
-          ">
-      <TargetPath>Rules</TargetPath>
-    </Tool>
-    <Tool Include="$(BasePath)raw\Additional\Microsoft.Common.NuProj.targets" />
-    <Tool Include="..\packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe" />
-    <Tool Include="..\packages\NuGet.Core*\lib\net40-Client\NuGet.Core.dll" />
-    <Tool Include="..\packages\Microsoft.Web.Xdt*\lib\net40\Microsoft.Web.XmlTransform.dll" />
+    <ProjectReference Include="..\NuProj.Tasks\NuProj.Tasks.csproj">
+      <PackageDirectory>tools</PackageDirectory>
+    </ProjectReference>
   </ItemGroup>
-
-  <Import Project="$(NuProjPath)\NuProj.targets" />
-
+  <ItemGroup>
+    <Content Include="..\NuProj.Package\Rules\content.xaml">
+      <Link>tools\Rules\content.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.Package\Rules\folder.xaml">
+      <Link>tools\Rules\folder.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.Package\Rules\general.browseobject.xaml">
+      <Link>tools\Rules\general.browseobject.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.Package\Rules\general.xaml">
+      <Link>tools\Rules\general.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.Package\Rules\none.xaml">
+      <Link>tools\Rules\none.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.Package\Rules\ProjectItemsSchema.xaml">
+      <Link>tools\Rules\ProjectItemsSchema.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.Package\Rules\ProjectReference.xaml">
+      <Link>tools\Rules\ProjectReference.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.Package\Rules\ResolvedProjectReference.xaml">
+      <Link>tools\Rules\ResolvedProjectReference.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.Package\Rules\scc.xaml">
+      <Link>tools\Rules\scc.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.Targets\NuProj.props">
+      <Link>tools\NuProj.props</Link>
+    </Content>
+    <Content Include="..\NuProj.Targets\NuProj.targets">
+      <Link>tools\NuProj.targets</Link>
+    </Content>
+    <Content Include="..\NuProj.Targets\Microsoft.Common.NuProj.targets">
+      <Link>tools\Microsoft.Common.NuProj.targets</Link>
+    </Content>
+    <Content Include="..\packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe">
+      <Link>tools\NuGet.exe</Link>
+    </Content>
+    <Content Include="..\packages\NuGet.Core*\lib\net40-Client\NuGet.Core.dll">
+      <Link>tools\NuGet.Core.dll</Link>
+    </Content>
+    <Content Include="..\packages\Microsoft.Web.Xdt*\lib\net40\Microsoft.Web.XmlTransform.dll">
+      <Link>tools\Microsoft.Web.XmlTransform.dll</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="tools\Rules\" />
+  </ItemGroup>
+  <Import Project="..\NuProj.Targets\NuProj.targets" />
 </Project>

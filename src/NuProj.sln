@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22810.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.Tasks", "NuProj.Tasks\NuProj.Tasks.csproj", "{187C3685-1EC7-4DCE-933B-8F7A43D5A481}"
 EndProject
@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{B990
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.Package.Dev14", "NuProj.Package.Dev14\NuProj.Package.Dev14.csproj", "{F75DC9FD-CC16-4F24-A054-BD27DFFF885C}"
+EndProject
+Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "NuProj", "NuProj.Packages\NuProj.nuproj", "{9A94CED7-8B2D-4CDA-ADF8-0A6398568D23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,7 +4,7 @@
   <Import Project="$(CustomBeforeNuProjTargets)" Condition="'$(CustomBeforeNuProjTargets)' != '' and Exists('$(CustomBeforeNuProjTargets)')"/>
 
   <PropertyGroup>
-    <NuProjRulesDir>$(MSBuildThisFileDirectory)Rules\</NuProjRulesDir>
+    <NuProjRulesDir Condition=" '$(NuProjRulesDir)' == '' ">$(MSBuildThisFileDirectory)Rules\</NuProjRulesDir>
   </PropertyGroup>
 
   <ItemGroup>
