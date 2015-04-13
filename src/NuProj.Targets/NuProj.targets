@@ -1,7 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Import Project="$(CustomBeforeNuProjTargets)" Condition="'$(CustomBeforeNuProjTargets)' != '' and Exists('$(CustomBeforeNuProjTargets)')"/>
+
+  <PropertyGroup>
+    <NuProjRulesDir>$(MSBuildThisFileDirectory)Rules\</NuProjRulesDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\ProjectItemsSchema.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\scc.xaml;">
+      <Context>Invisible</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\general.xaml">
+      <Context>Project;File</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\general.browseobject.xaml">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\folder.xaml;
+                                 $(NuProjRulesDir)\none.xaml;
+                                 $(NuProjRulesDir)\content.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\ResolvedProjectReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(NuProjRulesDir)\ProjectReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <ProjectCapability Include="ProjectReferences;ReferencesFolder" />
+    <ProjectCapability Include="ProjectConfigurationsDeclaredAsItems" />
+    <ProjectCapability Include="NuProj" />
+  </ItemGroup>
+
+  <PropertyGroup> 
+    <AvailablePlatforms>Any CPU,x86,x64,ARM</AvailablePlatforms>
+    <DefaultContentType>Content</DefaultContentType>
+  </PropertyGroup>
 
   <!--
       NUSPEC PATH
@@ -95,9 +134,28 @@
   <PropertyGroup>
     <ProjectProperties>
       Configuration=$(Configuration);
-      Platform=$(Platform);
+      Platform=$(Platform)
+    </ProjectProperties>
+
+    <!-- Use 'Microsoft.Common.NuProj.targets' if it's in same directory as this script. 
+         For example when using NuProj NuGet package instead of VS integration.-->
+    <ProjectProperties Condition="Exists('$(MSBuildThisFileDirectory)Microsoft.Common.NuProj.targets') And !$(CustomAfterMicrosoftCommonTargets.Contains('Microsoft.Common.NuProj.targets'))">
+      $(ProjectProperties);CustomAfterMicrosoftCommonTargets=$(MSBuildThisFileDirectory)Microsoft.Common.NuProj.targets
     </ProjectProperties>
   </PropertyGroup>
+
+  <!--
+      ITEM DEFINITIONS
+      
+      Defines default metadata for our items.
+  -->
+  
+  <ItemDefinitionGroup>
+    <ProjectReference>
+      <PackageDirectory>Lib</PackageDirectory>
+      <TargetFramework></TargetFramework>
+    </ProjectReference>
+  </ItemDefinitionGroup>
 
   <!--
       CUSTOM TASKS
@@ -126,6 +184,8 @@
     =================================================================================================================== -->
 
   <Target Name="_NuProjGetProjectClosure"
+          Inputs="%(ProjectReference.Identity)"
+          Outputs="fake"
           Returns="@(_ProjectReferenceClosure)">
     <!-- First let's make sure that the project references have been fully build,
              unless building project references is disabled. -->
@@ -157,9 +217,10 @@
       <!-- We can now mark all the closure references as indirect -->
       <_ProjectReferenceClosure Include="@(_ProjectReferenceClosureWithoutMetadata)">
         <DependencyKind>Indirect</DependencyKind>
+        <PackageDirectory>%(ProjectReference.PackageDirectory)</PackageDirectory>
       </_ProjectReferenceClosure>
-      <!-- Now add the direct references -->
-      <_ProjectReferenceClosure Include="%(ProjectReference.FullPath)">
+      <!-- Now add the direct references, preserving metadata -->
+      <_ProjectReferenceClosure Include="@(ProjectReference->'%(FullPath)')">
         <DependencyKind>Direct</DependencyKind>
       </_ProjectReferenceClosure>
     </ItemGroup>
@@ -205,6 +266,29 @@
 
   <!--
     ===================================================================================================================
+    ResolveProjectReferencesDesignTime
+    ===================================================================================================================
+
+    This target is called by Visual Studio to get the project references
+
+    OUTPUTS:
+        @(_ResolvedProjectReference)         The resolved project references
+
+    =================================================================================================================== -->
+
+  <Target Name="ResolveProjectReferencesDesignTime"
+          Returns="@(_ResolvedProjectReference)">
+    <ItemGroup>
+      <_ResolvedProjectReference Include="@(ProjectReference->'%(FullPath)')"
+                                 Condition="Exists('%(FullPath)')">
+        <OriginalItemSpec>%(Identity)</OriginalItemSpec>
+        <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+      </_ResolvedProjectReference>
+    </ItemGroup>
+  </Target>
+
+  <!--
+    ===================================================================================================================
     ExpandProjectReferences
     ===================================================================================================================
 
@@ -214,7 +298,7 @@
         @(ProjectReference)         The project references
 
     OUTPUTS:
-        @(Library)                  The library Files to be packaged
+        @(ProjectReferenceOutput)   The output of all project references
 
     =================================================================================================================== -->
 
@@ -226,11 +310,20 @@
         <!-- Ask for the output and all dependencies. -->
 
         <MSBuild Targets="$(ProjectOutputGroups)"
-                 Projects="%(_NonNuProjProjectReference.Identity)"
+                 Projects="@(_NonNuProjProjectReference)"
                  Properties="$(ProjectProperties)">
             <Output TaskParameter="TargetOutputs"
                     ItemName="_NonNuProjProjectOutput" />
         </MSBuild>
+
+        <!-- Make sure we package the final output path of project references so that any post-compile step
+             applied to the project's output (such as signing) is included in the version we package up. -->
+        <ItemGroup>
+            <_NonNuProjProjectOutput_ToReplace Include="@(_NonNuProjProjectOutput)"
+                                               Condition=" '%(_NonNuProjProjectOutput.FinalOutputPath)' != '' " />
+            <_NonNuProjProjectOutput Remove="@(_NonNuProjProjectOutput_ToReplace)" />
+            <_NonNuProjProjectOutput Include="@(_NonNuProjProjectOutput_ToReplace->'%(FinalOutputPath)')" />
+        </ItemGroup>
 
         <!-- Since the dependencies include platform assemblies, we'll filter
              out all files that don't exist in this project's output folder.
@@ -239,7 +332,7 @@
              get the directory name. -->
 
         <MSBuild Targets="GetTargetPath"
-                 Projects="%(_NonNuProjProjectReference.Identity)"
+                 Projects="@(_NonNuProjProjectReference)"
                  Properties="$(ProjectProperties)">
             <Output TaskParameter="TargetOutputs"
                     PropertyName="_NonNuProjProjectTargetPath" />
@@ -261,8 +354,9 @@
              NuGet package we need need to know the target framework moniker. -->
 
         <MSBuild Targets="GetTargetFrameworkMoniker"
-                 Projects="%(_NonNuProjProjectReference.Identity)"
+                 Projects="@(_NonNuProjProjectReference)"
                  Properties="$(ProjectProperties)">
+          
             <Output TaskParameter="TargetOutputs"
                     PropertyName="_NonNuProjProjectTargetFrameworkMoniker" />
         </MSBuild>
@@ -281,8 +375,8 @@
              lib\net40\foo.dll -->
 
         <AssignTargetFramework OutputsWithTargetFrameworkInformation="@(_NonNuProjProjectOutputWithTargetFrameworkMoniker)">
-            <Output TaskParameter="Libraries"
-                    ItemName="Library" />
+            <Output TaskParameter="PackageFiles"
+                    ItemName="ProjectReferenceOutput" />
         </AssignTargetFramework>
 
     </Target>
@@ -296,7 +390,7 @@
     be packaged.
 
     INPUTS:
-        @(Library)                  Library items to be packaged
+        @(ProjectReferenceOutput)   Output of referenced projects to be packaged
         @(Content)                  Content items to be packaged
 
     OUTPUTS:
@@ -306,8 +400,7 @@
 
   <Target Name="ConvertItems"
           DependsOnTargets="ExpandProjectReferences">
-    <CreateItem Include="@(Library)"
-                AdditionalMetadata="TargetPath=lib\%(Library.TargetFramework)">
+    <CreateItem Include="@(ProjectReferenceOutput)">
       <Output TaskParameter="Include"
               ItemName="File"/>
     </CreateItem>
@@ -327,11 +420,6 @@
       <Output TaskParameter="Include"
               ItemName="File"/>
     </CreateItem>
-    <CreateItem Include="@(Tool)"
-                AdditionalMetadata="TargetPath=tools\%(Tool.TargetPath)">
-      <Output TaskParameter="Include"
-              ItemName="File"/>
-    </CreateItem>
 
     <!-- We need to special case library files in later phases. In order to make this
          easier, we add custom metadata 'IsLibrary' that indicates whether the file is
@@ -342,13 +430,13 @@
                           Condition="'%(File.TargetPath)' == 'lib' OR
                                      $([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib\')) OR
                                      $([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib/'))">
-        <IsLibrary>True</IsLibrary>
+        <PackageDirectory>Lib</PackageDirectory>
       </_FileWithIsLibrary>
       <_FileWithIsLibrary Include="@(File)"
                           Condition="'%(File.TargetPath)' != 'lib' AND
                                      !$([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib\')) AND
                                      !$([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib/'))">
-        <IsLibrary>False</IsLibrary>
+        <PackageDirectory></PackageDirectory>
       </_FileWithIsLibrary>
       <File Remove="@(File)" />
       <File Include="@(_FileWithIsLibrary)" />
@@ -448,6 +536,7 @@
              Condition="!Exists('$(OutDir)')" />
     <NuGetPack OutputDirectory="$(OutDir)"
                NoPackageAnalysis="$(NoPackageAnalysis)"
+               NoDefaultExcludes="$(NoDefaultExcludes)"
                Symbols="$(GenerateSymbolPackage)"
                ToolPath="$(NuGetToolPath)"
                ToolExe="$(NuGetToolExe)"
@@ -476,7 +565,7 @@
              Depending on referenced projects, single library can come from multiple locations,
              e.g target and intermediate output directories. -->
         <_RawLibraryTargetPath Include="@(File->'%(TargetPath)\%(FileName)%(Extension)')"
-                         Condition="'%(File.IsLibrary)' == 'True'">
+                         Condition="'%(File.PackageDirectory)' == 'Lib'">
             <OriginalItemSpec>%(File.Identity)</OriginalItemSpec>
         </_RawLibraryTargetPath>
       </ItemGroup>
@@ -504,7 +593,7 @@
         <_FileTargetPath Include="@(_FilteredLibraryTargetPath->'%(FileName)%(Extension)')" />
 
         <_FileTargetPath Include="@(File->'::KEEP::')"
-                         Condition="'%(File.IsLibrary)' == 'False'">
+                         Condition="'%(File.PackageDirectory)' != 'Lib'">
             <OriginalItemSpec>%(File.Identity)</OriginalItemSpec>
         </_FileTargetPath>
 
@@ -647,7 +736,7 @@
       
       <!-- Get files that are library and have assigned target framework (so no debug symbols files). -->
       <_DependencyFile Include="@(File)" 
-                       Condition="'%(File.IsLibrary)' == 'True' 
+                       Condition="'%(File.PackageDirectory)' == 'Lib' 
                          and '%(File.TargetFramework)' != '' 
                          and '%(File.NuProjPackageId)' == '%(NuProjDependency.Identity)'"/>
       
@@ -728,23 +817,14 @@
     =================================================================================================================== -->
 
   <Target Name="GetNuGetPackageDependencies"
-          Inputs="%(_ProjectReferenceClosure.DependencyKind)"
-          Outputs="fake"
           Returns="@(NuGetDependency)">
 
       <!-- Read each project's packages.config file. -->
-      <ReadPackagesConfig ProjectPath="%(_ProjectReferenceClosure.FullPath)"
-                          Condition="'%(_ProjectReferenceClosure.FullPath)' != ''">
+      <ReadPackagesConfig Projects="@(_ProjectReferenceClosure)"
+                          Condition="'%(PackageDirectory)' == 'Lib'">
         <Output TaskParameter="PackageReferences"
                 ItemName="_PackageReference" />
       </ReadPackagesConfig>
-
-      <!-- Unfortunately, we can't use %(_ProjectReferenceClosure.DependencyKind) to
-           define the metadata in the declaration of NuGetDependency.DependencyKind.
-           So we simply capture the current batch in a property. -->
-      <PropertyGroup>
-        <_ProjectReferenceClosureDependencyKind>%(_ProjectReferenceClosure.DependencyKind)</_ProjectReferenceClosureDependencyKind>
-      </PropertyGroup>
 
       <!-- Turn all dependencies into NuGetDependency items with appropriate metadata. -->
       <ItemGroup Condition="'@(_PackageReference)' != ''">
@@ -752,7 +832,6 @@
                          Condition="!%(IsDevelopmentDependency)"
                          RemoveMetadata="IsDevelopmentDependency;RequireReinstallation;VersionConstraint">
           <Version Condition="'%(_PackageReference.VersionConstraint)' != ''">%(_PackageReference.VersionConstraint)</Version>
-          <DependencyKind>$(_ProjectReferenceClosureDependencyKind)</DependencyKind>
         </NuGetDependency>
       </ItemGroup>
 
@@ -843,13 +922,21 @@
 
   </Target>
 
-  <Target Name="Build" DependsOnTargets="CreatePackage">
+  <Target Name="Build"
+          DependsOnTargets="CreatePackage" 
+          Returns="@(_NuGetOutputFile)">
     <Message Text="$(MSBuildProjectName) -> $(NuGetOutputPath)"
              Importance="high" />
+
+    <ItemGroup>
+      <_NuGetOutputFile Include="$(NuGetOutputPath)" />
+      <_NuGetOutputFile Include="$(NuGetSymbolsOutputPath)" Condition=" '$(GenerateSymbolPackage)' == 'true' " />
+    </ItemGroup>
   </Target>
 
-  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
-
+  <Target Name="Rebuild"
+          DependsOnTargets="Clean;Build"
+          Returns="@(_NuGetOutputFile)" />
   <Import Project="$(CustomAfterNuProjTargets)" Condition="'$(CustomAfterNuProjTargets)' != '' and Exists('$(CustomAfterNuProjTargets)')"/>
 
 </Project>

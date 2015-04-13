@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>d9ca4431-bfd8-4e53-b3f5-e2c9981435a9</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>PackageToRoot</Id>
+    <Version>1.0.0</Version>
+    <Title>PackageToRoot</Title>
+    <Authors>kovalikp</Authors>
+    <Owners>kovalikp</Owners>
+    <Summary>PackageToRoot</Summary>
+    <Description>PackageToRoot</Description>
+    <ReleaseNotes>
+    </ReleaseNotes>
+    <ProjectUrl>
+    </ProjectUrl>
+    <LicenseUrl>
+    </LicenseUrl>
+    <Copyright>Copyright © kovalikp</Copyright>
+    <Tags>PackageToRoot</Tags>
+    <GenerateSymbolPackage>false</GenerateSymbolPackage>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tool\Tool.csproj">
+      <PackageDirectory>Root</PackageDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+</Project>

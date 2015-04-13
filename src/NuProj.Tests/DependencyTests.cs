@@ -59,23 +59,23 @@ namespace NuProj.Tests
         [Fact]
         public async Task Dependency_IndirectDependencies_AreNotPackaged()
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage("Dependency_IndirectDependencies_AreNotPackaged", "A");
+            var package = await Scenario.RestoreAndBuildSinglePackage("Dependency_IndirectDependencies_AreNotPackaged", "A.nuget");
             var files = package.GetFiles();
 
-            Assert.None(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
-            Assert.None(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
-            Assert.None(files, x => x.Path.Contains("B3.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("B3.dll"));
         }
 
         [Fact]
         public async Task Dependency_DirectDependencies_AreNotPackaged()
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage("Dependency_DirectDependencies_AreNotPackaged", "A");
+            var package = await Scenario.RestoreAndBuildSinglePackage("Dependency_DirectDependencies_AreNotPackaged", "A.nuget");
             var files = package.GetFiles();
 
-            Assert.None(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
-            Assert.None(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
-            Assert.None(files, x => x.Path.Contains("B3.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
+            Assert.DoesNotContain(files, x => x.Path.Contains("B3.dll"));
         }
 
         [Fact]
@@ -100,11 +100,11 @@ namespace NuProj.Tests
         {
             var package = await Scenario.RestoreAndBuildSinglePackage(
                 "Dependency_MultipleFrameworks_AreResolved", 
-                "Dependent");
+                "Dependent.nuget");
             var dependencySet = new []{
                 new PackageDependencySet(VersionUtility.ParseFrameworkName("net40"), new List<PackageDependency>
                     {
-                        new PackageDependency("Dependency", new VersionSpec
+                        new PackageDependency("Dependency.nuget", new VersionSpec
                             {
                                 IsMinInclusive = true,
                                 MinVersion = new SemanticVersion("1.0.0")
@@ -112,7 +112,7 @@ namespace NuProj.Tests
                     }),
                 new PackageDependencySet(VersionUtility.ParseFrameworkName("net45"), new List<PackageDependency>
                     {
-                        new PackageDependency("Dependency", new VersionSpec
+                        new PackageDependency("Dependency.nuget", new VersionSpec
                             {
                                 IsMinInclusive = true,
                                 MinVersion = new SemanticVersion("1.0.0")

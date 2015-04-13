@@ -22,18 +22,22 @@
 
     <MediaTemplate EmbedCab="yes" />
 
-    <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
-        <Directory Id="MSBuild" Name="MSBuild">
-          <Directory Id="INSTALLDIR" Name="$(var.ProductName)" />
-        </Directory>
-      </Directory>
-    </Directory>
+    <Directory Id="TARGETDIR" Name="SourceDir" />
 
     <FeatureRef Id="MSBuildIntegration" />
-    <FeatureRef Id="Templates_VS2008" />
-    <FeatureRef Id="Templates_VS2010" />
-    <FeatureRef Id="Templates_VS2012" />
+    <FeatureRef Id="VS12Integration" />
+    <FeatureRef Id="VS14Integration" />
+
+    <Icon Id="NuProjIcon" SourceFile="$(var.SolutionDir)Icons\NuProj.ico" />
+
+    <Property Id="ARPPRODUCTICON"
+              Value="NuProjIcon" />
+    <Property Id="ARPHELPLINK"
+              Value="$(var.ProductHomePage)" />
+    <Property Id="ARPURLINFOABOUT"
+              Value="$(var.ProductHomePage)" />
+    <Property Id="ARPURLUPDATEINFO"
+              Value="$(var.ProductHomePage)" />
 
     <WixVariable Id="WixUILicenseRtf"
                  Value="Resources\License.rtf" />

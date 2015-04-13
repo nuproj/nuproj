@@ -2,7 +2,7 @@
 
   <Import Project="build.props" />
 
-  <UsingTask TaskName="xunit" AssemblyFile="$(SourceDir)packages\xunit.runners.2.0.0-beta4-build2738\tools\xunit.runner.msbuild.dll" />
+  <UsingTask TaskName="xunit" AssemblyFile="$(SourceDir)packages\xunit.runner.msbuild.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.runner.msbuild.dll" />
 
   <ItemGroup>
     <TestAssembly Include="$(OutDir)raw\*Tests*.dll" />

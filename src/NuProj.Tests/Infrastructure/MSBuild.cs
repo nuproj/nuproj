@@ -14,9 +14,11 @@ namespace NuProj.Tests.Infrastructure
 {
     public static class MSBuild
     {
-        public static Task<BuildResultAndLogs> RebuildAsync(string projectPath, IDictionary<string, string> properties = null)
+        public static Task<BuildResultAndLogs> RebuildAsync(string projectPath, string projectName = null, IDictionary<string, string> properties = null)
         {
-            return MSBuild.ExecuteAsync(projectPath, new[] { "Rebuild" }, properties);
+
+            var target = string.IsNullOrEmpty(projectName) ? "Rebuild" : projectName.Replace('.', '_') + ":Rebuild";
+            return MSBuild.ExecuteAsync(projectPath, new[] { target }, properties);
         }
 
         public static Task<BuildResultAndLogs> ExecuteAsync(string projectPath, string targetToBuild, IDictionary<string, string> properties = null)
@@ -172,6 +174,12 @@ namespace NuProj.Tests.Infrastructure
             {
                 Assert.False(ErrorEvents.Any(), ErrorEvents.Select(e => e.Message).FirstOrDefault());
                 Assert.Equal(BuildResultCode.Success, Result.OverallResult);
+            }
+
+            public void AssertUnsuccessfulBuild()
+            {
+                Assert.Equal(BuildResultCode.Failure, Result.OverallResult);
+                Assert.True(ErrorEvents.Any(), ErrorEvents.Select(e => e.Message).FirstOrDefault());
             }
         }
 
