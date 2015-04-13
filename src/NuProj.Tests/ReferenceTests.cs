@@ -12,6 +12,15 @@ namespace NuProj.Tests
     public class ReferenceTests
     {
         [Fact]
+        public async Task References_PackagedWithCopyLocal()
+        {
+            var package = await Scenario.RestoreAndBuildSinglePackage();
+            Assert.NotNull(package.GetFile("A2.dll"));
+            Assert.Null(package.GetFile("A3.dll")); // CopyLocal=false
+            Assert.Null(package.GetFile("A4.dll")); // ExcludeFromNuPkg=true
+        }
+
+        [Fact]
         public async Task References_MultipleFrameworks_ReferenceAll()
         {
             var package = await Scenario.RestoreAndBuildSinglePackage("References_MultipleFrameworks", "ReferenceAll");
@@ -28,7 +37,7 @@ namespace NuProj.Tests
             var files = package.GetFiles().Select(f => f.Path);
             Assert.Equal(expectedFileNames, files);
         }
-        
+
         [Fact]
         public async Task References_MultipleFrameworks_ReferenceNet451()
         {
@@ -45,4 +54,4 @@ namespace NuProj.Tests
         }
     }
 }
-    
+
