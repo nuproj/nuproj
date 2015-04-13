@@ -1,10 +1,8 @@
 ﻿using System.Linq;
-
+using Microsoft.Build.Utilities;
 using NuGet;
-
 using NuProj.Tasks;
 using NuProj.Tests.Infrastructure;
-
 using Xunit;
 
 namespace NuProj.Tests
@@ -17,7 +15,7 @@ namespace NuProj.Tests
             var projectPath = Assets.GetScenarioFilePath("Task_ReadPackagesConfig_ParseProjectoryConfig", @"A.csproj");
 
             var task = new ReadPackagesConfig();
-            task.ProjectPath = projectPath;
+            task.Projects = new[] { new TaskItem(projectPath) };
             var result = task.Execute();
 
             var expectedVersionConstraint = VersionUtility.ParseVersionSpec("[1,2]").ToString();
@@ -40,7 +38,7 @@ namespace NuProj.Tests
             var projectPath = Assets.GetScenarioFilePath("Task_ReadPackagesConfig_ParseDirectoryConfig", @"B.csproj");
 
             var task = new ReadPackagesConfig();
-            task.ProjectPath = projectPath;
+            task.Projects = new[] { new TaskItem(projectPath) };
             var result = task.Execute();
 
             Assert.True(result);
@@ -57,7 +55,7 @@ namespace NuProj.Tests
             var projectPath = Assets.GetScenarioFilePath("Task_ReadPackagesConfig_NoConfig", @"C.csproj");
 
             var task = new ReadPackagesConfig();
-            task.ProjectPath = projectPath;
+            task.Projects = new[] { new TaskItem(projectPath) };
             var result = task.Execute();
 
             Assert.True(result);

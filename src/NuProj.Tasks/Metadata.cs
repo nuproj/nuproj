@@ -7,6 +7,8 @@
         public const string FileSource = "FullPath";
         
         public const string FileTarget = "TargetPath";
+
+        public const string PackageDirectory = "PackageDirectory";
         
         public const string TargetFramework = "TargetFramework";
 

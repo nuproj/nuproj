@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,19 +16,22 @@ namespace NuProj.Tasks
     public class ReadPackagesConfig : Task
     {
         [Required]
-        public string ProjectPath { get; set; }
+        public ITaskItem[] Projects { get; set; }
 
         [Output]
         public ITaskItem[] PackageReferences { get; set; }
 
         public override bool Execute()
         {
-            var packageReferenceFile = PackageReferenceFile.CreateFromProject(ProjectPath);
-            PackageReferences = packageReferenceFile.GetPackageReferences().Select(ConvertPackageElement).ToArray();
+            var packageReferences = from project in Projects
+                                    let packageReferenceFile = PackageReferenceFile.CreateFromProject(project.GetMetadata("FullPath"))
+                                    from packageReference in packageReferenceFile.GetPackageReferences()
+                                    select ConvertPackageElement(project, packageReference);
+            PackageReferences = packageReferences.ToArray();
             return true;
         }
 
-        protected ITaskItem ConvertPackageElement(PackageReference packageReference)
+        protected ITaskItem ConvertPackageElement(ITaskItem project, PackageReference packageReference)
         {
             var id = packageReference.Id;
             var version = packageReference.Version;
@@ -36,25 +40,25 @@ namespace NuProj.Tasks
             var requireReinstallation = packageReference.RequireReinstallation;
             var versionConstraint = packageReference.VersionConstraint;
 
-            var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var item = new TaskItem(id);
+            project.CopyMetadataTo(item);
 
-            var packageDirectoryPath = GetPackageDirectoryPath(ProjectPath, id, version);
-            metadata.Add("PackageDirectoryPath", packageDirectoryPath);
-            metadata.Add("ProjectPath", ProjectPath);
+            var packageDirectoryPath = GetPackageDirectoryPath(project.GetMetadata("FullPath"), id, version);
+            item.SetMetadata("PackageDirectoryPath", packageDirectoryPath);
+            item.SetMetadata("ProjectPath", project.GetMetadata("FullPath"));
 
-            metadata.Add("IsDevelopmentDependency", isDevelopmentDependency.ToString());
-            metadata.Add("RequireReinstallation", requireReinstallation.ToString());
+            item.SetMetadata("IsDevelopmentDependency", isDevelopmentDependency.ToString());
+            item.SetMetadata("RequireReinstallation", requireReinstallation.ToString());
 
             if (version != null)
-                metadata.Add(Metadata.Version, version.ToString());
+                item.SetMetadata(Metadata.Version, version.ToString());
 
             if (targetFramework != null)
-                metadata.Add(Metadata.TargetFramework, targetFramework.GetShortFrameworkName());
+                item.SetMetadata(Metadata.TargetFramework, targetFramework.GetShortFrameworkName());
 
             if (versionConstraint != null)
-                metadata.Add("VersionConstraint", versionConstraint.ToString());
+                item.SetMetadata("VersionConstraint", versionConstraint.ToString());
 
-            var item = new TaskItem(id, metadata);
             return item;
         }
 

@@ -2,12 +2,12 @@
 <Rule Name="ResolvedProjectReference"
       DisplayName="Resolved Project Reference"
       PageTemplate="generic"
-      Description="Resolved reference"
+      Description="Resolved project reference"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.Categories>
-        <Category Name="General"
-                  DisplayName="General" />
+        <Category Name="Advanced" DisplayName="Advanced" />
+        <Category Name="General" DisplayName="General" />
     </Rule.Categories>
 
     <Rule.DataSource>
@@ -35,6 +35,17 @@
             <DataSource PersistedName="Identity" />
         </StringProperty.DataSource>
     </StringProperty>
+
+    <EnumProperty Name="PackageDirectory"
+                  DisplayName="Package directory"
+                  Category="Advanced"
+                  Description="The directory to receive the output of this reference.">
+        <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+        </EnumProperty.DataSource>
+        <EnumValue Name="Lib" DisplayName="lib" />
+        <EnumValue Name="Tools" DisplayName="tools" />
+    </EnumProperty>
 
     <StringProperty Name="Version"
                     ReadOnly="true"

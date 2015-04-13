@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
 
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
@@ -24,13 +34,24 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
   </PropertyGroup>
 
   <ItemGroup>
-    <Tool Include="$(BasePath)raw\NuProj.Tasks.dll" />
-    <Tool Include="$(BasePath)raw\Additional\NuProj.props" />
-    <Tool Include="$(BasePath)raw\Additional\NuProj.targets" />
-    <Tool Include="$(BasePath)raw\Additional\Microsoft.Common.NuProj.targets" />
-    <Tool Include="..\packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe" />
-    <Tool Include="..\packages\NuGet.Core*\lib\net40-Client\NuGet.Core.dll" />
-    <Tool Include="..\packages\Microsoft.Web.Xdt*\lib\net40\Microsoft.Web.XmlTransform.dll" />
+    <ProjectReference Include="..\NuProj.Tasks\NuProj.Tasks.csproj">
+      <PackageDirectory>Tools</PackageDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="$(BasePath)raw\Additional\NuProj.props">
+      <Link>tools\NuProj.props</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\NuProj.targets">
+      <Link>tools\NuProj.targets</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\Microsoft.Common.NuProj.targets">
+      <Link>tools\Microsoft.Common.NuProj.targets</Link>
+    </Content>
+    <Content Include="..\packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe">
+      <Link>tools\NuGet.exe</Link>
+    </Content>
   </ItemGroup>
 
   <Import Project="$(NuProjPath)\NuProj.targets" />
