@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using NuGet;
@@ -10,7 +11,7 @@ namespace NuProj.Tests.Infrastructure
 {
     public static class Scenario
     {
-        public static async Task<IPackage> RestoreAndBuildSinglePackage(string scenarioName, string packageId = null, IDictionary<string, string> properties = null)
+        public static async Task<IPackage> RestoreAndBuildSinglePackage([CallerMemberName] string scenarioName = null, string packageId = null, IDictionary<string, string> properties = null)
         {
             var packages = await RestoreAndBuildPackages(scenarioName, properties);
             return packageId == null
@@ -18,7 +19,7 @@ namespace NuProj.Tests.Infrastructure
                     : packages.Single(p => string.Equals(p.Id, packageId, StringComparison.OrdinalIgnoreCase));
         }
 
-        public static async Task<IReadOnlyCollection<IPackage>> RestoreAndBuildPackages(string scenarioName, IDictionary<string, string> properties = null)
+        public static async Task<IReadOnlyCollection<IPackage>> RestoreAndBuildPackages([CallerMemberName] string scenarioName = null, IDictionary<string, string> properties = null)
         {
             var projectFullPath = Assets.GetScenarioSolutionPath(scenarioName);
 
