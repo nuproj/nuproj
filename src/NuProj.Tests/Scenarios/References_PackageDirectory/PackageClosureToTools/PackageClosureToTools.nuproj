@@ -11,20 +11,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>6a1ca851-c20e-4d96-a185-c8d8a99dfb47</ProjectGuid>
+    <ProjectGuid>2ed4f53c-67d7-457a-88d9-b91fe44b40a3</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>Dependent.nuget</Id>
+    <Id>PackageClosureToTools</Id>
     <Version>1.0.0</Version>
-    <Title>Dependent</Title>
+    <Title>PackageClosureToTools</Title>
     <Authors>kovalikp</Authors>
     <Owners>kovalikp</Owners>
-    <Summary>Dependent</Summary>
-    <Description>Dependent</Description>
+    <Summary>PackageClosureToTools</Summary>
+    <Description>PackageClosureToTools</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
@@ -32,15 +32,12 @@
     <LicenseUrl>
     </LicenseUrl>
     <Copyright>Copyright © kovalikp</Copyright>
-    <Tags>Dependent</Tags>
+    <Tags>PackageClosureToTools</Tags>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dependency.nuget\Dependency.nuget.nuproj" />
-    <ProjectReference Include="..\Dependent\Dependent.net40.csproj" />
-    <ProjectReference Include="..\Dependent\Dependent.net45.csproj" />
+    <ProjectReference Include="..\ToolWithClosure\ToolWithClosure.csproj">
+      <PackageDirectory>Tools</PackageDirectory>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>

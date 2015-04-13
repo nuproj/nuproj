@@ -11,20 +11,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>6a1ca851-c20e-4d96-a185-c8d8a99dfb47</ProjectGuid>
+    <ProjectGuid>fa625168-697c-44a8-ba9c-4a1577570c1d</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>Dependent.nuget</Id>
+    <Id>PackageToContent</Id>
     <Version>1.0.0</Version>
-    <Title>Dependent</Title>
+    <Title>PackageToContent</Title>
     <Authors>kovalikp</Authors>
     <Owners>kovalikp</Owners>
-    <Summary>Dependent</Summary>
-    <Description>Dependent</Description>
+    <Summary>PackageToContent</Summary>
+    <Description>PackageToContent</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
@@ -32,15 +32,14 @@
     <LicenseUrl>
     </LicenseUrl>
     <Copyright>Copyright © kovalikp</Copyright>
-    <Tags>Dependent</Tags>
+    <Tags>PackageToContent</Tags>
+    <NoPackageAnalysis>True</NoPackageAnalysis>
+    <GenerateSymbolPackage>False</GenerateSymbolPackage>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dependency.nuget\Dependency.nuget.nuproj" />
-    <ProjectReference Include="..\Dependent\Dependent.net40.csproj" />
-    <ProjectReference Include="..\Dependent\Dependent.net45.csproj" />
+    <ProjectReference Include="..\Tool\Tool.csproj">
+      <PackageDirectory>Content</PackageDirectory>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>
