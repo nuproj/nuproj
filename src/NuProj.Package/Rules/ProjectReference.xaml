@@ -6,8 +6,8 @@
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.Categories>
-        <Category Name="General"
-                  DisplayName="General" />
+        <Category Name="Advanced" DisplayName="Advanced" />
+        <Category Name="General" DisplayName="General" />
     </Rule.Categories>
 
     <Rule.DataSource>
@@ -15,6 +15,14 @@
                     ItemType="ProjectReference"
                     HasConfigurationCondition="false" />
     </Rule.DataSource>
+
+    <EnumProperty Name="PackageDirectory"
+                  DisplayName="Package directory"
+                  Category="Advanced"
+                  Description="The directory to receive the output of this reference.">
+        <EnumValue Name="Lib" DisplayName="lib" />
+        <EnumValue Name="Tools" DisplayName="tools" />
+    </EnumProperty>
 
     <BoolProperty Name="ReferenceOutputAssembly"
                   Category="General"
