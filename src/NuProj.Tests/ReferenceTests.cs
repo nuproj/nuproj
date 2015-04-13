@@ -14,7 +14,7 @@ namespace NuProj.Tests
         [Fact]
         public async Task References_PackagedWithCopyLocal()
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage();
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync();
             Assert.NotNull(package.GetFile("A2.dll"));
             Assert.Null(package.GetFile("A3.dll")); // CopyLocal=false
             Assert.Null(package.GetFile("A4.dll")); // ExcludeFromNuPkg=true
@@ -23,7 +23,7 @@ namespace NuProj.Tests
         [Fact]
         public async Task References_MultipleFrameworks_ReferenceAll()
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage("References_MultipleFrameworks", "ReferenceAll");
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync("References_MultipleFrameworks", "ReferenceAll");
             var expectedFileNames = new[]
             {
                 @"lib\net40\net40.dll",
@@ -41,7 +41,7 @@ namespace NuProj.Tests
         [Fact]
         public async Task References_MultipleFrameworks_ReferenceNet451()
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage("References_MultipleFrameworks", "ReferenceNet451");
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync("References_MultipleFrameworks", "ReferenceNet451");
             var expectedFileNames = new[]
             {
                 @"lib\net451\net40.dll",
@@ -67,7 +67,7 @@ namespace NuProj.Tests
             string[] expectedFiles, 
             string[] expectedDependencies)
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage("References_PackageDirectory", packageId);
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync("References_PackageDirectory", packageId);
             var actualFiles = package.GetFiles().Select(f => f.Path).OrderBy(x => x);
             var actualDependencies = package.DependencySets.NullAsEmpty().Flatten().OrderBy(x => x);
             expectedFiles = expectedFiles.OrderBy(x => x).ToArray();

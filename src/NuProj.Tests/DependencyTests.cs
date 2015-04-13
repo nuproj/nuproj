@@ -30,7 +30,7 @@ namespace NuProj.Tests
         [Fact]
         public async Task Dependency_Content_IsNotFiltered()
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage();
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync();
             var expectedFileNames = new[]
             {
                 @"content\jquery-2.1.1.js",
@@ -43,7 +43,7 @@ namespace NuProj.Tests
         [Fact]
         public async Task Dependency_Tools_IsNotFiltered()
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage();
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync();
             var expectedFileNames = new[]
             {
                 @"lib\net45\ClassLibrary1.dll",
@@ -59,7 +59,7 @@ namespace NuProj.Tests
         [Fact]
         public async Task Dependency_IndirectDependencies_AreNotPackaged()
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage(packageId: "A.nuget");
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync(packageId: "A.nuget");
             var files = package.GetFiles();
 
             Assert.DoesNotContain(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
@@ -70,7 +70,7 @@ namespace NuProj.Tests
         [Fact]
         public async Task Dependency_DirectDependencies_AreNotPackaged()
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage(packageId: "A.nuget");
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync(packageId: "A.nuget");
             var files = package.GetFiles();
 
             Assert.DoesNotContain(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
@@ -81,7 +81,7 @@ namespace NuProj.Tests
         [Fact]
         public async Task Dependency_Versions_AreAggregated()
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage();
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync();
             var expectedVersions = new[]
             {
                     "1.1.20-beta",
@@ -98,7 +98,7 @@ namespace NuProj.Tests
         [Fact]
         public async Task Dependency_MultipleFrameworks_AreResolved()
         {
-            var package = await Scenario.RestoreAndBuildSinglePackage(packageId: "Dependent.nuget");
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync(packageId: "Dependent.nuget");
             var dependencySet = new []{
                 new PackageDependencySet(VersionUtility.ParseFrameworkName("net40"), new List<PackageDependency>
                     {
