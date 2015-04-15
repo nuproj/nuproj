@@ -52,6 +52,33 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
     <Content Include="..\packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe">
       <Link>tools\NuGet.exe</Link>
     </Content>
+    <Content Include="$(BasePath)raw\Additional\Rules\content.xaml">
+      <Link>tools\Rules\content.xaml</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\Rules\folder.xaml">
+      <Link>tools\Rules\folder.xaml</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\Rules\general.browseobject.xaml">
+      <Link>tools\Rules\general.browseobject.xaml</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\Rules\general.xaml">
+      <Link>tools\Rules\general.xaml</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\Rules\none.xaml">
+      <Link>tools\Rules\none.xaml</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\Rules\ProjectItemsSchema.xaml">
+      <Link>tools\Rules\ProjectItemsSchema.xaml</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\Rules\ProjectReference.xaml">
+      <Link>tools\Rules\ProjectReference.xaml</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\Rules\ResolvedProjectReference.xaml">
+      <Link>tools\Rules\ResolvedProjectReference.xaml</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\Rules\scc.xaml">
+      <Link>tools\Rules\scc.xaml</Link>
+    </Content>
   </ItemGroup>
 
   <Import Project="$(NuProjPath)\NuProj.targets" />
