@@ -104,5 +104,77 @@ namespace NuProj.Tests
             Assert.Equal(BuildResultCode.Failure, result.Result.OverallResult);
             Assert.NotEqual(0, result.ErrorEvents.Count());
         }
+
+        [Fact]
+        public async Task Basic_SetIntermediateOutputPathProperty()
+        {
+            var intermediateOutputPath = @"foo\bar\";
+            nuproj.CreateMockContentFiles();
+            nuproj.SetGlobalProperty("IntermediateOutputPath", intermediateOutputPath);
+
+            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+            result.AssertSuccessfulBuild();
+
+            var expectedNuSpecFileName = string.Format(CultureInfo.InvariantCulture, "{0}.nuspec", nuproj.GetPropertyValue("Id"));
+            var nuprojFileName = Path.GetFileNameWithoutExtension(nuproj.FullPath);
+            var expectedNuSpecPath = Path.Combine(intermediateOutputPath, expectedNuSpecFileName);
+            var actualNuSpecPath = nuproj.GetNuSpecPath();
+            Assert.Equal(expectedNuSpecPath, actualNuSpecPath, StringComparer.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public async Task Basic_SetIntermediateOutputPathWithGenerateProjectSpecificOutputFolderProperty()
+        {
+            var intermediateOutputPath = @"foo\bar\";
+            nuproj.CreateMockContentFiles();
+            nuproj.SetGlobalProperty("IntermediateOutputPath", intermediateOutputPath);
+            nuproj.SetGlobalProperty("GenerateProjectSpecificOutputFolder", @"true");
+
+            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+            result.AssertSuccessfulBuild();
+
+            var expectedNuSpecFileName = string.Format(CultureInfo.InvariantCulture, "{0}.nuspec", nuproj.GetPropertyValue("Id"));
+            var nuprojFileName = Path.GetFileNameWithoutExtension(nuproj.FullPath);
+            var expectedNuSpecPath = Path.Combine(intermediateOutputPath, nuprojFileName, expectedNuSpecFileName);
+            var actualNuSpecPath = nuproj.GetNuSpecPath();
+            Assert.Equal(expectedNuSpecPath, actualNuSpecPath, StringComparer.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public async Task Basic_SetOutDirProperty()
+        {
+            var outDir = @"foo\bar\";
+            nuproj.CreateMockContentFiles();
+            nuproj.SetGlobalProperty("OutDir", outDir);
+
+            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+            result.AssertSuccessfulBuild();
+
+            var expectedNuPkgFileName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.nupkg", nuproj.GetPropertyValue("Id"), nuproj.GetPropertyValue("Version"));
+            var nuprojDirectoryName = Path.GetDirectoryName(nuproj.FullPath);
+            var nuprojFileName = Path.GetFileNameWithoutExtension(nuproj.FullPath);
+            var expectedNuPkgPath = Path.Combine(nuprojDirectoryName, outDir, expectedNuPkgFileName);
+            var actualNuPkgPath = nuproj.GetNuPkgPath();
+            Assert.Equal(expectedNuPkgPath, actualNuPkgPath, StringComparer.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public async Task Basic_SetOutDirWithGenerateProjectSpecificOutputFolderProperty()
+        {
+            var outDir = @"foo\bar\";
+            nuproj.CreateMockContentFiles();
+            nuproj.SetGlobalProperty("OutDir", outDir);
+            nuproj.SetGlobalProperty("GenerateProjectSpecificOutputFolder", @"true");
+
+            var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
+            result.AssertSuccessfulBuild();
+
+            var expectedNuPkgFileName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.nupkg", nuproj.GetPropertyValue("Id"), nuproj.GetPropertyValue("Version"));
+            var nuprojDirectoryName = Path.GetDirectoryName(nuproj.FullPath);
+            var nuprojFileName = Path.GetFileNameWithoutExtension(nuproj.FullPath);
+            var expectedNuPkgPath = Path.Combine(nuprojDirectoryName, outDir, nuprojFileName, expectedNuPkgFileName);
+            var actualNuPkgPath = nuproj.GetNuPkgPath();
+            Assert.Equal(expectedNuPkgPath, actualNuPkgPath, StringComparer.InvariantCultureIgnoreCase);
+        }
     }
 }

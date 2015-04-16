@@ -52,5 +52,10 @@ namespace NuProj.Tests.Infrastructure
         {
             return nuProj.GetPropertyValue("NuGetOutputPath");
         }
+
+        public static string GetNuSpecPath(this Project nuProj)
+        {
+            return nuProj.GetPropertyValue("NuSpecPath");
+        }
     }
 }
