@@ -11,31 +11,9 @@ namespace NuProj.ProjectSystem
     [Export]
 #if Dev12
     [PartMetadata(ProjectCapabilities.Requires, NuProjCapabilities.NuProj)]
-    internal sealed partial class NuProjProjectProperties
-    {
-        /// <summary>
-        /// The configured project.
-        /// </summary>
-        [Import]
-        private ConfiguredProject ConfiguredProject { get; set; }
-
-        /// <summary>
-        /// The file context for the properties.
-        /// </summary>
-        private string File { get; set; }
-
-        /// <summary>
-        /// The item type context for the properties.
-        /// </summary>
-        private string ItemType { get; set; }
-
-        /// <summary>
-        /// The item name context for the properties.
-        /// </summary>
-        private string ItemName { get; set; }
-    }
 #else
     [AppliesTo(NuProjCapabilities.NuProj)]
+#endif
     internal partial class NuProjProjectProperties : StronglyTypedPropertyAccess
     {
         /// <summary>
@@ -71,5 +49,4 @@ namespace NuProj.ProjectSystem
         {
         }
     }
-#endif
 }
