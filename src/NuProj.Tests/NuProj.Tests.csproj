@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildAuthoringTests.cs" />
     <Compile Include="DependencyTests.cs" />
     <Compile Include="GenerateNuSpecTests.cs" />
     <Compile Include="IncrementalBuildTests.cs" />

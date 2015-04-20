@@ -41,10 +41,10 @@ namespace NuProj.Tests
         }
 
         [Fact]
-        public void Basic_NuPkgFileNameBasedOnProjectName()
+        public async Task Basic_NuPkgFileNameBasedOnProjectName()
         {
             var expectedNuPkgFileName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.nupkg", nuproj.GetPropertyValue("Id"), nuproj.GetPropertyValue("Version"));
-            var actualNuPkgPath = nuproj.GetNuPkgPath();
+            var actualNuPkgPath = await nuproj.GetNuPkgPathAsync();
             Assert.Equal(expectedNuPkgFileName, Path.GetFileName(actualNuPkgPath));
         }
 
@@ -54,7 +54,7 @@ namespace NuProj.Tests
             nuproj.CreateMockContentFiles();
             var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
             result.AssertSuccessfulBuild();
-            AssertNu.PackageContainsContentItems(nuproj);
+            await AssertNu.PackageContainsContentItemsAsync(nuproj);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace NuProj.Tests
             var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
             result.AssertSuccessfulBuild();
 
-            var package = nuproj.GetPackage();
+            var package = await nuproj.GetPackageAsync();
 
             var properties = new Dictionary<string, object>
                 {
@@ -118,7 +118,7 @@ namespace NuProj.Tests
             var expectedNuSpecFileName = string.Format(CultureInfo.InvariantCulture, "{0}.nuspec", nuproj.GetPropertyValue("Id"));
             var nuprojFileName = Path.GetFileNameWithoutExtension(nuproj.FullPath);
             var expectedNuSpecPath = Path.Combine(intermediateOutputPath, expectedNuSpecFileName);
-            var actualNuSpecPath = nuproj.GetNuSpecPath();
+            var actualNuSpecPath = await nuproj.GetNuSpecPathAsync();
             Assert.Equal(expectedNuSpecPath, actualNuSpecPath, StringComparer.InvariantCultureIgnoreCase);
         }
 
@@ -136,7 +136,7 @@ namespace NuProj.Tests
             var expectedNuSpecFileName = string.Format(CultureInfo.InvariantCulture, "{0}.nuspec", nuproj.GetPropertyValue("Id"));
             var nuprojFileName = Path.GetFileNameWithoutExtension(nuproj.FullPath);
             var expectedNuSpecPath = Path.Combine(intermediateOutputPath, nuprojFileName, expectedNuSpecFileName);
-            var actualNuSpecPath = nuproj.GetNuSpecPath();
+            var actualNuSpecPath = await nuproj.GetNuSpecPathAsync();
             Assert.Equal(expectedNuSpecPath, actualNuSpecPath, StringComparer.InvariantCultureIgnoreCase);
         }
 
@@ -154,7 +154,7 @@ namespace NuProj.Tests
             var nuprojDirectoryName = Path.GetDirectoryName(nuproj.FullPath);
             var nuprojFileName = Path.GetFileNameWithoutExtension(nuproj.FullPath);
             var expectedNuPkgPath = Path.Combine(nuprojDirectoryName, outDir, expectedNuPkgFileName);
-            var actualNuPkgPath = nuproj.GetNuPkgPath();
+            var actualNuPkgPath = await nuproj.GetNuPkgPathAsync();
             Assert.Equal(expectedNuPkgPath, actualNuPkgPath, StringComparer.InvariantCultureIgnoreCase);
         }
 
@@ -173,7 +173,7 @@ namespace NuProj.Tests
             var nuprojDirectoryName = Path.GetDirectoryName(nuproj.FullPath);
             var nuprojFileName = Path.GetFileNameWithoutExtension(nuproj.FullPath);
             var expectedNuPkgPath = Path.Combine(nuprojDirectoryName, outDir, nuprojFileName, expectedNuPkgFileName);
-            var actualNuPkgPath = nuproj.GetNuPkgPath();
+            var actualNuPkgPath = await nuproj.GetNuPkgPathAsync();
             Assert.Equal(expectedNuPkgPath, actualNuPkgPath, StringComparer.InvariantCultureIgnoreCase);
         }
     }
