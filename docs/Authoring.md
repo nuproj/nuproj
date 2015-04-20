@@ -90,49 +90,64 @@ As with dependencies, those can be specific to a certain target framework:
 
 ## Packaging Files
 
-Packaging library files is done as follows:
+Packaging files is done as follows:
 
 ```xml
 <ItemGroup>
-  <Library Include="$(BasePath)HelloWorld.dll" />
-    <TargetFramework>net40</TargetFramework>
-  </Library>
+  <!-- Package readme.txt nuproj folder. -->
+  <Content Include="readme.txt" />
+  <!-- Package all .css files in content\css directory. -->
+  <Content Include="content\css\**\*.css" />
+  <!-- You can also add library this way. -->
+  <Content Include="lib\net40\HelloWorld.dll" />
 </ItemGroup>
 ```
 
-The `TargetFramework` metadata is optional. If it's missing, the library will
-apply to all platforms. Please note that per convention the path to the file
-name is prefixed with the `$(BasePath)` property. This allows the build process
-to control where the binaries should be picked up from.
-
-For packaging content files you can use the `Content` item:
+The path of file is relative to NuProj project file. The files must be in 
+project directory or its subdirectory. You can include files outside project 
+directory by using `Link` metadata to specify file path in output package.
 
 ```xml
 <ItemGroup>
-  <!-- Package license.txt into content folder. -->
-  <Content Include="$(BasePath)license.txt" />
-  <!-- Package all .css files into content\css -->
-  <Content Include="$(BasePath)css\**\*.css">
-    <TargetPath>css</TargetPath>
-  </Content>
-  <!-- The following will also rename readme.txt to readme_HelloWorld.txt -->
-  <Content Include="$(BasePath)readme.txt">
-    <TargetPath>notes\readme_HelloWorld.txt</TargetPath>
+  <!-- Package icon.png. -->
+  <Content Include="..\common\icon.png">
+    <Link>icon.png</Link>
   </Content>
 </ItemGroup>
 ```
 
-The `Content` element supports an optional `TargetPath` metadata element. If not
-specified, the file will packaged directly into the content folder.
+## Using Project References
 
-For ultimate control, you can also use the File item which allows you to package
-arbitrary files:
+You can reference other projects to automatically include their output in 
+package. By default the project is considered to be a library and will be
+put into `lib` folder. The package directory can be controlled by using 
+`PackageDirectory` metadata. Recognized values are: `Lib`, `Tools`, `Build`,
+`Content` and `Root`. 
 
 ```xml
 <ItemGroup>
-  <File Include="$(BasePath)build.proj">
-    <TargetPath>tools\build</TargetPath>
-  </File>
+  <!-- Package output of Library.csproj to lib directory. -->
+  <ProjectReference Include="..\Library\Library.csproj" />
+  <!-- Package output of Tools.csproj to tools directory. -->
+  <ProjectReference Include="..\Tools\Tools.csproj">
+    <PackageDirectory>Tools</PackageDirectory>
+  </ProjectReference>
+  <!-- Package output of Tasks.csproj to build directory. -->
+  <ProjectReference Include="..\Tasks\Tasks.csproj">
+    <PackageDirectory>Build</PackageDirectory>
+  </ProjectReference>
+</ItemGroup>
+```
+
+You can also reference other NuProj projects to generate package dependencies.
+Content of `Lib` directory of `Dependency` package will be removed from `Lib` 
+directory of dependent package. `Dependency` package will be added as a NuGet 
+dependency.
+
+```xml
+<ItemGroup>
+  <!-- Add NuGet dependency. -->
+  <ProjectReference Include="..\Dependency\Dependency.nuproj" />
 </ItemGroup>
 ```
 

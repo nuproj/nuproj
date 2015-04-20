@@ -24,7 +24,8 @@
         <_MSBuildAllProjects>$(MSBuildAllProjects);@(ProjectFiles)</_MSBuildAllProjects>
         <ProjectProperties>
           $(ProjectProperties);
-          MSBuildAllProjects=$(_MSBuildAllProjects)
+          MSBuildAllProjects=$(_MSBuildAllProjects);
+          DeployExtension=False;
         </ProjectProperties>
       </PropertyGroup>
   </Target>
