@@ -41,10 +41,10 @@ namespace NuProj.Tests
         }
 
         [Fact]
-        public void Basic_NuPkgFileNameBasedOnProjectName()
+        public async Task Basic_NuPkgFileNameBasedOnProjectName()
         {
             var expectedNuPkgFileName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.nupkg", nuproj.GetPropertyValue("Id"), nuproj.GetPropertyValue("Version"));
-            var actualNuPkgPath = nuproj.GetNuPkgPath();
+            var actualNuPkgPath = await nuproj.GetNuPkgPathAsync();
             Assert.Equal(expectedNuPkgFileName, Path.GetFileName(actualNuPkgPath));
         }
 
@@ -54,7 +54,7 @@ namespace NuProj.Tests
             nuproj.CreateMockContentFiles();
             var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
             result.AssertSuccessfulBuild();
-            AssertNu.PackageContainsContentItems(nuproj);
+            await AssertNu.PackageContainsContentItemsAsync(nuproj);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace NuProj.Tests
             var result = await MSBuild.ExecuteAsync(nuproj.CreateProjectInstance());
             result.AssertSuccessfulBuild();
 
-            var package = nuproj.GetPackage();
+            var package = await nuproj.GetPackageAsync();
 
             var properties = new Dictionary<string, object>
                 {
