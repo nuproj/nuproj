@@ -94,7 +94,8 @@ namespace NuProj.Tests.Infrastructure
                 buildManager.BeginBuild(parameters);
                 try
                 {
-                    var requestData = new BuildRequestData(projectInstance, targetsToBuild);
+                    var brdFlags = BuildRequestDataFlags.ProvideProjectStateAfterBuild;
+                    var requestData = new BuildRequestData(projectInstance, targetsToBuild, null, brdFlags);
                     var submission = buildManager.PendBuildRequest(requestData);
                     result = await submission.ExecuteAsync();
                 }
