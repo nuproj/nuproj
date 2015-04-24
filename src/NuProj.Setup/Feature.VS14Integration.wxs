@@ -35,13 +35,13 @@
         <File Source="$(var.SolutionDir)Icons\NuProj.ico" Id="VS14.NuProj.ico" />
       </Component>
       <Component Id="VS14.NuProj.ProjectSystem.dll" Guid="{63295F02-0E47-43AE-A787-FE6988EABEF6}">
-        <File Source="$(var.NuProj.Package.Dev14.TargetDir)NuProj.ProjectSystem.dll" Id="VS14.NuProj.ProjectSystem.dll" />
+        <File Source="$(var.NuProj.Package.Dev14.TargetDir)NuProj.ProjectSystem14.dll" Id="VS14.NuProj.ProjectSystem.dll" />
       </Component>
       <Component Id="VS14.NuProj.ProjectSystem.pdb" Guid="{20E27E4B-6407-4123-BFEF-9EFCC64DAFD8}">
-        <File Source="$(var.NuProj.Package.Dev14.TargetDir)NuProj.ProjectSystem.pdb" Id="VS14.NuProj.ProjectSystem.pdb"/>
+        <File Source="$(var.NuProj.Package.Dev14.TargetDir)NuProj.ProjectSystem14.pdb" Id="VS14.NuProj.ProjectSystem.pdb"/>
       </Component>
       <Component Id="VS14.NuProj.ProjectSystem.pkgdef" Guid="{A2C4D64B-6DF1-41A6-B223-7423B26B3A2F}">
-        <File Source="$(var.NuProj.Package.Dev14.TargetDir)NuProj.ProjectSystem.pkgdef" Id="VS14.NuProj.ProjectSystem.pkgdef" />
+        <File Source="$(var.NuProj.Package.Dev14.TargetDir)NuProj.ProjectSystem14.pkgdef" Id="VS14.NuProj.ProjectSystem.pkgdef" />
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="VS140.ProjectTemplates.NuGet" Directory="VS140.ProjectTemplates.NuGet">
