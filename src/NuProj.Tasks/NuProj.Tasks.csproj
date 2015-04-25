@@ -86,39 +86,39 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\NuProj.Package\Rules\content.xaml">
+    <None Include="..\NuProj.ProjectSystem.12\Rules\content.xaml">
       <Link>Additional\Rules\content.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\NuProj.Package\Rules\folder.xaml">
+    <None Include="..\NuProj.ProjectSystem.12\Rules\folder.xaml">
       <Link>Additional\Rules\folder.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\NuProj.Package\Rules\general.browseobject.xaml">
+    <None Include="..\NuProj.ProjectSystem.12\Rules\general.browseobject.xaml">
       <Link>Additional\Rules\general.browseobject.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\NuProj.Package\Rules\general.xaml">
+    <None Include="..\NuProj.ProjectSystem.12\Rules\general.xaml">
       <Link>Additional\Rules\general.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\NuProj.Package\Rules\none.xaml">
+    <None Include="..\NuProj.ProjectSystem.12\Rules\none.xaml">
       <Link>Additional\Rules\none.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\NuProj.Package\Rules\ProjectItemsSchema.xaml">
+    <None Include="..\NuProj.ProjectSystem.12\Rules\ProjectItemsSchema.xaml">
       <Link>Additional\Rules\ProjectItemsSchema.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\NuProj.Package\Rules\ProjectReference.xaml">
+    <None Include="..\NuProj.ProjectSystem.12\Rules\ProjectReference.xaml">
       <Link>Additional\Rules\ProjectReference.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\NuProj.Package\Rules\ResolvedProjectReference.xaml">
+    <None Include="..\NuProj.ProjectSystem.12\Rules\ResolvedProjectReference.xaml">
       <Link>Additional\Rules\ResolvedProjectReference.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\NuProj.Package\Rules\scc.xaml">
+    <None Include="..\NuProj.ProjectSystem.12\Rules\scc.xaml">
       <Link>Additional\Rules\scc.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
