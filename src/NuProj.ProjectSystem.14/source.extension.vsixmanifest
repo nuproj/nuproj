@@ -7,7 +7,7 @@
     <MoreInfo>http://bit.ly/NuProjVS</MoreInfo>
     <Icon>NuProj.ico</Icon>
   </Metadata>
-  <Installation AllUsers="true" InstalledByMsi="true">
+  <Installation InstalledByMsi="true" AllUsers="true">
     <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[14.0,15.0)" />
   </Installation>
   <Dependencies>
