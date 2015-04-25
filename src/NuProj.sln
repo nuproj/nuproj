@@ -9,7 +9,7 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "NuProj.Setup", "NuProj.Setu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.Build", "NuProj.Build\NuProj.Build.csproj", "{516B545B-D897-449F-A6BD-49D696ED264A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.Package", "NuProj.Package\NuProj.Package.csproj", "{3C115530-0FB2-47B6-A6D5-9EB33611A394}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.ProjectSystem.12", "NuProj.ProjectSystem.12\NuProj.ProjectSystem.12.csproj", "{3C115530-0FB2-47B6-A6D5-9EB33611A394}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.Tests", "NuProj.Tests\NuProj.Tests.csproj", "{030AA9EA-E489-4EFC-8C7C-D05D343FC297}"
 EndProject
@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{B990
 		NuProj.Targets\NuProj.targets = NuProj.Targets\NuProj.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.Package.Dev14", "NuProj.Package.Dev14\NuProj.Package.Dev14.csproj", "{F75DC9FD-CC16-4F24-A054-BD27DFFF885C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.ProjectSystem.14", "NuProj.ProjectSystem.14\NuProj.ProjectSystem.14.csproj", "{F75DC9FD-CC16-4F24-A054-BD27DFFF885C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

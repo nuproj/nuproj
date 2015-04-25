@@ -50,31 +50,31 @@
     </ComponentGroup>
     <ComponentGroup Id="Rules" Directory="Rules">
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.Package\Rules\content.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\content.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.Package\Rules\folder.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\folder.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.Package\Rules\general.browseobject.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\general.browseobject.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.Package\Rules\general.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\general.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.Package\Rules\none.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\none.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.Package\Rules\ProjectItemsSchema.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\ProjectItemsSchema.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.Package\Rules\ProjectReference.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\ProjectReference.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.Package\Rules\ResolvedProjectReference.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\ResolvedProjectReference.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.Package\Rules\scc.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\scc.xaml" />
       </Component>
     </ComponentGroup>
   </Fragment>

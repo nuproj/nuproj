@@ -16,7 +16,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NuProj.ProjectSystem</RootNamespace>
-    <AssemblyName>NuProj.ProjectSystem</AssemblyName>
+    <AssemblyName>NuProj.ProjectSystem.12</AssemblyName>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
