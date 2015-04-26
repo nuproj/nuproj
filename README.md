@@ -5,11 +5,11 @@
 [build-status-img]: http://img.shields.io/appveyor/ci/terrajobst/nuproj.svg?style=flat
 [build-status-url]: https://ci.appveyor.com/project/terrajobst/nuproj
 
-[pull-requests-img]: http://www.issuestats.com/github/terrajobst/nuproj/badge/pr
-[pull-requests-url]: http://www.issuestats.com/github/terrajobst/nuproj
+[pull-requests-img]: http://www.issuestats.com/github/nuproj/nuproj/badge/pr
+[pull-requests-url]: http://www.issuestats.com/github/nuproj/nuproj
 
-[issues-closed-img]: http://www.issuestats.com/github/terrajobst/nuproj/badge/issue
-[issues-closed-url]: http://www.issuestats.com/github/terrajobst/nuproj
+[issues-closed-img]: http://www.issuestats.com/github/nuproj/nuproj/badge/issue
+[issues-closed-url]: http://www.issuestats.com/github/nuproj/nuproj
 
 NuProj provides MSBuild based support for creating NuGet packages (.nupkg).
 
