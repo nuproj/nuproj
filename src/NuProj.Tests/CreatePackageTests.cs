@@ -9,7 +9,7 @@ namespace NuProj.Tests
         [Fact]
         public async Task CreatePackage_LibraryWithXmlDoc_ShouldNotFail()
         {
-            var solutionPath = Assets.GetScenarioSolutionPath("Dependency_NoDependencies_Fails");
+            var solutionPath = Assets.GetScenarioSolutionPath("CreatePackage_LibraryWithXmlDoc_ShouldNotFail");
             var result = await MSBuild.RebuildAsync(solutionPath);
 
             result.AssertSuccessfulBuild();
