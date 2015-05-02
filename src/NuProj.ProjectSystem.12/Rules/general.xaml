@@ -165,4 +165,10 @@
         </BoolProperty.DataSource>
     </BoolProperty>
 
+    <BoolProperty Name="DevelopmentDependency" DisplayName="Development dependency"
+                  Description="The dependency on this package should not propagate transitively to other packages.">
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+        </BoolProperty.DataSource>
+    </BoolProperty>
 </Rule>
