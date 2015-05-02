@@ -351,6 +351,8 @@
              in the project's output folder. -->
 
         <ItemGroup>
+            <_FilteredNonNuProjProjectOutput Include="@(_NonNuProjProjectOutput->'$(_NonNuProjProjectTargetPath)%(Filename)%(Extension)')"
+                                             Condition=" Exists('$(_NonNuProjProjectTargetPath)%(_NonNuProjProjectOutput.Filename)%(_NonNuProjProjectOutput.Extension)') " />
             <_NonNuProjProjectOutput Remove="@(_NonNuProjProjectOutput)"
                                      Condition="!Exists('$(_NonNuProjProjectTargetPath)%(_NonNuProjProjectOutput.Filename)%(_NonNuProjProjectOutput.Extension)') "/>
         </ItemGroup>
@@ -368,7 +370,7 @@
 
         <!-- In order to add custom metadata, we need to create a new item list -->
 
-        <CreateItem Include="@(_NonNuProjProjectOutput)"
+        <CreateItem Include="@(_FilteredNonNuProjProjectOutput)"
                     AdditionalMetadata="TargetFrameworkMoniker=$(_NonNuProjProjectTargetFrameworkMoniker)">
             <Output TaskParameter="Include"
                     ItemName="_NonNuProjProjectOutputWithTargetFrameworkMoniker"/>
