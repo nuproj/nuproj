@@ -1,5 +1,7 @@
 # Welcome to NuProj!
 
+[![Join the chat at https://gitter.im/nuproj/nuproj](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nuproj/nuproj?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![dev version][build-status-img]][build-status-url] [![Issue Stats][pull-requests-img]][pull-requests-url] [![Issue Stats][issues-closed-img]][issues-closed-url]
 
 [build-status-img]: http://img.shields.io/appveyor/ci/terrajobst/nuproj.svg?style=flat
