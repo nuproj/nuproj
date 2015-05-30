@@ -174,6 +174,20 @@
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="AssignSourceTargetPaths" />
 
   <!--
+    ============================================================
+                                        PrepareForBuild
+
+    Prepare the prerequisites for building.
+    ============================================================
+    -->
+    <PropertyGroup>
+      <PrepareForBuildDependsOn>EstablishNuGetPaths</PrepareForBuildDependsOn>
+    </PropertyGroup>
+    <Target Name="PrepareForBuild"
+            DependsOnTargets="$(PrepareForBuildDependsOn)">
+    </Target>
+
+    <!--
     ===================================================================================================================
     _NuProjGetProjectClosure
     ===================================================================================================================
@@ -538,7 +552,7 @@
                   $(NuSpecPath);
                   @(File)"
           Outputs="$(NuGetOutputPath)"
-          DependsOnTargets="GenerateNuSpec;EstablishNuGetPaths">
+          DependsOnTargets="GenerateNuSpec;PrepareForBuild">
     <MakeDir Directories="$(OutDir)"
              Condition="!Exists('$(OutDir)')" />
     <NuGetPack OutputDirectory="$(OutDir)"
