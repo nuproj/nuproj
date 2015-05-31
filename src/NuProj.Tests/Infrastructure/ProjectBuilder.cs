@@ -54,5 +54,12 @@ namespace NuProj.Tests.Infrastructure
             AssertNu.SuccessfulBuild(result);
             return result.Result.ProjectStateAfterBuild.GetPropertyValue("NuGetOutputPath");
         }
+
+        public static async Task<string> GetNuSpecPathAsync(this Project nuProj)
+        {
+            var result = await MSBuild.ExecuteAsync(nuProj.CreateProjectInstance(), "EstablishNuGetPaths");
+            AssertNu.SuccessfulBuild(result);
+            return result.Result.ProjectStateAfterBuild.GetPropertyValue("NuSpecPath");
+        }
     }
 }

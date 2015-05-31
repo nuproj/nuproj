@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" TreatAsLocalProperty="OutDir;IntermediateOutputPath" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Import Project="$(CustomBeforeNuProjTargets)" Condition="'$(CustomBeforeNuProjTargets)' != '' and Exists('$(CustomBeforeNuProjTargets)')"/>
 
@@ -42,6 +42,34 @@
     <DefaultContentType>Content</DefaultContentType>
   </PropertyGroup>
 
+  <!-- Set output and intermmediate output properties. -->
+  <PropertyGroup>
+    <OutputPath Condition="'$(OutputPath)' != '' and !HasTrailingSlash('$(OutputPath)')">$(OutputPath)\</OutputPath>
+    <OutputPath Condition="'$(OutputPath)'==''">bin\$(Configuration)\</OutputPath>
+
+    <OutDirWasSpecified Condition=" '$(OutDir)'!='' and '$(OutDirWasSpecified)'=='' ">true</OutDirWasSpecified>
+    <OutDir Condition="'$(OutDir)' == ''">$(OutputPath)</OutDir>
+    <OutDir Condition="'$(OutDir)' != '' and !HasTrailingSlash('$(OutDir)')">$(OutDir)\</OutDir>
+
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">obj\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath Condition="!HasTrailingSlash('$(BaseIntermediateOutputPath)')">$(BaseIntermediateOutputPath)\</BaseIntermediateOutputPath>
+
+    <IntermediateOutputPathWasSpecified Condition=" '$(IntermediateOutputPath)'!='' and '$(IntermediateOutputPathWasSpecified)'=='' ">true</IntermediateOutputPathWasSpecified>
+    <IntermediateOutputPath Condition="$(IntermediateOutputPath) == ''">$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
+    <IntermediateOutputPath Condition="!HasTrailingSlash('$(IntermediateOutputPath)')">$(IntermediateOutputPath)\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <!-- For projects that want a per-project output directory, update OutDir and IntermediateOutputPath to include the project name. -->
+  <PropertyGroup>
+    <ProjectName Condition=" '$(ProjectName)' == '' ">$(MSBuildProjectName)</ProjectName>
+    <OutDir Condition="'$(OutDir)' != '' and '$(OutDirWasSpecified)' == 'true' and '$(GenerateProjectSpecificOutputFolder)' == 'true'">$(OutDir)$(ProjectName)\</OutDir>
+    <IntermediateOutputPath Condition="'$(IntermediateOutputPath)' != '' and '$(IntermediateOutputPathWasSpecified)' == 'true' and '$(GenerateProjectSpecificOutputFolder)' == 'true'">$(IntermediateOutputPath)$(ProjectName)\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetDir Condition="'$(OutDir)' != ''">$([MSBuild]::Escape($([System.IO.Path]::GetFullPath(`$([System.IO.Path]::Combine(`$(MSBuildProjectDirectory)`, `$(OutDir)`))`))))</TargetDir>
+  </PropertyGroup>
+
   <!--
       NUSPEC PATH
   -->
@@ -61,10 +89,10 @@
   -->
 
   <Target Name="EstablishNuGetPaths" DependsOnTargets="$(VersionDependsOn)">
-    <PropertyGroup>
-      <NuGetOutputPath>$([System.IO.Path]::GetFullPath('$(OutDir)$(Id).$(Version).nupkg'))</NuGetOutputPath>
-      <NuGetSymbolsOutputPath>$(OutDir)$(Id).$(Version).symbols.nupkg</NuGetSymbolsOutputPath>
-    </PropertyGroup>
+  <PropertyGroup>
+    <NuGetOutputPath>$(TargetDir)$(Id).$(Version).nupkg</NuGetOutputPath>
+    <NuGetSymbolsOutputPath>$(TargetDir)$(Id).$(Version).symbols.nupkg</NuGetSymbolsOutputPath>
+  </PropertyGroup>
   </Target>
 
   <!--
