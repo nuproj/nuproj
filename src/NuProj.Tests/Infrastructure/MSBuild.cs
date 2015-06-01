@@ -128,11 +128,17 @@ namespace NuProj.Tests.Infrastructure
             /// <summary>
             /// Gets the global properties to pass to indicate where NuProj imports can be found.
             /// </summary>
+            /// <remarks>
+            /// For purposes of true verifications, this map of global properties should
+            /// NOT include any that are propagated by project references from NuProj
+            /// or else their presence here (which does not reflect what the user's solution
+            /// typically builds with) may mask over-build errors that would otherwise
+            /// be caught by our BuildResultAndLogs.AssertNoTargetsExecutedTwice method.
+            /// </remarks>
             public static readonly ImmutableDictionary<string, string> Default = Empty
                 .Add("NuProjPath", Assets.NuProjPath)
                 .Add("NuProjTasksPath", Assets.NuProjTasksPath)
-                .Add("NuGetToolPath", Assets.NuGetToolPath)
-                .Add("CustomAfterMicrosoftCommonTargets", Assets.MicrosoftCommonNuProjTargetsPath);
+                .Add("NuGetToolPath", Assets.NuGetToolPath);
 
             /// <summary>
             /// The project will build in the same manner as if it were building inside Visual Studio.
