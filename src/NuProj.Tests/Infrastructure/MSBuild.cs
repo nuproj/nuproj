@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Build.Execution;
@@ -16,7 +17,6 @@ namespace NuProj.Tests.Infrastructure
     {
         public static Task<BuildResultAndLogs> RebuildAsync(string projectPath, string projectName = null, IDictionary<string, string> properties = null)
         {
-
             var target = string.IsNullOrEmpty(projectName) ? "Rebuild" : projectName.Replace('.', '_') + ":Rebuild";
             return MSBuild.ExecuteAsync(projectPath, new[] { target }, properties);
         }
@@ -174,6 +174,7 @@ namespace NuProj.Tests.Infrastructure
             public void AssertSuccessfulBuild()
             {
                 Assert.False(ErrorEvents.Any(), ErrorEvents.Select(e => e.Message).FirstOrDefault());
+                this.AssertNoTargetsExecutedTwice();
                 Assert.Equal(BuildResultCode.Success, Result.OverallResult);
             }
 
@@ -181,6 +182,73 @@ namespace NuProj.Tests.Infrastructure
             {
                 Assert.Equal(BuildResultCode.Failure, Result.OverallResult);
                 Assert.True(ErrorEvents.Any(), ErrorEvents.Select(e => e.Message).FirstOrDefault());
+            }
+
+            /// <summary>
+            /// Verifies that we don't have multi-proc build bugs that may cause
+            /// build failures as a result of projects building multiple times.
+            /// </summary>
+            private void AssertNoTargetsExecutedTwice()
+            {
+                var projectPathToId = new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
+                var configurations = new Dictionary<long, ProjectStartedEventArgs>();
+                foreach (var projectStarted in this.LogEvents.OfType<ProjectStartedEventArgs>())
+                {
+                    if (!configurations.ContainsKey(projectStarted.BuildEventContext.ProjectInstanceId))
+                    {
+                        configurations.Add(projectStarted.BuildEventContext.ProjectInstanceId, projectStarted);
+                    }
+
+                    long existingId;
+                    if (projectPathToId.TryGetValue(projectStarted.ProjectFile, out existingId))
+                    {
+                        if (existingId != projectStarted.BuildEventContext.ProjectInstanceId)
+                        {
+                            var originalProjectStarted = configurations[existingId];
+                            var originalRequestingProject = configurations[originalProjectStarted.ParentProjectBuildEventContext.ProjectInstanceId].ProjectFile;
+
+                            var requestingProject = configurations[projectStarted.ParentProjectBuildEventContext.ProjectInstanceId].ProjectFile;
+
+                            var globalPropertiesFirst = originalProjectStarted.GlobalProperties.Select(kv => $"{kv.Key}={kv.Value}").ToImmutableHashSet();
+                            var globalPropertiesSecond = projectStarted.GlobalProperties.Select(kv => $"{kv.Key}={kv.Value}").ToImmutableHashSet();
+                            var inFirstNotSecond = globalPropertiesFirst.Except(globalPropertiesSecond);
+                            var inSecondNotFirst = globalPropertiesSecond.Except(globalPropertiesFirst);
+
+                            var messageBuilder = new StringBuilder();
+                            messageBuilder.AppendLine($@"Project ""{projectStarted.ProjectFile}"" was built twice. ");
+                            messageBuilder.Append($@"The first build request came from ""{originalRequestingProject}""");
+                            if (inFirstNotSecond.IsEmpty)
+                            {
+                                messageBuilder.AppendLine();
+                            }
+                            else
+                            {
+                                messageBuilder.AppendLine($" and defined these unique global properties: {string.Join(",", inFirstNotSecond)}");
+                            }
+
+                            messageBuilder.Append($@"The subsequent build request came from ""{requestingProject}""");
+                            if (inSecondNotFirst.IsEmpty)
+                            {
+                                messageBuilder.AppendLine();
+                            }
+                            else
+                            {
+                                messageBuilder.AppendLine($" and defined these unique global properties: {string.Join(",", inSecondNotFirst)}");
+                            }
+
+                            Assert.False(true, messageBuilder.ToString());
+                        }
+                    }
+                    else
+                    {
+                        projectPathToId.Add(projectStarted.ProjectFile, projectStarted.BuildEventContext.ProjectInstanceId);
+                    }
+                }
+            }
+
+            private static string SerializeProperties(IDictionary<string, string> properties)
+            {
+                return string.Join(",", properties.Select(kv => $"{kv.Key}={kv.Value}"));
             }
         }
 
@@ -201,7 +269,7 @@ namespace NuProj.Tests.Infrastructure
             public List<BuildEventArgs> LogEvents { get; set; }
 
             public void Initialize(IEventSource eventSource)
-            {               
+            {
                 _eventSource = eventSource;
                 _eventSource.AnyEventRaised += EventSourceAnyEventRaised;
             }
