@@ -31,6 +31,10 @@
             </Compile>
             <Clean Include="@(_XamlPropertyRuleSource)" />
         </ItemGroup>
+        <Message Text="MSBuildThisFileFullPath: $(MSBuildThisFileFullPath)" Importance="high" />
+        <Message Text="MSBuildProjectFullPath: $(MSBuildProjectFullPath)" Importance="high" />
+        <Message Text="IntermediateOutputPath: $(IntermediateOutputPath)" Importance="high" />
+        <Message Text="@(Compile->'%(FullPath)', '%0a')" Importance="high" />
     </Target>
 
    <!-- The target needs to run so the task can populate the output items correctly. The task does an uptodate check on the files themselves-->

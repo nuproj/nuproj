@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|AnyCPU">
@@ -49,7 +49,7 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
     <Content Include="$(BasePath)raw\Additional\Microsoft.Common.NuProj.targets">
       <Link>tools\Microsoft.Common.NuProj.targets</Link>
     </Content>
-    <Content Include="..\packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe">
+    <Content Include="..\packages\NuGet.CommandLine.2.8.6\tools\NuGet.exe">
       <Link>tools\NuGet.exe</Link>
     </Content>
     <Content Include="$(BasePath)raw\Additional\Rules\content.xaml">
