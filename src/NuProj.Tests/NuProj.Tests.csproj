@@ -73,6 +73,7 @@
     <Compile Include="BuildAuthoringTests.cs" />
     <Compile Include="CreatePackageTests.cs" />
     <Compile Include="DependencyTests.cs" />
+    <Compile Include="ExtensibilityTests.cs" />
     <Compile Include="GenerateNuSpecTests.cs" />
     <Compile Include="IncrementalBuildTests.cs" />
     <Compile Include="Infrastructure\AssertNu.cs" />

@@ -3,6 +3,8 @@
 
   <Import Project="$(CustomBeforeNuProjTargets)" Condition="'$(CustomBeforeNuProjTargets)' != '' and Exists('$(CustomBeforeNuProjTargets)')"/>
 
+  <Import Project="$(MSBuildProjectFullPath).user" Condition="Exists('$(MSBuildProjectFullPath).user')"/>
+
   <PropertyGroup>
     <NuProjRulesDir>$(MSBuildThisFileDirectory)Rules\</NuProjRulesDir>
   </PropertyGroup>
