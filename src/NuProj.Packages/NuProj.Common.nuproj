@@ -29,6 +29,7 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
     <Tags>NuGet nupkg MSBuild NuProj</Tags>
     <NoPackageAnalysis>True</NoPackageAnalysis>
     <GenerateSymbolPackage>False</GenerateSymbolPackage>
+    <DevelopmentDependency>True</DevelopmentDependency>
   </PropertyGroup>
 
   <ItemGroup>
