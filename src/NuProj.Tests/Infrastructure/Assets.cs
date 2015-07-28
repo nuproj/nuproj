@@ -27,7 +27,7 @@ namespace NuProj.Tests.Infrastructure
 
         public static string NuGetToolPath
         {
-            get { return Path.Combine(ProjectDirectory, @"src\packages\NuGet.CommandLine.2.8.5\tools"); }
+            get { return Path.Combine(ProjectDirectory, @"src\packages\NuGet.CommandLine.2.8.6\tools"); }
         }
 
         public static string NuGetExePath
