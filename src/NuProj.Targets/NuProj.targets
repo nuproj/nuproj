@@ -359,21 +359,11 @@
                     ItemName="_NonNuProjProjectOutput" />
         </MSBuild>
 
-        <!-- Make sure we package the final output path of project references so that any post-compile step
-             applied to the project's output (such as signing) is included in the version we package up. -->
-        <ItemGroup>
-            <_NonNuProjProjectOutput_ToReplace Include="@(_NonNuProjProjectOutput)"
-                                               Condition=" '%(_NonNuProjProjectOutput.FinalOutputPath)' != '' " />
-            <_NonNuProjProjectOutput Remove="@(_NonNuProjProjectOutput_ToReplace)" />
-            <_NonNuProjProjectOutput Include="@(_NonNuProjProjectOutput_ToReplace->'%(FinalOutputPath)')" />
-        </ItemGroup>
-
         <!-- Since the dependencies include platform assemblies, we'll filter
              out all files that don't exist in this project's output folder.
              First we need the project's output folder. The easiest way is
              to ask for the target path and then use a property function to
              get the directory name. -->
-
         <MSBuild Targets="GetTargetPath"
                  Projects="@(_NonNuProjProjectReference)"
                  Properties="$(ProjectProperties)">
@@ -383,16 +373,33 @@
 
         <PropertyGroup>
              <_NonNuProjProjectTargetPath>$([System.IO.Path]::GetDirectoryName($(_NonNuProjProjectTargetPath)))\</_NonNuProjProjectTargetPath>
+             <_NonNuProjProjectPath>$([System.IO.Path]::GetDirectoryName(%(_NonNuProjProjectReference.FullPath)))\</_NonNuProjProjectPath>
         </PropertyGroup>
 
-        <!-- Now we can filter the outputs based on whether they exist
-             in the project's output folder. -->
-
+        <!-- Make sure we package the final output path of project references so that any post-compile step
+             applied to the project's output (such as signing) is included in the version we package up. 
+             In some cases final output path can be relative to output directory. -->
         <ItemGroup>
-            <_FilteredNonNuProjProjectOutput Include="@(_NonNuProjProjectOutput->'$(_NonNuProjProjectTargetPath)%(Filename)%(Extension)')"
-                                             Condition=" Exists('$(_NonNuProjProjectTargetPath)%(_NonNuProjProjectOutput.Filename)%(_NonNuProjProjectOutput.Extension)') " />
+            <_NonNuProjProjectOutput_ToReplace Include="@(_NonNuProjProjectOutput)"
+                                               Condition=" '%(_NonNuProjProjectOutput.FinalOutputPath)' != '' ">
+              <FullFinalOutputPath>$([System.IO.Path]::Combine($(_NonNuProjProjectPath),%(_NonNuProjProjectOutput.FinalOutputPath)))</FullFinalOutputPath>
+            </_NonNuProjProjectOutput_ToReplace>
+            <_NonNuProjProjectOutput Remove="@(_NonNuProjProjectOutput_ToReplace)" />
+          <_NonNuProjProjectOutput Include="@(_NonNuProjProjectOutput_ToReplace->'%(FullFinalOutputPath)')" />
+        </ItemGroup>
+
+      
+        <!-- Now we can filter the outputs based on whether they are framework assemblies,
+             are not private, and exist in output directory. -->
+        <ItemGroup>
+            <_FilteredNonNuProjProjectOutput Include="@(_NonNuProjProjectOutput)"
+                                             Condition=" '%(_NonNuProjProjectOutput.FrameworkFile)' != 'true'
+                                             AND '%(_NonNuProjProjectOutput.CopyLocal)' != 'false'
+                                             AND Exists('%(_NonNuProjProjectOutput.FullPath)')" />
             <_NonNuProjProjectOutput Remove="@(_NonNuProjProjectOutput)"
-                                     Condition="!Exists('$(_NonNuProjProjectTargetPath)%(_NonNuProjProjectOutput.Filename)%(_NonNuProjProjectOutput.Extension)') "/>
+                                     Condition=" '%(_NonNuProjProjectOutput.FrameworkFile)' == 'true'
+                                     OR '%(_NonNuProjProjectOutput.CopyLocal)' == 'false'
+                                     OR !Exists('%(_NonNuProjProjectOutput.FullPath)')"/>
         </ItemGroup>
 
         <!-- In order to package the the files in the correct folder in the

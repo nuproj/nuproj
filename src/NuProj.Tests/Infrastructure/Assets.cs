@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Xml;
 
 using Microsoft.Build.Construction;
@@ -50,7 +51,7 @@ namespace NuProj.Tests.Infrastructure
             return Path.Combine(ScenariosDirectory, scenarioName);
         }
 
-        public static string GetScenarioSolutionPath(string scenarioName)
+        public static string GetScenarioSolutionPath([CallerMemberName] string scenarioName = null)
         {
             var solutioDirectory = GetScenarioDirectory(scenarioName);
             return Path.Combine(solutioDirectory, scenarioName + ".sln");
