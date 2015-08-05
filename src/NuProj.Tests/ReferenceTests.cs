@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Build.Framework;
 using NuGet;
 using NuProj.Tests.Infrastructure;
 using Xunit;
@@ -61,7 +62,7 @@ namespace NuProj.Tests
                 @"lib\net451\net451.dll",
                 @"Readme.txt",
             };
-            var files = package.GetFiles().Select(f => f.Path);
+            var files = package.GetFiles().Select(f => f.Path).OrderBy(x => x);
             Assert.Equal(expectedFileNames, files);
         }
 
@@ -101,6 +102,22 @@ namespace NuProj.Tests
             expectedDependencies = expectedDependencies.OrderBy(x => x).ToArray();
             Assert.Equal(expectedFiles, actualFiles);
             Assert.Equal(expectedDependencies, actualDependencies);
+        }
+
+        [Fact]
+        public async Task References_PackageOutputGroups()
+        {
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync();
+            var expectedFileNames = new[]
+            {
+                @"lib\net451\ClassLibrary.dll",
+                @"lib\net451\ClassLibrary.pdb",
+                @"lib\net451\ClassLibrary.xml",
+                @"lib\net451\de-DE\ClassLibrary.resources.dll",
+                @"lib\net451\sk-SK\ClassLibrary.resources.dll",
+            };
+            var files = package.GetFiles().Select(f => f.Path).OrderBy(x => x);
+            Assert.Equal(expectedFileNames, files);
         }
     }
 }
