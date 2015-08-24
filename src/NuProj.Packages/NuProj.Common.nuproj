@@ -31,10 +31,6 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
     <GenerateSymbolPackage>False</GenerateSymbolPackage>
     <DevelopmentDependency>True</DevelopmentDependency>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="NuProj.NUproj" />
-  </ItemGroup>
   
   <ItemGroup>
     <Content Include="$(BasePath)raw\Additional\Microsoft.Common.NuProj.targets">
