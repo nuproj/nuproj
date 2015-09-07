@@ -161,19 +161,6 @@
   </PropertyGroup>
 
   <!--
-      PROJECT PROPERTIES
-
-      These are the properties we forward to our project references.
-  -->
-
-  <PropertyGroup>
-    <ProjectProperties>
-      Configuration=$(Configuration);
-      Platform=$(Platform)
-    </ProjectProperties>
-  </PropertyGroup>
-
-  <!--
       ITEM DEFINITIONS
       
       Defines default metadata for our items.
@@ -185,6 +172,14 @@
       <TargetFramework></TargetFramework>
     </ProjectReference>
   </ItemDefinitionGroup>
+
+  
+  <!--
+      COMMON TASKS
+  -->
+  
+  <UsingTask TaskName="Microsoft.Build.Tasks.AssignProjectConfiguration"            AssemblyName="Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Condition="'$(MSBuildAssemblyVersion)' == ''" />
+  <UsingTask TaskName="Microsoft.Build.Tasks.AssignProjectConfiguration"            AssemblyName="Microsoft.Build.Tasks.v12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Condition="'$(MSBuildAssemblyVersion)' != ''" />
 
   <!--
       CUSTOM TASKS
@@ -211,7 +206,69 @@
             DependsOnTargets="$(PrepareForBuildDependsOn)">
     </Target>
 
-    <!--
+  <!--
+    ============================================================
+                                        AssignProjectConfiguration
+
+    Assigns the appropriate configuration to each project in the list of project references passed in.
+    Adds to the project references passed in any project references implied by dependencies expressed in the solution file, if any.
+
+        [IN]
+        @(ProjectReference) - the list of all project references
+
+        [OUT]
+        @(ProjectReferenceWithConfiguration) - the list of project references (MSBuild and potentially VSIP projects)
+                                               with metadata values FullConfiguration, Configuration, Platform,
+                                               SetConfiguration, and SetPlatform
+    ============================================================
+    -->
+  <Target
+      Name="AssignProjectConfiguration"
+      Condition="'$(CurrentSolutionConfigurationContents)' != '' or '@(ProjectReference)' != ''">
+
+    <PropertyGroup>
+      <OnlyReferenceAndBuildProjectsEnabledInSolutionConfiguration Condition="'$(OnlyReferenceAndBuildProjectsEnabledInSolutionConfiguration)' == ''">true</OnlyReferenceAndBuildProjectsEnabledInSolutionConfiguration>
+      <ShouldUnsetParentConfigurationAndPlatform Condition="'$(ShouldUnsetParentConfigurationAndPlatform)' == '' and ('$(BuildingInsideVisualStudio)' == 'true' or '$(BuildingSolutionFile)' == 'true')">true</ShouldUnsetParentConfigurationAndPlatform>
+      <ShouldUnsetParentConfigurationAndPlatform Condition="'$(ShouldUnsetParentConfigurationAndPlatform)' == ''">false</ShouldUnsetParentConfigurationAndPlatform>
+
+      <!-- Web Application projects can "secretly" reference Silverlight projects, which can take project dependencies on that same Web Application.  If the project 
+           dependencies are promoted to project references, this ends up creating a situation where we have a circular reference between the two projects.  We don't 
+           want this to happen, so just turn off synthetic project reference generation for Silverlight projects. -->
+      <AddSyntheticProjectReferencesForSolutionDependencies Condition="'$(AddSyntheticProjectReferencesForSolutionDependencies)' == '' and '$(TargetFrameworkIdentifier)' == 'Silverlight'">false</AddSyntheticProjectReferencesForSolutionDependencies>
+
+      <!-- Inside VS, we do not need to add synthetic references, as VS already organizes the build per any solution-level dependencies; we only do this on the command line-->
+      <AddSyntheticProjectReferencesForSolutionDependencies Condition="'$(AddSyntheticProjectReferencesForSolutionDependencies)' == '' and '$(BuildingInsideVisualStudio)' != 'true'">true</AddSyntheticProjectReferencesForSolutionDependencies>
+    </PropertyGroup>
+
+    <!-- Assign a project configuration to each project reference if we're building a solution file. -->
+    <AssignProjectConfiguration
+        ProjectReferences="@(ProjectReference)"
+        CurrentProject="$(MSBuildProjectFullPath)"
+        CurrentProjectConfiguration="$(Configuration)"
+        CurrentProjectPlatform="$(Platform)"
+        DefaultToVcxPlatformMapping="$(DefaultToVcxPlatformMapping)"
+        VcxToDefaultPlatformMapping="$(VcxToDefaultPlatformMapping)"
+        OutputType="$(OutputType)"
+        ResolveConfigurationPlatformUsingMappings="false"
+        SolutionConfigurationContents="$(CurrentSolutionConfigurationContents)"
+        AddSyntheticProjectReferencesForSolutionDependencies="$(AddSyntheticProjectReferencesForSolutionDependencies)"
+        OnlyReferenceAndBuildProjectsEnabledInSolutionConfiguration = "$(OnlyReferenceAndBuildProjectsEnabledInSolutionConfiguration)"
+        ShouldUnsetParentConfigurationAndPlatform = "$(ShouldUnsetParentConfigurationAndPlatform)" >
+
+      <Output TaskParameter="AssignedProjects" ItemName="ProjectReferenceWithConfiguration"/>
+      <Output TaskParameter="UnassignedProjects" ItemName="ProjectReferenceWithConfiguration"/>
+    </AssignProjectConfiguration>
+
+    <ItemGroup>
+      <ProjectReferenceWithConfiguration>
+        <BuildReference Condition="'%(ProjectReferenceWithConfiguration.BuildReference)' == ''">true</BuildReference>
+        <ReferenceOutputAssembly Condition="'%(ProjectReferenceWithConfiguration.ReferenceOutputAssembly)' == ''">true</ReferenceOutputAssembly>
+      </ProjectReferenceWithConfiguration>
+    </ItemGroup>
+  </Target>
+
+
+  <!--
     ===================================================================================================================
     _NuProjGetProjectClosure
     ===================================================================================================================
@@ -219,7 +276,7 @@
     This target returns the closure of all project references.
 
     INPUTS:
-        @(_MSBuildProjectReferenceExistent)   The project references that actually exist.
+        @(ProjectReferenceWithConfiguration)  The project references that actually exist.
 
     OUTPUTS:
         @(_ProjectReferenceClosure)           The closure of all references. Doesn't include duplicates.
@@ -227,7 +284,8 @@
     =================================================================================================================== -->
 
   <Target Name="_NuProjGetProjectClosure"
-          Inputs="%(ProjectReference.Identity)"
+          DependsOnTargets="AssignProjectConfiguration"
+          Inputs="%(ProjectReferenceWithConfiguration.Identity)"
           Outputs="fake"
           Returns="@(_ProjectReferenceClosure)">
     <!-- First let's make sure that the project references have been fully built,
@@ -235,14 +293,14 @@
 
     <MSBuild Targets="Build"
              Condition="'$(BuildProjectReferences)' == 'true'"
-             Projects="@(ProjectReference)"
-             Properties="$(ProjectProperties)"
+             Projects="@(ProjectReferenceWithConfiguration)"
+             Properties="%(ProjectReferenceWithConfiguration.SetConfiguration); %(ProjectReferenceWithConfiguration.SetPlatform)"
              ContinueOnError="WarnAndContinue"/>
 
     <!-- Get closure of indirect references -->
-    <MSBuild Projects="@(ProjectReference)"
+    <MSBuild Projects="@(ProjectReferenceWithConfiguration)"
              Targets="_NuProjGetProjectClosure"
-             Properties="$(ProjectProperties)"
+             Properties="%(ProjectReferenceWithConfiguration.SetConfiguration); %(ProjectReferenceWithConfiguration.SetPlatform)"
              ContinueOnError="WarnAndContinue">
       <Output TaskParameter="TargetOutputs"
               ItemName="_ProjectReferenceClosureWithDuplicates" />
@@ -256,14 +314,14 @@
 
     <ItemGroup>
       <!-- Remove references that are also direct references -->
-      <_ProjectReferenceClosureWithoutMetadata Remove="%(ProjectReference.FullPath)" />
+      <_ProjectReferenceClosureWithoutMetadata Remove="%(ProjectReferenceWithConfiguration.FullPath)" />
       <!-- We can now mark all the closure references as indirect -->
       <_ProjectReferenceClosure Include="@(_ProjectReferenceClosureWithoutMetadata)">
         <DependencyKind>Indirect</DependencyKind>
-        <PackageDirectory>%(ProjectReference.PackageDirectory)</PackageDirectory>
+        <PackageDirectory>%(ProjectReferenceWithConfiguration.PackageDirectory)</PackageDirectory>
       </_ProjectReferenceClosure>
       <!-- Now add the direct references, preserving metadata -->
-      <_ProjectReferenceClosure Include="@(ProjectReference->'%(FullPath)')">
+      <_ProjectReferenceClosure Include="@(ProjectReferenceWithConfiguration->'%(FullPath)')">
         <DependencyKind>Direct</DependencyKind>
       </_ProjectReferenceClosure>
     </ItemGroup>
@@ -278,8 +336,7 @@
     This target will split the project references into NuProj project references and non-NuProj references.
 
     INPUTS:
-        @(ProjectReference)            The direct project references
-        @(_ProjectReferenceClosure)    The direct and indirect project references
+        @(_ProjectReferenceClosure)           The direct and indirect project references
 
     OUTPUTS:
         @(_NuProjProjectReference)            Direct references to NuProj projects.
@@ -338,10 +395,10 @@
     This target will get the build outputs of the project references
 
     INPUTS:
-        @(ProjectReference)         The project references
+        @(_NonNuProjProjectReference)  The project references
 
     OUTPUTS:
-        @(ProjectReferenceOutput)   The output of all project references
+        @(ProjectReferenceOutput)      The output of all project references
 
     =================================================================================================================== -->
 
@@ -354,7 +411,7 @@
 
         <MSBuild Targets="$(ProjectOutputGroups)"
                  Projects="@(_NonNuProjProjectReference)"
-                 Properties="$(ProjectProperties)">
+                 Properties="%(_NonNuProjProjectReference.SetConfiguration); %(_NonNuProjProjectReference.SetPlatform)">
             <Output TaskParameter="TargetOutputs"
                     ItemName="_NonNuProjProjectOutput" />
         </MSBuild>
@@ -376,7 +433,7 @@
 
         <MSBuild Targets="GetTargetPath"
                  Projects="@(_NonNuProjProjectReference)"
-                 Properties="$(ProjectProperties)">
+                 Properties="%(_NonNuProjProjectReference.SetConfiguration); %(_NonNuProjProjectReference.SetPlatform)">
             <Output TaskParameter="TargetOutputs"
                     PropertyName="_NonNuProjProjectTargetPath" />
         </MSBuild>
@@ -400,7 +457,7 @@
 
         <MSBuild Targets="GetTargetFrameworkMoniker"
                  Projects="@(_NonNuProjProjectReference)"
-                 Properties="$(ProjectProperties)">
+                 Properties="%(_NonNuProjProjectReference.SetConfiguration); %(_NonNuProjProjectReference.SetPlatform)">
           
             <Output TaskParameter="TargetOutputs"
                     PropertyName="_NonNuProjProjectTargetFrameworkMoniker" />
@@ -726,7 +783,7 @@
           DependsOnTargets="SplitProjectReferences">
       <MSBuild Targets="GetPackageFiles"
                Projects="@(_NuProjProjectReferenceClosure)"
-               Properties="$(ProjectProperties)">
+               Properties="%(_NuProjProjectReferenceClosure.SetConfiguration); %(_NuProjProjectReferenceClosure.SetPlatform)">
         <Output TaskParameter="TargetOutputs"
                 ItemName="NuProjFileDependency" />
       </MSBuild>
@@ -838,7 +895,7 @@
           DependsOnTargets="SplitProjectReferences">
       <MSBuild Targets="GetPackageIdentity"
                Projects="@(_NuProjProjectReferenceClosure)"
-               Properties="$(ProjectProperties)">
+               Properties="%(_NuProjProjectReferenceClosure.SetConfiguration); %(_NuProjProjectReferenceClosure.SetPlatform)">
         <Output TaskParameter="TargetOutputs"
                 ItemName="_NuProjDependency" />
       </MSBuild>
@@ -945,7 +1002,7 @@
 
     =================================================================================================================== -->
 
-  <Target Name="Clean" DependsOnTargets="EstablishNuGetPaths">
+  <Target Name="Clean" DependsOnTargets="AssignProjectConfiguration;EstablishNuGetPaths">
 
     <!-- We should also clear our references.
 
@@ -954,8 +1011,8 @@
 
     <MSBuild Targets="Clean"
              Condition="'$(BuildProjectReferences)' == 'true'"
-             Projects="@(ProjectReference)"
-             Properties="$(ProjectProperties)" />
+             Projects="@(ProjectReferenceWithConfiguration)"
+             Properties="%(ProjectReferenceWithConfiguration.SetConfiguration); %(ProjectReferenceWithConfiguration.SetPlatform)" />
 
     <!-- Delete our outputs and intermediates. -->
 
