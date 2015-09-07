@@ -34,6 +34,7 @@ namespace NuProj.Tests.Infrastructure
                 WorkingDirectory = path,
                 UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
             };
