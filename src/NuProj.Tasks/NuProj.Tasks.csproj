@@ -85,6 +85,10 @@
       <Link>Additional\NuProj.props</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\NuProj.Targets\Redirect.targets">
+      <Link>Additional\Redirect.targets</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
