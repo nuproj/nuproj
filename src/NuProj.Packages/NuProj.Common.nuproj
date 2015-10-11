@@ -37,6 +37,12 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
     <Content Include="$(BasePath)raw\Additional\Microsoft.Common.NuProj.targets">
       <Link>build\NuProj.Common.targets</Link>
     </Content>
+    <Content Include="$(BasePath)raw\Additional\Redirect.targets">
+      <Link>build\portable-net+win+wpa+wp+sl+net-cf+netmf+MonoAndroid+MonoTouch+Xamarin.iOS\NuProj.Common.targets</Link>
+    </Content>
+    <Content Include="$(BasePath)raw\Additional\Redirect.targets">
+      <Link>build\dotnet\NuProj.Common.targets</Link>
+    </Content>
   </ItemGroup>
 
   <Import Project="$(NuProjPath)\NuProj.targets" />
