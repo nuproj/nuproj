@@ -63,9 +63,7 @@ Below is an example how HelloWorld.nuproj would look like:
     </Library>
   </ItemGroup>
   <PropertyGroup>
-    <NuProjTargetsPath Condition=" '$(NuProjTargetsPath)' == '' ">
-        $(MSBuildExtensionsPath)\NuProj\NuProj.targets
-    </NuProjTargetsPath>
+    <NuProjTargetsPath Condition=" '$(NuProjTargetsPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\NuProj.targets</NuProjTargetsPath>
   </PropertyGroup>
   <Import Project="$(NuProjTargetsPath)" />
 </Project>
