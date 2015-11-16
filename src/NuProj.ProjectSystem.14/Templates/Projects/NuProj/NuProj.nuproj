@@ -32,4 +32,10 @@
     <Content Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <Target Name="BeforeBuild">
+  </Target>  
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

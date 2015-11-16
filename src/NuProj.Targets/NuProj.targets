@@ -1009,7 +1009,16 @@
 
     =================================================================================================================== -->
 
-  <Target Name="Clean" DependsOnTargets="AssignProjectConfiguration;EstablishNuGetPaths">
+  <PropertyGroup>
+    <CleanDependsOn>
+      BeforeClean;
+      AssignProjectConfiguration;
+      EstablishNuGetPaths
+      AfterClean
+    </CleanDependsOn>
+  </PropertyGroup>
+
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)">
 
     <!-- We should also clear our references.
 
@@ -1031,9 +1040,35 @@
     <Delete Files="@(_ToBeDeleted)" />
 
   </Target>
+  
+  <!--
+    ============================================================
+                                        BeforeClean
+
+    Redefine this target in your project in order to run tasks just before Clean.
+    ============================================================
+    -->
+  <Target Name="BeforeClean"/>
+
+  <!--
+    ============================================================
+                                        AfterClean
+
+    Redefine this target in your project in order to run tasks just after Clean.
+    ============================================================
+    -->
+  <Target Name="AfterClean"/>
+  
+  <PropertyGroup>
+    <BuildDependsOn>
+      BeforeBuild;
+      CreatePackage;
+      AfterBuild
+    </BuildDependsOn>
+  </PropertyGroup>
 
   <Target Name="Build"
-          DependsOnTargets="CreatePackage" 
+          DependsOnTargets="$(BuildDependsOn)" 
           Returns="@(_NuGetOutputFile)">
     <Message Text="$(MSBuildProjectName) -> $(NuGetOutputPath)"
              Importance="high" />
@@ -1044,9 +1079,55 @@
     </ItemGroup>
   </Target>
 
+  <!--
+    ============================================================
+                                        BeforeBuild
+
+    Redefine this target in your project in order to run tasks just before Build
+    ============================================================
+    -->
+  <Target Name="BeforeBuild"/>
+
+  <!--
+    ============================================================
+                                        AfterBuild
+
+    Redefine this target in your project in order to run tasks just after Build
+    ============================================================
+    -->
+  <Target Name="AfterBuild"/>
+  
+  <PropertyGroup>
+    <RebuildDependsOn>
+      BeforeRebuild;
+      Clean;
+	  Build;
+      AfterRebuild
+    </RebuildDependsOn>
+  </PropertyGroup>
+
+  
   <Target Name="Rebuild"
-          DependsOnTargets="Clean;Build"
+          DependsOnTargets="$(RebuildDependsOn)"
           Returns="@(_NuGetOutputFile)" />
   <Import Project="$(CustomAfterNuProjTargets)" Condition="'$(CustomAfterNuProjTargets)' != '' and Exists('$(CustomAfterNuProjTargets)')"/>
 
+  <!--
+    ============================================================
+                                        BeforeRebuild
+
+    Redefine this target in your project in order to run tasks just before Rebuild
+    ============================================================
+    -->
+  <Target Name="BeforeRebuild"/>
+
+  <!--
+    ============================================================
+                                        AfterRebuild
+
+    Redefine this target in your project in order to run tasks just after Rebuild
+    ============================================================
+    -->
+  <Target Name="AfterRebuild"/>
+  
 </Project>
