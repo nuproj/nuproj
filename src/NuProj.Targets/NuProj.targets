@@ -1062,22 +1062,14 @@
   <PropertyGroup>
     <BuildDependsOn>
       BeforeBuild;
-      CreatePackage;
+      CoreBuild;
       AfterBuild
     </BuildDependsOn>
   </PropertyGroup>
 
   <Target Name="Build"
           DependsOnTargets="$(BuildDependsOn)" 
-          Returns="@(_NuGetOutputFile)">
-    <Message Text="$(MSBuildProjectName) -> $(NuGetOutputPath)"
-             Importance="high" />
-
-    <ItemGroup>
-      <_NuGetOutputFile Include="$(NuGetOutputPath)" />
-      <_NuGetOutputFile Include="$(NuGetSymbolsOutputPath)" Condition=" '$(GenerateSymbolPackage)' == 'true' " />
-    </ItemGroup>
-  </Target>
+          Returns="@(_NuGetOutputFile)" />
 
   <!--
     ============================================================
@@ -1097,11 +1089,37 @@
     -->
   <Target Name="AfterBuild"/>
   
+  <!--
+    ============================================================
+                                        CoreBuild
+
+    The core build step calls each of the build targets.
+    ============================================================
+    -->
+  <PropertyGroup>
+    <CoreBuildDependsOn>
+      CreatePackage
+    </CoreBuildDependsOn>
+  </PropertyGroup>
+  
+  <Target Name="CoreBuild"
+          DependsOnTargets="$(CoreBuildDependsOn)" 
+          Returns="@(_NuGetOutputFile)">
+    <Message Text="$(MSBuildProjectName) -> $(NuGetOutputPath)"
+             Importance="high" />
+
+    <ItemGroup>
+      <_NuGetOutputFile Include="$(NuGetOutputPath)" />
+      <_NuGetOutputFile Include="$(NuGetSymbolsOutputPath)" Condition=" '$(GenerateSymbolPackage)' == 'true' " />
+    </ItemGroup>
+  </Target>
+
+  
   <PropertyGroup>
     <RebuildDependsOn>
       BeforeRebuild;
       Clean;
-	  Build;
+      Build;
       AfterRebuild
     </RebuildDependsOn>
   </PropertyGroup>
