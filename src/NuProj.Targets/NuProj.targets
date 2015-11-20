@@ -1013,7 +1013,7 @@
     <CleanDependsOn>
       BeforeClean;
       AssignProjectConfiguration;
-      EstablishNuGetPaths
+      EstablishNuGetPaths;
       AfterClean
     </CleanDependsOn>
   </PropertyGroup>
