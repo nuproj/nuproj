@@ -959,7 +959,8 @@
       <_PdbFiles Include="@(PackageFile)"
                  Condition="'%(Extension)' == '.pdb'" />
     </ItemGroup>
-    <ReadPdbSourceFiles PdbPath="%(_PdbFiles.Identity)">
+    <ReadPdbSourceFiles PdbPath="%(_PdbFiles.Identity)"
+                        Condition=" '@(_PdbFiles)' != '' ">
       <Output TaskParameter="SourcePaths"
               ItemName="_SourceFile" />
     </ReadPdbSourceFiles>
