@@ -8,11 +8,26 @@ using Microsoft.Build.Framework;
 using NuGet;
 using NuProj.Tests.Infrastructure;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace NuProj.Tests
 {
     public class ReferenceTests
     {
+        private readonly ITestOutputHelper logger;
+
+        public ReferenceTests(ITestOutputHelper logger)
+        {
+            this.logger = logger;
+        }
+
+        [Fact]
+        public async Task References_ExcludeFromNuPkgAndEmbedSourceFiles()
+        {
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync(testLogger: this.logger);
+            Assert.Empty(package.GetLibFiles());
+        }
+
         [Fact]
         public async Task References_AssignProjectConfiguration()
         {
