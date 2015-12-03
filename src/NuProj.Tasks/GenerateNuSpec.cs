@@ -210,6 +210,7 @@ namespace NuProj.Tasks
                     {
                         TargetFramework = dependenciesByFramework.Key.GetShortFrameworkName(),
                         Dependencies = (from dependency in dependenciesByFramework
+                                        where dependency.Id != "_._"
                                         group dependency by dependency.Id into dependenciesById
                                         select new ManifestDependency
                                         {
