@@ -197,5 +197,86 @@ namespace NuProj.Tests
                     ManifestFileComparer.Instance);
             }
         }
+
+        [Fact]
+        public void Task_GenerateNuSpec_PlaceholderDependencies()
+        {
+            var output = Path.Combine(_projectDirectory, "PlaceholderDependencies.nuspec");
+
+            var target = new GenerateNuSpec();
+            target.OutputFileName = output;
+            target.Id = "PlaceHolderDependenciesTest";
+            target.Version = "1.0.0";
+            target.Title = "PlaceHolderDependenciesTest";
+            target.Authors = "Nuproj";
+            target.RequireLicenseAcceptance = true;
+            target.Description = "PlaceHolderDependenciesTest";
+            target.ReleaseNotes = "Testing";
+            target.Summary = "PlaceHolderDependenciesTest";
+            target.ProjectUrl = "http://nuproj.net/changes";
+            target.IconUrl = "http://placekitten.com/g/128/128";
+            target.LicenseUrl = "http://nuproj.net/LICENSE/changes";
+            target.Copyright = "Copyright © Testing";
+            target.Tags = "PlaceHolderDependenciesTest";
+            target.DevelopmentDependency = false;
+
+            target.Dependencies = new[]
+            {
+                new TaskItem("APackage", new Dictionary<string, string>
+                {
+                    { Metadata.TargetFramework, "portable-net45+win80" }
+                }),
+
+                new TaskItem("_._", new Dictionary<string, string>
+                {
+                    { Metadata.TargetFramework, "net45" }
+                })
+            };
+
+            var result = target.Execute();
+            Assert.True(result);
+
+            using (var stream = File.OpenRead(output))
+            {
+                var manifest = Manifest.ReadFrom(stream, false);
+                Assert.Equal(target.Id, manifest.Metadata.Id);
+                Assert.Equal(target.Version, manifest.Metadata.Version);
+                Assert.Equal(target.Title, manifest.Metadata.Title);
+                Assert.Equal(target.Authors, manifest.Metadata.Authors);
+                Assert.Equal(target.RequireLicenseAcceptance, manifest.Metadata.RequireLicenseAcceptance);
+                Assert.Equal(target.Description, manifest.Metadata.Description);
+                Assert.Equal(target.ReleaseNotes, manifest.Metadata.ReleaseNotes);
+                Assert.Equal(target.Summary, manifest.Metadata.Summary);
+                Assert.Equal(target.Language, manifest.Metadata.Language);
+                Assert.Equal(target.ProjectUrl, manifest.Metadata.ProjectUrl);
+                Assert.Equal(target.IconUrl, manifest.Metadata.IconUrl);
+                Assert.Equal(target.LicenseUrl, manifest.Metadata.LicenseUrl);
+                Assert.Equal(target.Copyright, manifest.Metadata.Copyright);
+                Assert.Equal(target.Tags, manifest.Metadata.Tags);
+                Assert.Equal(false, manifest.Metadata.DevelopmentDependency);
+
+                //compare dependencies
+                Assert.Equal(2, manifest.Metadata.DependencySets.Count);
+
+                foreach (var dependencySet in manifest.Metadata.DependencySets)
+                {
+                    if (dependencySet.TargetFramework == "net45")
+                    {
+                        Assert.Equal(0, dependencySet.Dependencies.Count);
+                    }
+                    else if (dependencySet.TargetFramework == "portable-net45+win80")
+                    {
+                        Assert.Equal(1, dependencySet.Dependencies.Count);
+                        Assert.Equal("APackage", dependencySet.Dependencies[0].Id);
+                    }
+                    else
+                    {
+                        // unexpected dependency set
+                        Assert.True(false);
+                    }
+
+                }
+            }
+        }
     }
 }
