@@ -191,4 +191,12 @@
             <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
         </BoolProperty.DataSource>
     </BoolProperty>
+
+    <StringProperty Name="OutputPath" DisplayName="Output path"
+                    Description="The directory to write the NuPkg to."
+                    Category="Build">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+        </StringProperty.DataSource>
+    </StringProperty>
 </Rule>
