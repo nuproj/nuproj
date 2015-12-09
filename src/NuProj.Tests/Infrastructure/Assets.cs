@@ -53,8 +53,8 @@ namespace NuProj.Tests.Infrastructure
 
         public static string GetScenarioSolutionPath([CallerMemberName] string scenarioName = null)
         {
-            var solutioDirectory = GetScenarioDirectory(scenarioName);
-            return Path.Combine(solutioDirectory, scenarioName + ".sln");
+            var solutionDirectory = GetScenarioDirectory(scenarioName);
+            return Path.Combine(solutionDirectory, scenarioName + ".sln");
         }
 
         public static string GetScenarioFilePath(string scenarioName, string filePath)
