@@ -649,7 +649,9 @@
                Symbols="$(GenerateSymbolPackage)"
                ToolPath="$(NuGetToolPath)"
                ToolExe="$(NuGetToolExe)"
-               NuSpecPath="$(NuSpecPath)"/>
+               NuSpecPath="$(NuSpecPath)"
+               Properties="$(NuSpecProperties)"
+               />
   </Target>
 
   <!--
