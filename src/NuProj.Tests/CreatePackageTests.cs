@@ -14,5 +14,14 @@ namespace NuProj.Tests
 
             result.AssertSuccessfulBuild();
         }
+
+        [Fact]
+        public async Task CreatePackage_SubstituteMacros()
+        {
+            var properties = MSBuild.Properties.Default
+                .Add("NuSpecProperties", "SummaryMacro=TestSummary");
+            var package = await Scenario.RestoreAndBuildSinglePackageAsync(properties: properties);
+            Assert.Equal("TestSummary", package.Summary);
+        }
     }
 }

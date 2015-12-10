@@ -39,7 +39,7 @@ namespace NuProj.Tasks
             builder.AppendSwitch("pack");
             builder.AppendFileNameIfNotNull(NuSpecPath);
             builder.AppendSwitchIfNotNull("-OutputDirectory ", OutputDirectory);
-            builder.AppendSwitchIfNotNull("-Properties", Properties);
+            builder.AppendSwitchIfNotNull("-Properties ", Properties);
 
             if (Symbols)
                 builder.AppendSwitch("-Symbols");
