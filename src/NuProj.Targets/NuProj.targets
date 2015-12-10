@@ -44,10 +44,9 @@
     <DefaultContentType>Content</DefaultContentType>
   </PropertyGroup>
 
-  <!-- Set output and intermmediate output properties. -->
+  <!-- Set output and intermediate output properties. -->
   <PropertyGroup>
     <OutputPath Condition="'$(OutputPath)' != '' and !HasTrailingSlash('$(OutputPath)')">$(OutputPath)\</OutputPath>
-    <OutputPath Condition="'$(OutputPath)'==''">bin\$(Configuration)\</OutputPath>
 
     <OutDirWasSpecified Condition=" '$(OutDir)'!='' and '$(OutDirWasSpecified)'=='' ">true</OutDirWasSpecified>
     <OutDir Condition="'$(OutDir)' == ''">$(OutputPath)</OutDir>
