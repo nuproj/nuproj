@@ -184,6 +184,14 @@
         </BoolProperty.DataSource>
     </BoolProperty>
 
+    <StringProperty Name="NuSpecProperties" DisplayName="Macro properties"
+                    Description="Value for the -Properties switch passed to the nuget pack command."
+                    Category="Build">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
     <BoolProperty Name="DevelopmentDependency" DisplayName="Development dependency"
                   Description="Specifies whether the package will be marked as a development-only dependency in the packages.config. This will cause the package to be excluded from the dependency list when the referencing project itself is later packaged."
                   Category="NuSpec">

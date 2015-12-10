@@ -21,6 +21,8 @@ namespace NuProj.Tasks
 
         public bool ExcludeEmptyDirectories { get; set; }
 
+        public string Properties { get; set; }
+
         protected override string ToolName
         {
             get { return "NuGet -pack"; }
@@ -37,6 +39,7 @@ namespace NuProj.Tasks
             builder.AppendSwitch("pack");
             builder.AppendFileNameIfNotNull(NuSpecPath);
             builder.AppendSwitchIfNotNull("-OutputDirectory ", OutputDirectory);
+            builder.AppendSwitchIfNotNull("-Properties", Properties);
 
             if (Symbols)
                 builder.AppendSwitch("-Symbols");
