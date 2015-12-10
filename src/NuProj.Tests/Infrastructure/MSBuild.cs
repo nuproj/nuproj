@@ -10,20 +10,21 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Logging;
 
 using Xunit;
+using Xunit.Abstractions;
 
 namespace NuProj.Tests.Infrastructure
 {
     public static class MSBuild
     {
-        public static Task<BuildResultAndLogs> RebuildAsync(string projectPath, string projectName = null, IDictionary<string, string> properties = null)
+        public static Task<BuildResultAndLogs> RebuildAsync(string projectPath, string projectName = null, IDictionary<string, string> properties = null, ITestOutputHelper testLogger = null)
         {
             var target = string.IsNullOrEmpty(projectName) ? "Rebuild" : projectName.Replace('.', '_') + ":Rebuild";
-            return MSBuild.ExecuteAsync(projectPath, new[] { target }, properties);
+            return MSBuild.ExecuteAsync(projectPath, new[] { target }, properties, testLogger);
         }
 
-        public static Task<BuildResultAndLogs> ExecuteAsync(string projectPath, string targetToBuild, IDictionary<string, string> properties = null)
+        public static Task<BuildResultAndLogs> ExecuteAsync(string projectPath, string targetToBuild, IDictionary<string, string> properties = null, ITestOutputHelper testLogger = null)
         {
-            return MSBuild.ExecuteAsync(projectPath, new[] { targetToBuild }, properties);
+            return MSBuild.ExecuteAsync(projectPath, new[] { targetToBuild }, properties, testLogger);
         }
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace NuProj.Tests.Infrastructure
         /// <param name="targetsToBuild">The targets to build. If not specified, the project's default target will be invoked.</param>
         /// <param name="properties">The optional global properties to pass to the project. May come from the <see cref="MSBuild.Properties"/> static class.</param>
         /// <returns>A task whose result is the result of the build.</returns>
-        public static async Task<BuildResultAndLogs> ExecuteAsync(string projectPath, string[] targetsToBuild = null, IDictionary<string, string> properties = null)
+        public static async Task<BuildResultAndLogs> ExecuteAsync(string projectPath, string[] targetsToBuild = null, IDictionary<string, string> properties = null, ITestOutputHelper testLogger = null)
         {
             targetsToBuild = targetsToBuild ?? new string[0];
 
@@ -44,6 +45,7 @@ namespace NuProj.Tests.Infrastructure
                 Loggers = new List<ILogger>
                 {
                     new ConsoleLogger(LoggerVerbosity.Detailed, logLines.Add, null, null),
+                    new ConsoleLogger(LoggerVerbosity.Minimal, v => testLogger?.WriteLine(v.TrimEnd()), null, null),
                     logger,
                 },
             };
