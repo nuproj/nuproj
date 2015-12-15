@@ -184,6 +184,14 @@
         </BoolProperty.DataSource>
     </BoolProperty>
 
+    <BoolProperty Name="NoDefaultExcludes" DisplayName="No Default Excludes"
+                  Description="Prevent default exclusion of NuGet package files and files and folders starting with a dot e.g. .svn."
+                  Category="Build">
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+        </BoolProperty.DataSource>
+    </BoolProperty>
+
     <StringProperty Name="NuSpecProperties" DisplayName="Macro properties"
                     Description="Value for the -Properties switch passed to the nuget pack command."
                     Category="Build">
