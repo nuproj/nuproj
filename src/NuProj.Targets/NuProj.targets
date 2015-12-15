@@ -139,27 +139,6 @@
   </PropertyGroup>
 
   <!--
-      OUTPUT GROUPS
-
-      These are the groups we are using to discover outputs from our project references.
-  -->
-
-  <PropertyGroup>
-    <ProjectOutputGroups>
-      BuiltProjectOutputGroup;
-      BuiltProjectOutputGroupDependencies;
-      DebugSymbolsProjectOutputGroup;
-      DebugSymbolsProjectOutputGroupDependencies;
-      DocumentationProjectOutputGroup;
-      DocumentationProjectOutputGroupDependencies;
-      SatelliteDllsProjectOutputGroup;
-      SatelliteDllsProjectOutputGroupDependencies;
-      SGenFilesOutputGroup;
-      SGenFilesOutputGroupDependencies;
-    </ProjectOutputGroups>
-  </PropertyGroup>
-
-  <!--
       ITEM DEFINITIONS
       
       Defines default metadata for our items.
@@ -169,6 +148,7 @@
     <ProjectReference>
       <PackageDirectory>Lib</PackageDirectory>
       <TargetFramework></TargetFramework>
+      <Targets>$(ProjectOutputGroups)</Targets>
     </ProjectReference>
   </ItemDefinitionGroup>
 
@@ -408,7 +388,7 @@
 
         <!-- Ask for the output and all dependencies. -->
 
-        <MSBuild Targets="$(ProjectOutputGroups)"
+        <MSBuild Targets="%(_NonNuProjProjectReference.Targets)"
                  Projects="@(_NonNuProjProjectReference)"
                  Properties="%(_NonNuProjProjectReference.SetConfiguration); %(_NonNuProjProjectReference.SetPlatform)">
             <Output TaskParameter="TargetOutputs"

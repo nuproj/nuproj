@@ -24,4 +24,25 @@
     <NuGetToolExe Condition=" '$(NuGetToolExe)' == '' ">NuGet.exe</NuGetToolExe>
   </PropertyGroup>
 
+  <!--
+      OUTPUT GROUPS
+
+      These are the groups we are using to discover outputs from our project references.
+  -->
+
+  <PropertyGroup>
+    <ProjectOutputGroups>
+      BuiltProjectOutputGroup;
+      BuiltProjectOutputGroupDependencies;
+      DebugSymbolsProjectOutputGroup;
+      DebugSymbolsProjectOutputGroupDependencies;
+      DocumentationProjectOutputGroup;
+      DocumentationProjectOutputGroupDependencies;
+      SatelliteDllsProjectOutputGroup;
+      SatelliteDllsProjectOutputGroupDependencies;
+      SGenFilesOutputGroup;
+      SGenFilesOutputGroupDependencies;
+    </ProjectOutputGroups>
+  </PropertyGroup>
+
 </Project>
