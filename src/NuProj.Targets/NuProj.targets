@@ -386,25 +386,25 @@
             Inputs="%(_NonNuProjProjectReference.Identity)"
             Outputs="fake">
 
-        <!-- Ask for the output and all dependencies. -->
+      <!-- Since the dependencies include platform assemblies, we'll filter
+             out all files that don't exist in this project's output folder.
+             First we need the project's output folder. The easiest way is
+             to ask for the target path and then use a property function to
+             get the directory name. -->
+      <MSBuild Targets="GetTargetPath"
+               Projects="@(_NonNuProjProjectReference)"
+               Properties="%(_NonNuProjProjectReference.SetConfiguration); %(_NonNuProjProjectReference.SetPlatform)">
+        <Output TaskParameter="TargetOutputs"
+                PropertyName="_NonNuProjProjectTargetPath" />
+      </MSBuild>
+
+      <!-- Ask for the output and all dependencies. -->
 
         <MSBuild Targets="%(_NonNuProjProjectReference.Targets)"
                  Projects="@(_NonNuProjProjectReference)"
                  Properties="%(_NonNuProjProjectReference.SetConfiguration); %(_NonNuProjProjectReference.SetPlatform)">
             <Output TaskParameter="TargetOutputs"
                     ItemName="_NonNuProjProjectOutput" />
-        </MSBuild>
-
-        <!-- Since the dependencies include platform assemblies, we'll filter
-             out all files that don't exist in this project's output folder.
-             First we need the project's output folder. The easiest way is
-             to ask for the target path and then use a property function to
-             get the directory name. -->
-        <MSBuild Targets="GetTargetPath"
-                 Projects="@(_NonNuProjProjectReference)"
-                 Properties="%(_NonNuProjProjectReference.SetConfiguration); %(_NonNuProjProjectReference.SetPlatform)">
-            <Output TaskParameter="TargetOutputs"
-                    PropertyName="_NonNuProjProjectTargetPath" />
         </MSBuild>
 
         <PropertyGroup>

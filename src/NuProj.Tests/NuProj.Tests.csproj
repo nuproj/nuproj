@@ -96,6 +96,7 @@
     <Compile Include="Infrastructure\NuGetHelper.cs" />
     <Compile Include="Infrastructure\NuPkg.cs" />
     <Compile Include="Infrastructure\ProjectBuilder.cs" />
+    <Compile Include="PackageSpecificTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadPackagesConfigTests.cs" />
     <Compile Include="ReferenceTests.cs" />
