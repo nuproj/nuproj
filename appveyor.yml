@@ -1,0 +1,13 @@
+version: 1.0.{build}
+os: Visual Studio 2015
+build_script:
+- cmd: '"%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe" /nologo /m /v:m /nr:false /flp:verbosity=detailed /p:SkipTests=True'
+artifacts:
+- path: msbuild.log
+  name: MSBuild Log
+- path: bin\release\NuProj_Setup.zip
+  name: Setup
+- path: bin\release\*.nupkg
+  name: Packages
+- path: bin\raw\*.vsix
+  name: Extensions
