@@ -11,20 +11,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>b9f888b3-73f0-47c9-bce5-eee7a000f3cd</ProjectGuid>
+    <ProjectGuid>379e2c22-cad7-4039-968c-85baee19f5fe</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>NuGetDependency</Id>
+    <Id>PackageToToolsDependency</Id>
     <Version>1.0.0</Version>
-    <Title>NuGetDependency</Title>
+    <Title>Package</Title>
     <Authors>kovalikp</Authors>
     <Owners>kovalikp</Owners>
-    <Summary>NuGetDependency</Summary>
-    <Description>NuGetDependency</Description>
+    <Summary>PackageToToolsDependency</Summary>
+    <Description>PackageToToolsDependency</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
@@ -32,19 +32,12 @@
     <LicenseUrl>
     </LicenseUrl>
     <Copyright>Copyright © kovalikp</Copyright>
-    <Tags>NuGetDependency</Tags>
+    <Tags>PackageToToolsDependency</Tags>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Readme.txt" />
+    <ProjectReference Include="..\Tool\Tool.csproj">
+      <PackageDirectory>Tools</PackageDirectory>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
-  <Target Name="AfterClean">
-    <Error Text="Dependency Target Called: Clean" />
-  </Target>
-  <Target Name="AfterBuild">
-    <Error Text="Dependency Target Called: Build" />
-  </Target>
-  <Target Name="AfterRebuild">
-    <Error Text="Dependency Target Called: Rebuild" />
-  </Target>
 </Project>

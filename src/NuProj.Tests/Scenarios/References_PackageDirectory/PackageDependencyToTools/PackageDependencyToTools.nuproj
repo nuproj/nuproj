@@ -35,7 +35,7 @@
     <Tags>PackageDependencyToTools</Tags>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PackageToTools\PackageToTools.nuproj" />
+    <ProjectReference Include="..\PackageToToolsDependency\PackageToToolsDependency.nuproj" />
     <ProjectReference Include="..\Tool\Tool.csproj">
       <PackageDirectory>Tools</PackageDirectory>
     </ProjectReference>

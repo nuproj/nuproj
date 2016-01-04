@@ -38,13 +38,13 @@
     <Content Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
-  <Target Name="Clean">
+  <Target Name="AfterClean">
     <Warning Text="NuProj dependency Target Called: Clean" />
   </Target>
-  <Target Name="Build">
+  <Target Name="AfterBuild">
     <Warning Text="NuProj dependency Target Called: Build" />
   </Target>
-  <Target Name="Rebuild">
+  <Target Name="AfterRebuild">
     <Warning Text="NuProj dependency Target Called: Rebuild" />
   </Target>
 </Project>

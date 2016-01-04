@@ -11,40 +11,34 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>b9f888b3-73f0-47c9-bce5-eee7a000f3cd</ProjectGuid>
+    <ProjectGuid>79ce8c3e-25e3-4ee4-b0fe-8d66ddfa2187</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>NuGetDependency</Id>
-    <Version>1.0.0</Version>
-    <Title>NuGetDependency</Title>
-    <Authors>kovalikp</Authors>
-    <Owners>kovalikp</Owners>
-    <Summary>NuGetDependency</Summary>
-    <Description>NuGetDependency</Description>
+    <Id>NuGetPackage</Id>
+    <Version Condition="'$(Version)' != ''">1.0.0</Version>
+    <Title>NuGetPackage</Title>
+    <Authors>immol</Authors>
+    <Owners>immol</Owners>
+    <Summary>NuGetPackage</Summary>
+    <Description>NuGetPackage</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
     </ProjectUrl>
     <LicenseUrl>
     </LicenseUrl>
-    <Copyright>Copyright © kovalikp</Copyright>
-    <Tags>NuGetDependency</Tags>
+    <Copyright>Copyright © immol</Copyright>
+    <Tags>NuGetPackage</Tags>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
+  </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
-  <Target Name="AfterClean">
-    <Error Text="Dependency Target Called: Clean" />
-  </Target>
-  <Target Name="AfterBuild">
-    <Error Text="Dependency Target Called: Build" />
-  </Target>
-  <Target Name="AfterRebuild">
-    <Error Text="Dependency Target Called: Rebuild" />
-  </Target>
 </Project>

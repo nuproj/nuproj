@@ -59,4 +59,7 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
       <Version>$(NuGetPackageVersion)</Version>
     </PropertyGroup>
   </Target>
+  
+  <!-- Suppress generating AssemblyInfo file. -->
+  <Target Name="GenerateAssemblyInfo" />
 </Project>

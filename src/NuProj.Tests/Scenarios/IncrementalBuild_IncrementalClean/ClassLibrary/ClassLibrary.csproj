@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FEE2829C-B9D6-4E3C-8E46-45B9EFCDEA80}</ProjectGuid>
+    <ProjectGuid>{B48B6D77-CE87-4E33-8C7D-2B60E3A7CE30}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ClassLibrary</RootNamespace>
@@ -43,19 +43,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  -->
-  <Target Name="AfterClean">
-    <Warning Text="CsProj dependency Target Called: Clean" />
-  </Target>
   <Target Name="AfterBuild">
-    <Warning Text="CsProj dependency Target Called: Build" />
   </Target>
-  <Target Name="AfterRebuild">
-    <Warning Text="CsProj dependency Target Called: Rebuild" />
-  </Target>
-
+  -->
 </Project>

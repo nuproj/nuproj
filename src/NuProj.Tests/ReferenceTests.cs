@@ -101,7 +101,7 @@ namespace NuProj.Tests
         [InlineData("PackageToLib", new[] { @"lib\net45\Tool.dll" }, new string[0])]
         [InlineData("PackageToRoot", new[] { @"Tool.dll", @"Tool.pdb" }, new string[0])]
         [InlineData("PackageToTools", new[] { @"tools\Tool.dll" }, new string[0])]
-        [InlineData("PackageDependencyToTools", new[] { @"tools\Tool.dll" }, new[] { "PackageToTools (>= 1.0.0)" })]
+        [InlineData("PackageDependencyToTools", new[] { @"tools\Tool.dll" }, new[] { "PackageToToolsDependency (>= 1.0.0)" })]
         [InlineData("PackageClosureToTools", new[] { @"tools\Tool.dll", @"tools\ToolWithClosure.dll" }, new string[0])]
         [InlineData("PackageToContent", new[] { @"content\Tool.dll", @"content\Tool.pdb" }, new string[0])]
         [InlineData("PackageNuGetDependencyToTools", new[] { @"tools\System.Collections.Immutable.dll", @"tools\ToolWithDependency.dll" }, new string[0])]
@@ -128,6 +128,7 @@ namespace NuProj.Tests
                 @"lib\net451\ClassLibrary.dll",
                 @"lib\net451\ClassLibrary.pdb",
                 @"lib\net451\ClassLibrary.xml",
+                @"lib\net451\ClassLibrary.XmlSerializers.dll",
                 @"lib\net451\de-DE\ClassLibrary.resources.dll",
                 @"lib\net451\sk-SK\ClassLibrary.resources.dll",
             };
