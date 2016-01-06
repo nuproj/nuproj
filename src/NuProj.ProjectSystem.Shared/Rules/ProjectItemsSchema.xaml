@@ -7,6 +7,9 @@
     <ItemType Name="Content"
               DisplayName="Content" />
 
+    <ItemType Name="ContentFile"
+              DisplayName="ContentFile" />
+
     <ContentType Name="Text"
                  DisplayName="Text file"
                  ItemType="Content">

@@ -72,6 +72,9 @@
         <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\content.xaml" />
       </Component>
       <Component>
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\ContentFile.xaml" />
+      </Component>
+      <Component>
         <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\folder.xaml" />
       </Component>
       <Component>

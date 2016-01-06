@@ -61,6 +61,7 @@
     <Compile Include="Infrastructure\Assets.cs" />
     <Compile Include="BasicTests.cs" />
     <Compile Include="Infrastructure\Extensions.cs" />
+    <Compile Include="Infrastructure\ManifestContentFilesComparer.cs" />
     <Compile Include="Infrastructure\ManifestDependencyComparer.cs" />
     <Compile Include="Infrastructure\ManifestDependencySetComparer.cs" />
     <Compile Include="Infrastructure\ManifestFileComparer.cs" />

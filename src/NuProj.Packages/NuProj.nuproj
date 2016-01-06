@@ -57,6 +57,9 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
     <Content Include="$(BasePath)raw\Additional\Rules\content.xaml">
       <Link>tools\Rules\content.xaml</Link>
     </Content>
+    <Content Include="$(BasePath)raw\Additional\Rules\ContentFile.xaml">
+      <Link>tools\Rules\ContentFile.xaml</Link>
+    </Content>
     <Content Include="$(BasePath)raw\Additional\Rules\folder.xaml">
       <Link>tools\Rules\folder.xaml</Link>
     </Content>

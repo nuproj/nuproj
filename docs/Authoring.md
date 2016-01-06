@@ -125,6 +125,23 @@ directory by using `Link` metadata to specify file path in output package.
 </ItemGroup>
 ```
 
+To package content v2 files, use `ContentFile` item type. This item type supports 
+`PackageBuildAction`, `PackageCopyToOutput` and `PackageFlatten` metadata. 
+You can use `Link` metadata same way as for `Content` item type, but in any case 
+file path in output package must be under `contentFiles` directory.
+
+```xml
+<ItemGroup>
+  <ContentFile Include="contentFiles\cs\Example.cs">
+	<ContentFileBuildAction>Compile</ContentFileBuildAction>
+  </ContentFile>
+  <ContentFile Include="..\common\icon.png">
+    <Link>contentFiles\images\icon.png</Link>
+	<ContentFileBuildAction>EmbeddedResource</ContentFileBuildAction>
+  </ContentFile>
+</ItemGroup>
+```
+
 ## Using Project References
 
 You can reference other projects to automatically include their output in 

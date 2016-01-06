@@ -15,7 +15,16 @@
         public const string TargetFramework = "TargetFramework";
 
         public const string TargetFrameworkMoniker = "TargetFrameworkMoniker";
-        
+
         public const string Version = "Version";
+
+        public static class ContentFile
+        {
+            public const string BuildAction = "PackageBuildAction";
+
+            public const string CopyToOutput = "PackageCopyToOutput";
+
+            public const string Flatten = "PackageFlatten";
+        }
     }
 }

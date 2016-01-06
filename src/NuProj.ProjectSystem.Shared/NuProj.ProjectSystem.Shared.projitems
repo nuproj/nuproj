@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Rules\content.xaml" />
+    <None Include="$(MSBuildThisFileDirectory)Rules\ContentFile.xaml" />
     <None Include="$(MSBuildThisFileDirectory)Rules\folder.xaml" />
     <None Include="$(MSBuildThisFileDirectory)Rules\general.browseobject.xaml" />
     <None Include="$(MSBuildThisFileDirectory)Rules\general.xaml" />

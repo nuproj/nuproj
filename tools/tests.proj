@@ -2,7 +2,7 @@
 
   <Import Project="build.props" />
 
-  <UsingTask TaskName="xunit" AssemblyFile="$(SourceDir)packages\xunit.runner.msbuild.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.runner.msbuild.dll" />
+  <UsingTask TaskName="xunit" AssemblyFile="$(NuGetPackageRoot)xunit.runner.msbuild\2.1.0\build\portable-net45+win8+wp8+wpa81\xunit.runner.msbuild.dll" />
 
   <ItemGroup>
     <TestAssembly Include="$(OutDir)raw\*Tests*.dll" />
@@ -14,7 +14,7 @@
   <Target Name="Build">
     <xunit Assemblies="@(TestAssembly)"
            ParallelizeTestCollections="False"
-           Verbose="True" />
+           Reporter="verbose" />
   </Target>
 
   <Target Name="Rebuild"
