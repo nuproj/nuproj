@@ -48,13 +48,13 @@
   <Target Name="BeforeBuild">
   </Target>
   -->
-  <Target Name="Clean">
+  <Target Name="AfterClean" Condition="'$(CheckTarget)' == 'true'">
     <Error Text="Dependency Target Called: Clean" />
   </Target>
-  <Target Name="Build">
+  <Target Name="AfterBuild" Condition="'$(CheckTarget)' == 'true'">
     <Error Text="Dependency Target Called: Build" />
   </Target>
-  <Target Name="Rebuild">
+  <Target Name="AfterRebuild" Condition="'$(CheckTarget)' == 'true'">
     <Error Text="Dependency Target Called: Rebuild" />
   </Target>
 </Project>

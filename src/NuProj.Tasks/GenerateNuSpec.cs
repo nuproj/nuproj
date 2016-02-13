@@ -67,6 +67,9 @@ namespace NuProj.Tasks
 
         public ITaskItem[] Files { get; set; }
 
+        [Output]
+        public ITaskItem[] FilesWritten { get; set; }
+
         public override bool Execute()
         {
             try
@@ -89,6 +92,7 @@ namespace NuProj.Tasks
             if (!IsDifferent(manifest))
             {
                 Log.LogMessage("Skipping generation of .nuspec because contents are identical.");
+                FilesWritten = new[] { new TaskItem(OutputFileName) };
                 return;
             }
 
@@ -101,6 +105,7 @@ namespace NuProj.Tasks
             using (var file = File.Create(OutputFileName))
             {
                 manifest.Save(file, false);
+                FilesWritten = new[] { new TaskItem(OutputFileName) };
             }
         }
 

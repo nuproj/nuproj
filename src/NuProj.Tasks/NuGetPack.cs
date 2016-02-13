@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -22,6 +23,12 @@ namespace NuProj.Tasks
         public bool ExcludeEmptyDirectories { get; set; }
 
         public string Properties { get; set; }
+
+        [Output]
+        public ITaskItem[] OutputPackage { get; private set; }
+
+        [Output]
+        public ITaskItem[] OutputSymbolsPackage { get; private set; }
 
         protected override string ToolName
         {
@@ -63,6 +70,20 @@ namespace NuProj.Tasks
 
         protected override void LogEventsFromTextOutput(string singleLine, MessageImportance messageImportance)
         {
+            if (singleLine.StartsWith("Successfully created package"))
+            {
+                var outputPackage = singleLine.Split('\'').Skip(1).First();
+                var outputPackageItem = new TaskItem(outputPackage);
+                if (outputPackage.EndsWith(".symbols.nupkg", StringComparison.OrdinalIgnoreCase))
+                {
+                    OutputSymbolsPackage = new[] { outputPackageItem };
+                }
+                else
+                {
+                    OutputPackage = new[] { outputPackageItem };
+                }
+            }
+
             if (messageImportance == MessageImportance.High)
             {
                 Log.LogError(singleLine);

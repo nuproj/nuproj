@@ -84,5 +84,36 @@ namespace NuProj.Tests
             Assert.Equal(expectedDescription1, actualDescription1);
             Assert.Equal(expectedDescription2, actualDescription2);
         }
+
+        [Fact]
+        public async Task IncrementalBuild_IncrementalClean()
+        {
+            var solutionPath = Assets.GetScenarioSolutionPath("IncrementalBuild_IncrementalClean");
+            var projectPath = Path.GetDirectoryName(solutionPath);
+
+            const string expectedVersion1 = "2.0.0";
+            const string expectedVersion2 = "3.0.0";
+
+            // Perform first build
+
+            var properties = MSBuild.Properties.Default.Add("Version", expectedVersion1);
+            var result1 = await MSBuild.ExecuteAsync(solutionPath, "Build", properties);
+            result1.AssertSuccessfulBuild();
+
+            var package1 = NuPkg.GetPackages(projectPath).Single();
+            var actualVersion1 = package1.Version.ToString();
+
+            // Perform second build
+
+            var modifiedProperties = properties.SetItem("Version", expectedVersion2);
+            var result2 = await MSBuild.ExecuteAsync(solutionPath, "Build", modifiedProperties);
+            result2.AssertSuccessfulBuild();
+
+            var package2 = NuPkg.GetPackages(projectPath).Single();
+            var actualVersion2 = package2.Version.ToString();
+
+            Assert.Equal(expectedVersion1, actualVersion1);
+            Assert.Equal(expectedVersion2, actualVersion2);
+        }
     }
 }

@@ -155,17 +155,17 @@ dependency.
 
 For a given a target platform, NuGet will add references to all the libraries in
 the corresponding lib folder. You can override this behavior by using the
-`Reference` item:
+`LibraryReference` item:
 
 ```xml
 <ItemGroup>
-  <Reference Include="HelloWorld.dll" />
+  <LibraryReference Include="HelloWorld.dll" />
 </ItemGroup>
 ```
 
-Please note that the reference item doesn't support the `TargetFramework`
+Please note that the `LibraryReference` item doesn't support the `TargetFramework`
 metadata. Instead, NuGet will only add the references if the file is also
-packaged in the corresponding lib folder. If it's not the reference is simply
+packaged in the corresponding lib folder. If it's not, the reference is simply
 ignored. In other words, the target framework is already controlled by the fact
 that the file might or might not be in the corresponding lib folder.
 

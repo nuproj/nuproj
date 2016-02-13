@@ -31,6 +31,7 @@ namespace NuProj.Tests.Infrastructure
         {
             return Directory.GetFiles(projectDirectory, "*.nupkg", SearchOption.AllDirectories)
                             .Where(f => !IsSymbolPackage(f) && !IsExternalPackage(f))
+                            .Where(f=> !f.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}"))
                             .Select(GetPackage)
                             .ToArray();
         }
