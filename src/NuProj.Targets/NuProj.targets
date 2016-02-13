@@ -43,7 +43,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Language>NuGet</Language>
     <OutputType>package</OutputType>
     <TargetExt>.nupkg</TargetExt>
     <AssemblyName>$(Id)</AssemblyName>
@@ -150,7 +149,7 @@
     <ProjectReference>
       <PackageDirectory>Lib</PackageDirectory>
       <TargetFramework></TargetFramework>
-      <ProjectOutputGroups>$(ProjectOutputGroups)</ProjectOutputGroups>
+      <PackageOutputGroups>$(PackageOutputGroups)</PackageOutputGroups>
     </ProjectReference>
   </ItemDefinitionGroup>
 
@@ -295,7 +294,7 @@
 
         <!-- Ask for the output and all dependencies. -->
 
-        <MSBuild Targets="%(_NonNuProjProjectReference.ProjectOutputGroups)"
+        <MSBuild Targets="%(_NonNuProjProjectReference.PackageOutputGroups)"
                  Projects="@(_NonNuProjProjectReference)"
                  Properties="%(_NonNuProjProjectReference.SetConfiguration); %(_NonNuProjProjectReference.SetPlatform)">
             <Output TaskParameter="TargetOutputs"

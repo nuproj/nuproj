@@ -32,7 +32,7 @@
   -->
 
   <PropertyGroup>
-    <ProjectOutputGroups>
+    <PackageOutputGroups>
       BuiltProjectOutputGroup;
       BuiltProjectOutputGroupDependencies;
       DebugSymbolsProjectOutputGroup;
@@ -43,7 +43,7 @@
       SatelliteDllsProjectOutputGroupDependencies;
       SGenFilesOutputGroup;
       SGenFilesOutputGroupDependencies;
-    </ProjectOutputGroups>
+    </PackageOutputGroups>
   </PropertyGroup>
 
 </Project>
