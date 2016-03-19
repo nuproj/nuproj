@@ -126,6 +126,13 @@
                                   Condition="'$(GenerateSymbolPackage)' == 'true'">
         <TargetPath>$(TargetName).symbols$(TargetExt)</TargetPath>
       </IntermediateSymbolsPackage>
+
+      <BuiltProjectOutputGroupKeyOutput Remove="@(BuiltProjectOutputGroupKeyOutput)" />
+      <BuiltProjectOutputGroupKeyOutput Include="@(IntermediateAssembly->'%(FullPath)')">
+        <IsKeyOutput>true</IsKeyOutput>
+        <FinalOutputPath>$(TargetPath)</FinalOutputPath>
+        <TargetPath>$(TargetFileName)</TargetPath>
+      </BuiltProjectOutputGroupKeyOutput>
     </ItemGroup>
   </Target>
 
