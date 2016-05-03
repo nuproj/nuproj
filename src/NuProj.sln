@@ -29,15 +29,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.ProjectSystem.14", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5DBF6396-1E9A-402A-B70E-92EECEE58ED8}"
 	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
 		..\version.json = ..\version.json
 	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NuProj.ProjectSystem.Shared", "NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.shproj", "{F4F9654A-A6E3-4D7F-9DB7-57EB0DDDFCC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.ProjectSystem.15", "NuProj.ProjectSystem.15\NuProj.ProjectSystem.15.csproj", "{346C4C43-FA23-4A41-9455-2B2B03CBF264}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{f75dc9fd-cc16-4f24-a054-bd27dfff885c}*SharedItemsImports = 4
 		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{3c115530-0fb2-47b6-a6d5-9eb33611a394}*SharedItemsImports = 4
+		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{346c4c43-fa23-4a41-9455-2b2b03cbf264}*SharedItemsImports = 4
 		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{f4f9654a-a6e3-4d7f-9db7-57eb0dddfcc6}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +99,14 @@ Global
 		{F75DC9FD-CC16-4F24-A054-BD27DFFF885C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F75DC9FD-CC16-4F24-A054-BD27DFFF885C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F75DC9FD-CC16-4F24-A054-BD27DFFF885C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{346C4C43-FA23-4A41-9455-2B2B03CBF264}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{346C4C43-FA23-4A41-9455-2B2B03CBF264}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{346C4C43-FA23-4A41-9455-2B2B03CBF264}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{346C4C43-FA23-4A41-9455-2B2B03CBF264}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{346C4C43-FA23-4A41-9455-2B2B03CBF264}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{346C4C43-FA23-4A41-9455-2B2B03CBF264}.Release|Any CPU.Build.0 = Release|Any CPU
+		{346C4C43-FA23-4A41-9455-2B2B03CBF264}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{346C4C43-FA23-4A41-9455-2B2B03CBF264}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

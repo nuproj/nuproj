@@ -5,9 +5,11 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging;
 #endif
 using Microsoft.VisualStudio.ProjectSystem;
+#if Dev12 || Dev14
 using Microsoft.VisualStudio.ProjectSystem.Designers;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Utilities.Designers;
+#endif
 
 namespace NuProj.ProjectSystem
 {

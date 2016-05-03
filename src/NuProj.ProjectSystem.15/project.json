@@ -1,0 +1,15 @@
+﻿{
+  "dependencies": {
+    "Microsoft.VisualStudio.ProjectSystem": "15.0.183-pre",
+    "Microsoft.VisualStudio.ProjectSystem.SDK": "15.0.183-pre",
+    "Microsoft.VisualStudio.SDK.VsixSuppression": "14.1.25",
+    "Microsoft.VisualStudio.Shell.15.0": "15.0.25123-Dev15Preview",
+    "Nerdbank.GitVersioning": "1.4.19"
+  },
+  "frameworks": {
+    "net46": { }
+  },
+  "runtimes": {
+    "win": { }
+  }
+}

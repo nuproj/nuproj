@@ -5,7 +5,9 @@ using Microsoft.Collections.Immutable;
 #else
 using System.Collections.Immutable;
 #endif
+#if Dev12 || Dev14
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+#endif
 
 namespace NuProj.ProjectSystem
 {
