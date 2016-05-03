@@ -15,6 +15,9 @@ TestResults
 
 # NuGet packages
 packages
+*.nuget.props
+*.nuget.targets
+project.lock.json
 
 # Roslyn cache
 *.ide/
