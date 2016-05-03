@@ -213,30 +213,6 @@
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\NuProj.ProjectSystem.12\NuProjCapabilities.cs">
-      <Link>NuProjCapabilities.cs</Link>
-    </Compile>
-    <Compile Include="..\NuProj.ProjectSystem.12\NuProjConfiguredProject.cs">
-      <Link>NuProjConfiguredProject.cs</Link>
-    </Compile>
-    <Compile Include="..\NuProj.ProjectSystem.12\NuProjPackage.cs">
-      <Link>NuProjPackage.cs</Link>
-    </Compile>
-    <Compile Include="..\NuProj.ProjectSystem.12\NuProjProjectCapabilitiesProvider.cs">
-      <Link>NuProjProjectCapabilitiesProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\NuProj.ProjectSystem.12\NuProjProjectProperties.cs">
-      <Link>NuProjProjectProperties.cs</Link>
-    </Compile>
-    <Compile Include="..\NuProj.ProjectSystem.12\NuProjProjectTreeModifier.cs">
-      <Link>NuProjProjectTreeModifier.cs</Link>
-    </Compile>
-    <Compile Include="..\NuProj.ProjectSystem.12\NuProjUnconfiguredProject.cs">
-      <Link>NuProjUnconfiguredProject.cs</Link>
-    </Compile>
-    <Compile Include="..\NuProj.ProjectSystem.12\NuProjValidProjectReferenceChecker.cs">
-      <Link>NuProjValidProjectReferenceChecker.cs</Link>
-    </Compile>
     <Compile Include="..\NuProj.ProjectSystem.12\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
@@ -269,35 +245,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <XamlPropertyRule Include="..\NuProj.ProjectSystem.12\Rules\content.xaml">
-      <Link>Rules\content.xaml</Link>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="..\NuProj.ProjectSystem.12\Rules\folder.xaml">
-      <Link>Rules\folder.xaml</Link>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="..\NuProj.ProjectSystem.12\Rules\general.browseobject.xaml">
-      <Link>Rules\general.browseobject.xaml</Link>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="..\NuProj.ProjectSystem.12\Rules\general.xaml">
-      <Link>Rules\general.xaml</Link>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="..\NuProj.ProjectSystem.12\Rules\none.xaml">
-      <Link>Rules\none.xaml</Link>
-    </XamlPropertyRule>
-    <None Include="..\NuProj.ProjectSystem.12\Rules\ProjectItemsSchema.xaml">
-      <Link>Rules\ProjectItemsSchema.xaml</Link>
-    </None>
-    <XamlPropertyRule Include="..\NuProj.ProjectSystem.12\Rules\ProjectReference.xaml">
-      <Link>Rules\ProjectReference.xaml</Link>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="..\NuProj.ProjectSystem.12\Rules\ResolvedProjectReference.xaml">
-      <Link>Rules\ResolvedProjectReference.xaml</Link>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="..\NuProj.ProjectSystem.12\Rules\scc.xaml">
-      <Link>Rules\scc.xaml</Link>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="..\NuProj.ProjectSystem.12\Resources.resx">
       <Link>Resources.resx</Link>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -318,6 +265,7 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
+  <Import Project="..\NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems" Label="Shared" />
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>

@@ -153,21 +153,13 @@
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="NuProjCapabilities.cs" />
-    <Compile Include="NuProjValidProjectReferenceChecker.cs" />
-    <Compile Include="NuProjConfiguredProject.cs" />
-    <Compile Include="NuProjUnconfiguredProject.cs" />
-    <Compile Include="NuProjProjectCapabilitiesProvider.cs" />
-    <Compile Include="NuProjProjectProperties.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\GlobalSuppressions.cs" />
-    <Compile Include="NuProjPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="NuProjProjectTreeModifier.cs" />
     <None Include="packages.config" />
     <None Include="Templates\Projects\NuProj\NuProj.nuproj">
       <SubType>Designer</SubType>
@@ -198,58 +190,7 @@
     </VSTemplate>
     <None Include="Templates\Projects\NuProj\Readme.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="Rules\general.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="Rules\general.browseobject.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="Rules\folder.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Rules\ProjectItemsSchema.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="Rules\content.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="Rules\none.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="Rules\scc.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="Rules\ProjectReference.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="Rules\ResolvedProjectReference.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
+  <Import Project="..\NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems" Label="Shared" />
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>
