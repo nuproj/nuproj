@@ -1,12 +1,11 @@
-﻿using System;
+﻿#if Dev12 || Dev14
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem;
-#if Dev12 || Dev14
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-#endif
 
 namespace NuProj.ProjectSystem
 {
@@ -29,3 +28,4 @@ namespace NuProj.ProjectSystem
         }
     }
 }
+#endif

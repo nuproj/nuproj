@@ -13,17 +13,27 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities.Designers;
 
 namespace NuProj.ProjectSystem
 {
+#if Dev12 || Dev14
     [Export(typeof(IProjectTreeModifier))]
+#else
+    [Export(typeof(IProjectTreePropertiesProvider))]
+#endif
 #if Dev12
     [PartMetadata(ProjectCapabilities.Requires, NuProjCapabilities.NuProj)]
 #else
     [AppliesTo(NuProjCapabilities.NuProj)]
 #endif
-    internal sealed class NuProjProjectTreeModifier : IProjectTreeModifier
+    internal sealed class NuProjProjectTreeModifier
+#if Dev12 || Dev14
+        : IProjectTreeModifier
+#else
+        : IProjectTreePropertiesProvider
+#endif
     {
         [Import]
         public UnconfiguredProject UnconfiguredProject { get; set; }
 
+#if Dev12 || Dev14
         public IProjectTree ApplyModifications(IProjectTree tree, IProjectTreeProvider projectTreeProvider)
         {
 #if Dev12
@@ -36,5 +46,17 @@ namespace NuProj.ProjectSystem
 
             return tree;
         }
+#else
+        public void CalculatePropertyValues(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues)
+        {
+            if (propertyValues != null)
+            {
+                if (propertyValues.Flags.Contains(ProjectTreeFlags.Common.ProjectRoot))
+                {
+                    propertyValues.Icon = KnownMonikers.NuGet.ToProjectSystemType();
+                }
+            }
+        }
+#endif
     }
 }

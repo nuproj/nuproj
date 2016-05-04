@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.VisualStudio.ProjectSystem;
 
 #if Dev12
 using Microsoft.Collections.Immutable;
