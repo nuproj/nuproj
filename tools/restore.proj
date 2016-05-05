@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Package Include="$(MSBuildThisFileDirectory)..\src\*\packages.config" />
+    <Solution Include="$(MSBuildThisFileDirectory)..\src\*.sln" />
   </ItemGroup>
 
   <UsingTask TaskName="DownloadFile" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
@@ -32,7 +33,7 @@
   <Target Name="DownloadNuGetExe"
           Condition="!Exists($(NuGetToolPath))">
     <DownloadFile Condition=""
-                  Address="http://nuget.org/nuget.exe"
+                  Address="https://dist.nuget.org/win-x86-commandline/v3.3.0/nuget.exe"
                   FileName="$(NuGetToolPath)" />
     <Message Importance="High"
              Text="NuGet.exe -> $(NuGetToolPath)" />
@@ -48,7 +49,8 @@
 
   <Target Name="Build"
           DependsOnTargets="DownloadNuGetExe">
-    <Exec Command="&quot;$(NuGetToolPath)&quot; install &quot;%(Package.FullPath)&quot; -o &quot;$(PackagesDir)\&quot;" />
+    <Exec Command='"$(NuGetToolPath)" install "%(Package.FullPath)" -o "$(PackagesDir)\"' />
+    <Exec Command='"$(NuGetToolPath)" restore "%(Solution.Identity)"' />
   </Target>
 
   <Target Name="Rebuild"

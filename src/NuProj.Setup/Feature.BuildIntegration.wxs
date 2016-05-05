@@ -32,7 +32,7 @@
 
     <ComponentGroup Id="MSBuildIntegration">
       <Component Directory="INSTALLDIR">
-        <File Source="$(var.SolutionDir)packages\NuGet.CommandLine.3.3.0\tools\NuGet.exe" />
+        <File Source="$(env.UserProfile)\.nuget\packages\NuGet.CommandLine\3.3.0\tools\NuGet.exe" />
       </Component>
       <Component Directory="INSTALLDIR">
         <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuProj.targets" />
@@ -60,31 +60,31 @@
     </ComponentGroup>
     <ComponentGroup Id="Rules" Directory="Rules">
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\content.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\content.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\folder.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\folder.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\general.browseobject.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\general.browseobject.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\general.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\general.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\none.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\none.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\ProjectItemsSchema.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\ProjectItemsSchema.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\ProjectReference.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\ProjectReference.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\ResolvedProjectReference.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\ResolvedProjectReference.xaml" />
       </Component>
       <Component>
-        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.12\Rules\scc.xaml" />
+        <File Source="$(var.SolutionDir)NuProj.ProjectSystem.Shared\Rules\scc.xaml" />
       </Component>
     </ComponentGroup>
   </Fragment>
