@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+#if Dev12 || Dev14
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+#endif
 
 namespace NuProj.ProjectSystem
 {

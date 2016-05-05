@@ -8,7 +8,9 @@ namespace NuProj.ProjectSystem
     using System.Threading.Tasks;
     using Microsoft.VisualStudio.ProjectSystem;
     using Microsoft.VisualStudio.ProjectSystem.Properties;
+#if Dev12 || Dev14
     using Microsoft.VisualStudio.ProjectSystem.Utilities;
+#endif
 
     [Export]
     [AppliesTo(NuProjCapabilities.NuProj)]

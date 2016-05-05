@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if Dev12 || Dev14
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
@@ -27,3 +28,4 @@ namespace NuProj.ProjectSystem
         }
     }
 }
+#endif

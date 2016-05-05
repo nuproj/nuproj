@@ -9,14 +9,22 @@ using Microsoft.Collections.Immutable;
 using System.Collections.Immutable;
 #endif
 using Microsoft.VisualStudio.ProjectSystem;
+#if Dev12 || Dev14
 using Microsoft.VisualStudio.ProjectSystem.Designers;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+#else
+using Microsoft.VisualStudio.ProjectSystem.References;
+#endif
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace NuProj.ProjectSystem
 {
     [Export(typeof(IValidProjectReferenceChecker))]
+#if Dev12 || Dev14
     [OrderPrecedence(1000)]
+#else
+    [Order(1000)]
+#endif
 #if Dev12
     [PartMetadata(ProjectCapabilities.Requires, NuProjCapabilities.NuProj)]
 #else
