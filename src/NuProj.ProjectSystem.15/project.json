@@ -7,6 +7,7 @@
     "Microsoft.VisualStudio.Shell.Interop.11.0": "11.0.61030",
     "Microsoft.VisualStudio.ImageCatalog": "15.0.25123-Dev15Preview",
     "Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime": "14.0.23205",
+    "Microsoft.VisualStudio.SDK.EmbedInteropTypes": "14.1.2",
     "Nerdbank.GitVersioning": "1.4.19"
   },
   "frameworks": {
