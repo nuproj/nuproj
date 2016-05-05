@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Wix.3.11.0.321-pre\build\wix.props"/>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -8,8 +9,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>NuProj</OutputName>
     <OutputType>Package</OutputType>
-    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">..\packages\WiX.Toolset.3.9.1208.0\tools\wix\Wix.targets</WixTargetsPath>
-    <WixInstallPath>$(MSBuildProjectDirectory)\..\packages\WiX.Toolset.3.9.1208.0\tools\wix</WixInstallPath>
+    <SolutionDir>..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -23,12 +23,21 @@
     <SuppressSpecificWarnings>1076</SuppressSpecificWarnings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Feature.VS15Integration.wxs" />
     <Compile Include="Feature.VS14Integration.wxs" />
     <Compile Include="Feature.BuildIntegration.wxs" />
     <Compile Include="Feature.VS12Integration.wxs" />
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NuProj.ProjectSystem.15\NuProj.ProjectSystem.15.csproj">
+      <Name>NuProj.ProjectSystem.15</Name>
+      <Project>{346c4c43-fa23-4a41-9455-2b2b03cbf264}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\NuProj.Tasks\NuProj.Tasks.csproj">
       <Name>NuProj.Tasks</Name>
       <Project>{187c3685-1ec7-4dce-933b-8f7a43d5a481}</Project>
