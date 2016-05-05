@@ -1,0 +1,14 @@
+﻿{
+  "dependencies": {
+    "Microsoft.Web.Xdt": "2.1.1",
+    "Nerdbank.GitVersioning": "1.4.19",
+    "NuGet.CommandLine": "3.3.0",
+    "NuGet.Core": "2.8.6"
+  },
+  "frameworks": {
+    "net451": { }
+  },
+  "runtimes": {
+    "win": { }
+  }
+}
