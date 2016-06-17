@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="267c66da-0c67-4933-9ae7-a20c53608e49" Version="|NuProj.ProjectSystem.14;GetBuildVersion|" Language="en-US" Publisher="NuGet" />
+    <Identity Id="NuProj.14" Version="|NuProj.ProjectSystem.14;GetBuildVersion|" Language="en-US" Publisher="NuGet" />
     <DisplayName>NuGet Package Project</DisplayName>
     <Description xml:space="preserve">Provides a NuGet package project (*.nuproj).</Description>
     <MoreInfo>http://bit.ly/NuProjVS</MoreInfo>
