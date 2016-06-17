@@ -59,8 +59,8 @@ In order for MSBuild to find the `NuProj.targets` that NuProj files depend on
 you need to change the `NuProjPath` property in your .nuproj file:
 
 ```xml
-<PropertyGroup Condition="'$(NuGetPackageRoot)' == ''">
-  <NuGetPackageRoot>$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+<PropertyGroup>
+  <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == ''">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
   <NuProjPath>$(NuGetPackageRoot)NuProj\0.10.48-beta-gea4a31bbc5\tools\</NuProjPath>
 </PropertyGroup>
 <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
