@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="267c66da-0c67-4933-9ae7-a20c53608e49" Version="|NuProj.ProjectSystem.15;GetBuildVersion|" Language="en-US" Publisher="NuGet" />
-    <DisplayName>NuGet Package Project</DisplayName>
+    <Identity Id="NuProj.15" Version="|NuProj.ProjectSystem.15;GetBuildVersion|" Language="en-US" Publisher="NuGet" />
+    <DisplayName>NuGet Package Project for Visual Studio "15"</DisplayName>
     <Description xml:space="preserve">Provides a NuGet package project (*.nuproj).</Description>
     <MoreInfo>http://bit.ly/NuProjVS</MoreInfo>
     <Icon>NuProj.ico</Icon>
