@@ -2,7 +2,7 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
     <Identity Id="NuProj.14" Version="|NuProj.ProjectSystem.14;GetBuildVersion|" Language="en-US" Publisher="NuGet" />
-    <DisplayName>NuGet Package Project</DisplayName>
+    <DisplayName>NuGet Package Project for Visual Studio 2015</DisplayName>
     <Description xml:space="preserve">Provides a NuGet package project (*.nuproj).</Description>
     <MoreInfo>http://bit.ly/NuProjVS</MoreInfo>
     <Icon>NuProj.ico</Icon>
