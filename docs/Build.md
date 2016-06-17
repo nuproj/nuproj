@@ -66,10 +66,10 @@ you need to change the `NuProjPath` property in your .nuproj file:
 <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
  ```
 
-## Arrange for a package restore before build
+## Arrange for a package restore before build or open the project
 
-Prior to starting a build (either locally or in a cloud build) you must ensure NuGet
-has restored packages for your NuProj. Sometimes restoring packages for the solution
+Prior to opening the project or starting a build (either locally or in a cloud build) you must
+ensure NuGet has restored packages for your NuProj. Sometimes restoring packages for the solution
 will be sufficient. When it is not, restore packages for your NuProj's project.json directly:
 
 ```
