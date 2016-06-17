@@ -3,7 +3,7 @@
     "VSSDK.Shell.12": "12.0.0",
     "Microsoft.VisualStudio.Shell.Interop.11.0": "11.0.61030",
     "Microsoft.VisualStudio.Validation": "12.0.0",
-    "Nerdbank.GitVersioning": "1.4.19"
+    "Nerdbank.GitVersioning": "1.4.41"
   },
   "frameworks": {
     "net45": { }

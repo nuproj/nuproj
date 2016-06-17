@@ -1,5 +1,8 @@
 version: 1.0.{build}
 os: Visual Studio 2015
+cache:
+ - '%USERPROFILE%\.nuget\packages -> **\project.json'
+ - 'src\packages -> **\packages.config'
 build_script:
 - cmd: '"%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe" /nologo /m /v:m /nr:false /flp:verbosity=detailed /p:SkipTests=True'
 artifacts:
