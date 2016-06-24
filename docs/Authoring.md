@@ -70,8 +70,8 @@ http://docs.nuget.org/consume/command-line-reference#excluding-development-depen
 
 If a project referenced by NuProj uses a NuGet package, it will be added as a dependency automatically. To prevent that NuGet package from being added as a dependency, you can mark is as a development dependency. Example (packages.config):
 
-```
-  <package id="NuProj.Common" version="0.10.4-beta" targetFramework="net452" developmentDependency="true" />
+```xml
+<package id="NuProj.Common" version="0.10.4-beta" targetFramework="net452" developmentDependency="true" />
 ```
 
 ## Framework Assemblies
