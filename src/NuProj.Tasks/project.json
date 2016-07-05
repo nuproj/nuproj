@@ -2,8 +2,8 @@
   "dependencies": {
     "Microsoft.Web.Xdt": "2.1.1",
     "Nerdbank.GitVersioning": "1.4.41",
-    "NuGet.CommandLine": "3.3.0",
-    "NuGet.Core": "2.8.6"
+    "NuGet.CommandLine": "3.4.3",
+    "NuGet.Core": "2.11.1"
   },
   "frameworks": {
     "net451": { }
