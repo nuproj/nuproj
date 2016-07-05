@@ -14,5 +14,6 @@ namespace NuProj.Tasks
         Tools,
         Content,
         Build,
+        Analyzers
     }
 }
