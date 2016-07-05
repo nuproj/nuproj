@@ -86,8 +86,8 @@ namespace NuProj.Tests
             {
                     "1.1.20-beta",
                     "1.0.12-alpha",
-                    "[0.2, 1.0]",
-                    "[0.2, 1.0]",
+                    "[0.2.0, 1.0.0]",
+                    "[0.2.0, 1.0.0]",
             };
             var versionSpecs = package.DependencySets
                 .SelectMany(x => x.Dependencies)
