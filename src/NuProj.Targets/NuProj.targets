@@ -156,6 +156,7 @@
     <ProjectReference>
       <PackageDirectory>Lib</PackageDirectory>
       <TargetFramework></TargetFramework>
+      <TargetSubdirectory></TargetSubdirectory>
       <PackageOutputGroups>$(PackageOutputGroups)</PackageOutputGroups>
     </ProjectReference>
   </ItemDefinitionGroup>
@@ -233,6 +234,7 @@
       <_ProjectReferenceClosure Include="@(_ProjectReferenceClosureWithoutMetadata)">
         <DependencyKind>Indirect</DependencyKind>
         <PackageDirectory>%(_MSBuildProjectReferenceExistent.PackageDirectory)</PackageDirectory>
+        <TargetSubdirectory>%(_MSBuildProjectReferenceExistent.TargetSubdirectory)</TargetSubdirectory>
       </_ProjectReferenceClosure>
       <!-- Now add the direct references, preserving metadata -->
       <_ProjectReferenceClosure Include="@(_MSBuildProjectReferenceExistent->'%(FullPath)')">

@@ -130,8 +130,17 @@ directory by using `Link` metadata to specify file path in output package.
 You can reference other projects to automatically include their output in 
 package. By default the project is considered to be a library and will be
 put into `lib` folder. The package directory can be controlled by using 
-`PackageDirectory` metadata. Recognized values are: `Lib`, `Tools`, `Build`,
-`Content` and `Root`. 
+`PackageDirectory` and `TargetSubdirectory` metadata. Recognized values are: 
+`Analyzers`, `Build`, `Content`, `Lib`, `Root` and `Tools`. 
+
+| PackageDirectory | Result file path |
+| --- | --- |
+| Analyzers | analyzers/dotnet/`TargetSubdirectory`/`TargetPath` |
+| Build | build/`TargetSubdirectory`/`TargetPath` |
+| Content | content/`TargetSubdirectory`/`TargetPath` |
+| Lib | lib/`TargetFramework`/`TargetSubdirectory`/`TargetPath` |
+| Root | `TargetSubdirectory`/`TargetPath` |
+| Tools | tools/`TargetSubdirectory`/`TargetPath` |
 
 ```xml
 <ItemGroup>
@@ -144,6 +153,11 @@ put into `lib` folder. The package directory can be controlled by using
   <!-- Package output of Tasks.csproj to build directory. -->
   <ProjectReference Include="..\Tasks\Tasks.csproj">
     <PackageDirectory>Build</PackageDirectory>
+  </ProjectReference>
+  <!-- Package output of Tasks.csproj to analyzers\dotnet\cs directory. -->
+  <ProjectReference Include="..\Tasks\Tasks.csproj">
+    <PackageDirectory>Analyzers</PackageDirectory>
+    <TargetSubdirectory>cs</TargetSubdirectory>
   </ProjectReference>
 </ItemGroup>
 ```

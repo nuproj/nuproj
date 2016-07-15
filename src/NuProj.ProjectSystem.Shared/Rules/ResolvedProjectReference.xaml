@@ -45,7 +45,18 @@
         </EnumProperty.DataSource>
         <EnumValue Name="Lib" DisplayName="lib" />
         <EnumValue Name="Tools" DisplayName="tools" />
+        <EnumValue Name="Analyzers" DisplayName="analyzers" />
     </EnumProperty>
+
+    <StringProperty Name="TargetSubdirectory"
+                    DisplayName="Target subdirectory"
+                    Category="Advanced"
+                    Description="The target subdirectory (usually under Package directory + Target framework) to receive the output of this reference.">
+        <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+        </EnumProperty.DataSource>
+    </StringProperty>
+
 
     <StringProperty Name="Version"
                     ReadOnly="true"

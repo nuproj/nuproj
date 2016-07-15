@@ -44,11 +44,15 @@ namespace NuProj.Tasks
             targetPath = string.IsNullOrEmpty(targetPath) ? Path.GetFileName(fileName) : targetPath;
             var frameworkNameMoniker = output.GetTargetFrameworkMoniker();
             var packageDirectory = output.GetPackageDirectory();
-            var targetFramework = frameworkNameMoniker.GetShortFrameworkName();
+            var targetSubdirectory = output.GetTargetSubdirectory();
+            var targetFramework = packageDirectory == PackageDirectory.Analyzers
+                ? frameworkNameMoniker.GetAnalyzersFrameworkName()
+                : frameworkNameMoniker.GetShortFrameworkName();
             var metadata = output.CloneCustomMetadata();
             metadata[Metadata.TargetFramework] = targetFramework;
             metadata[Metadata.PackageDirectory] = packageDirectory.ToString();
-            metadata[Metadata.FileTarget] = packageDirectory.Combine(targetFramework, targetPath);
+            metadata[Metadata.TargetSubdirectory] = targetSubdirectory;
+            metadata[Metadata.FileTarget] = packageDirectory.Combine(targetFramework, targetSubdirectory, targetPath);
             return new TaskItem(fileName, metadata);
         }
     }

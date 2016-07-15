@@ -27,6 +27,8 @@ Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "PackageNuGetDependencyToToo
 EndProject
 Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "PackageToToolsDependency", "PackageToToolsDependency\PackageToToolsDependency.nuproj", "{379E2C22-CAD7-4039-968C-85BAEE19F5FE}"
 EndProject
+Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "PackageToAnalyzers", "PackageToAnalyzers\PackageToAnalyzers.nuproj", "{D1332627-59BC-4DA0-8C2D-35932A8682B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{379E2C22-CAD7-4039-968C-85BAEE19F5FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{379E2C22-CAD7-4039-968C-85BAEE19F5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{379E2C22-CAD7-4039-968C-85BAEE19F5FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1332627-59BC-4DA0-8C2D-35932A8682B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1332627-59BC-4DA0-8C2D-35932A8682B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1332627-59BC-4DA0-8C2D-35932A8682B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1332627-59BC-4DA0-8C2D-35932A8682B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

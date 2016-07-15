@@ -69,6 +69,11 @@ namespace NuProj.Tasks
             return result;
         }
 
+        public static string GetTargetSubdirectory(this ITaskItem taskItem)
+        {
+            return  taskItem.GetMetadata(Metadata.TargetSubdirectory) ?? string.Empty;
+        }
+
         public static IVersionSpec GetVersion(this ITaskItem taskItem)
         {
             IVersionSpec result = null;
@@ -106,6 +111,15 @@ namespace NuProj.Tasks
             }
 
             return VersionUtility.GetShortFrameworkName(frameworkName);
+        }
+
+        public static string GetAnalyzersFrameworkName(this FrameworkName frameworkName)
+        {
+            // At this time there is no host other than Roslyn compiler that can run analyzers. 
+            // Therefore, Framework Name and Version should always be specified as 'dotnet' until another host is 
+            // implemented that has runtime restrictions.
+            return "dotnet";
+
         }
 
         public static string ToStringSafe(this object value)
@@ -165,20 +179,22 @@ namespace NuProj.Tasks
             property.SetValue(target, list, null);
         }
 
-        public static string Combine(this PackageDirectory packageDirectory, string targetFramework, string fileName)
+        public static string Combine(this PackageDirectory packageDirectory, string targetFramework, string packageSubdirectory, string fileName)
         { 
             switch (packageDirectory)
             {
                 case PackageDirectory.Root:
-                    return fileName;
+                    return Path.Combine(packageSubdirectory, fileName);
                 case PackageDirectory.Content:
-                    return Path.Combine(Constants.ContentDirectory, fileName);
+                    return Path.Combine(Constants.ContentDirectory, packageSubdirectory, fileName);
                 case PackageDirectory.Build:
-                    return Path.Combine(Constants.BuildDirectory, fileName);
+                    return Path.Combine(Constants.BuildDirectory, packageSubdirectory, fileName);
                 case PackageDirectory.Lib:
-                    return Path.Combine(Constants.LibDirectory, targetFramework, fileName);
+                    return Path.Combine(Constants.LibDirectory, targetFramework, packageSubdirectory, fileName);
                 case PackageDirectory.Tools:
-                    return Path.Combine(Constants.ToolsDirectory, fileName);
+                    return Path.Combine(Constants.ToolsDirectory, packageSubdirectory, fileName);
+                case PackageDirectory.Analyzers:
+                    return Path.Combine(Constants.AnalyzersDirectory, targetFramework, packageSubdirectory, fileName);
                 default:
                     return fileName;
             }

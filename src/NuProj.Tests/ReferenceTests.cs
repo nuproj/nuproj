@@ -97,6 +97,7 @@ namespace NuProj.Tests
         }
 
         [Theory]
+        [InlineData("PackageToAnalyzers", new[] { @"analyzers\dotnet\cs\Tool.dll" }, new string[0])]
         [InlineData("PackageToBuild", new[] { @"build\Tool.dll" }, new string[0])]
         [InlineData("PackageToLib", new[] { @"lib\net45\Tool.dll" }, new string[0])]
         [InlineData("PackageToRoot", new[] { @"Tool.dll", @"Tool.pdb" }, new string[0])]

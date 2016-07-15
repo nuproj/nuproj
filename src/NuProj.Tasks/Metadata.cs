@@ -9,7 +9,9 @@
         public const string FileTarget = "TargetPath";
 
         public const string PackageDirectory = "PackageDirectory";
-        
+
+        public const string TargetSubdirectory = "TargetSubdirectory";
+
         public const string TargetFramework = "TargetFramework";
 
         public const string TargetFrameworkMoniker = "TargetFrameworkMoniker";
