@@ -32,6 +32,7 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
     <NoPackageAnalysis>True</NoPackageAnalysis>
     <GenerateSymbolPackage>False</GenerateSymbolPackage>
     <DevelopmentDependency>True</DevelopmentDependency>
+    <NoDefaultExcludes>True</NoDefaultExcludes>
   </PropertyGroup>
 
   <ItemGroup>
