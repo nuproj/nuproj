@@ -37,6 +37,12 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NuProj.ProjectSystem.Shared
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.ProjectSystem.15", "NuProj.ProjectSystem.15\NuProj.ProjectSystem.15.csproj", "{346C4C43-FA23-4A41-9455-2B2B03CBF264}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{F175E103-053A-48A6-B19C-D65E463EED1B}"
+	ProjectSection(SolutionItems) = preProject
+		NuProj.Packages\NuProj.Common.nuproj = NuProj.Packages\NuProj.Common.nuproj
+		NuProj.Packages\NuProj.nuproj = NuProj.Packages\NuProj.nuproj
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{346c4c43-fa23-4a41-9455-2b2b03cbf264}*SharedItemsImports = 4

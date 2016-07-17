@@ -332,7 +332,7 @@
         <ItemGroup>
             <_FilteredNonNuProjProjectOutput Include="@(_NonNuProjProjectOutput)"
                                              Condition=" '%(_NonNuProjProjectOutput.FrameworkFile)' != 'true'
-                                             AND '%(_NonNuProjProjectOutput.CopyLocal)' != 'false'
+                                             AND (('%(_NonNuProjProjectOutput.CopyLocal)' != 'false') OR ('%(_NonNuProjProjectOutput.NuGetIsFrameworkReference)' == 'false'))
                                              AND Exists('%(_NonNuProjProjectOutput.FullPath)')" />
             <_NonNuProjProjectOutput Remove="@(_NonNuProjProjectOutput)"
                                      Condition=" '%(_NonNuProjProjectOutput.FrameworkFile)' == 'true'
