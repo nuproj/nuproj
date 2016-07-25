@@ -13,6 +13,7 @@ namespace NuProj.Tasks
         Lib,
         Tools,
         Content,
+        ContentFiles,
         Build,
         Analyzers
     }

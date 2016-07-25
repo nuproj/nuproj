@@ -9,6 +9,7 @@
     <OutDir Condition="'$(OutDir)' == ''">$(ProjectDir)bin\</OutDir>
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
     <Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
+    <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == ''">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
   </PropertyGroup>
  
 </Project>

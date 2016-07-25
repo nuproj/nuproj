@@ -22,7 +22,8 @@
     </PropertyPageSchema>
     <PropertyPageSchema Include="$(NuProjRulesDir)\folder.xaml;
                                  $(NuProjRulesDir)\none.xaml;
-                                 $(NuProjRulesDir)\content.xaml">
+                                 $(NuProjRulesDir)\content.xaml;
+                                 $(NuProjRulesDir)\ContentFile.xaml;">
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
     <PropertyPageSchema Include="$(NuProjRulesDir)\ResolvedProjectReference.xaml">
@@ -153,6 +154,12 @@
   -->
   
   <ItemDefinitionGroup>
+    <Content>
+      <PackageDirectory></PackageDirectory>
+    </Content>
+    <ContentFile>
+      <PackageDirectory>ContentFiles</PackageDirectory>
+    </ContentFile>
     <ProjectReference>
       <PackageDirectory>Lib</PackageDirectory>
       <TargetFramework></TargetFramework>
@@ -175,6 +182,7 @@
 
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="GenerateNuSpec" />
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="NuGetPack" />
+  <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="AssignPackageDirectory" />
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="AssignTargetFramework" />
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="ReadPackagesConfig" />
   <UsingTask AssemblyFile="$(NuProjTasksPath)" TaskName="ReadPdbSourceFiles" />
@@ -371,7 +379,25 @@
 
     </Target>
 
-    <!--
+  <!--
+    ===================================================================================================================
+    MergeContent
+    ===================================================================================================================
+    
+    This target merges multiple content items types into single one.
+    
+    INPUTS:
+        @(ContentFile)   Output of referenced projects to be packaged
+    
+    =================================================================================================================== -->
+  
+  <Target Name="MergeContent">
+    <ItemGroup>
+      <Content Include="@(ContentFile)" />
+    </ItemGroup>
+  </Target>
+
+  <!--
     ===================================================================================================================
     ConvertItems
     ===================================================================================================================
@@ -389,7 +415,7 @@
     =================================================================================================================== -->
 
   <Target Name="ConvertItems"
-          DependsOnTargets="ExpandProjectReferences">
+          DependsOnTargets="ExpandProjectReferences;MergeContent">
     <CreateItem Include="@(ProjectReferenceOutput)">
       <Output TaskParameter="Include"
               ItemName="File"/>
@@ -410,26 +436,19 @@
       <Output TaskParameter="Include"
               ItemName="File"/>
     </CreateItem>
-
+    
     <!-- We need to special case library files in later phases. In order to make this
-         easier, we add custom metadata 'IsLibrary' that indicates whether the file is
-         targeting the lib folder or not. -->
+         easier, we add custom metadata 'PackageDirectory' that indicates whether the file is
+         targeting the lib folder or any other. -->
+    
+    <AssignPackageDirectory Files="@(File)">
+      <Output TaskParameter="FilesWithPackageDirectory"
+              ItemName="_FileWithPackageDirectory"/>      
+    </AssignPackageDirectory>
 
     <ItemGroup>
-      <_FileWithIsLibrary Include="@(File)"
-                          Condition="'%(File.TargetPath)' == 'lib' OR
-                                     $([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib\')) OR
-                                     $([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib/'))">
-        <PackageDirectory>Lib</PackageDirectory>
-      </_FileWithIsLibrary>
-      <_FileWithIsLibrary Include="@(File)"
-                          Condition="'%(File.TargetPath)' != 'lib' AND
-                                     !$([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib\')) AND
-                                     !$([System.String]::Copy('%(File.TargetPath)').ToLower().StartsWith('lib/'))">
-        <PackageDirectory></PackageDirectory>
-      </_FileWithIsLibrary>
       <File Remove="@(File)" />
-      <File Include="@(_FileWithIsLibrary)" />
+      <File Include="@(_FileWithPackageDirectory)" />
     </ItemGroup>
 
   </Target>

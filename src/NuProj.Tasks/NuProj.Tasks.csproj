@@ -53,6 +53,7 @@
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AssignPackageDirectory.cs" />
     <Compile Include="AssignTargetFramework.cs" />
     <Compile Include="GenerateNuSpec.cs" />
     <Compile Include="AssignSourceTargetPaths.cs" />
@@ -72,6 +73,7 @@
     <None Include="..\NuProj.Targets\NuProj.targets">
       <Link>Additional\NuProj.targets</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="..\NuProj.Targets\NuProj.props">
       <Link>Additional\NuProj.props</Link>
@@ -118,6 +120,11 @@
     </None>
     <None Include="..\NuProj.ProjectSystem.Shared\Rules\scc.xaml">
       <Link>Additional\Rules\scc.xaml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NuProj.ProjectSystem.Shared\Rules\ContentFile.xaml">
+      <Link>Additional\Rules\ContentFile.xaml</Link>
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

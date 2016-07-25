@@ -24,6 +24,12 @@ namespace NuProj.Tasks
             return result;
         }
 
+        public static string GetMetadata(this ITaskItem taskItem, string metadataName, string defaultValue)
+        {
+            var metadataValue = taskItem.GetMetadata(metadataName);
+            return string.IsNullOrEmpty(metadataValue) ? defaultValue : metadataValue;
+        }
+
         public static FrameworkName GetTargetFramework(this ITaskItem taskItem)
         {
             FrameworkName result = null;
@@ -56,17 +62,39 @@ namespace NuProj.Tasks
             return result;
         }
 
-        public static PackageDirectory GetPackageDirectory(this ITaskItem taskItem)
+        public static PackageDirectory GetPackageDirectory(this ITaskItem taskItem, PackageDirectory defaultValue = PackageDirectory.Root)
         {
             var packageDirectoryName = taskItem.GetMetadata(Metadata.PackageDirectory);
             if (string.IsNullOrEmpty(packageDirectoryName))
             {
-                return PackageDirectory.Lib;
+                return defaultValue;
             }
 
             PackageDirectory result;
             Enum.TryParse(packageDirectoryName, true, out result);
             return result;
+        }
+
+        public static void GetTargetPackageDirectory(this ITaskItem taskItem, out PackageDirectory packageDirectory, out string targetSubdirectory)
+        {
+            var fileTarget = taskItem.GetMetadata(Metadata.FileTarget) ?? string.Empty;
+            var fileTargetParts = fileTarget.Split(new[] { '\\', '/' }, 2, StringSplitOptions.RemoveEmptyEntries);
+            if (fileTargetParts.Length < 1)
+            {
+                packageDirectory = PackageDirectory.Root;
+                targetSubdirectory = fileTarget;
+                return;
+            }
+
+            Enum.TryParse(fileTargetParts[0], true, out packageDirectory);
+            if (packageDirectory == PackageDirectory.Root)
+            {
+                targetSubdirectory = fileTarget;
+            }
+            else
+            {
+                targetSubdirectory = fileTargetParts.Length > 1 ? fileTargetParts[1] : string.Empty;
+            }
         }
 
         public static string GetTargetSubdirectory(this ITaskItem taskItem)
@@ -179,22 +207,24 @@ namespace NuProj.Tasks
             property.SetValue(target, list, null);
         }
 
-        public static string Combine(this PackageDirectory packageDirectory, string targetFramework, string packageSubdirectory, string fileName)
+        public static string Combine(this PackageDirectory packageDirectory, string targetFramework, string targetSubdirectory, string fileName)
         { 
             switch (packageDirectory)
             {
                 case PackageDirectory.Root:
-                    return Path.Combine(packageSubdirectory, fileName);
+                    return Path.Combine(targetSubdirectory, fileName);
                 case PackageDirectory.Content:
-                    return Path.Combine(Constants.ContentDirectory, packageSubdirectory, fileName);
+                    return Path.Combine(Constants.ContentDirectory, targetSubdirectory, fileName);
+                case PackageDirectory.ContentFiles:
+                    return Path.Combine(Constants.ContentFilesDirectory, targetSubdirectory, fileName);
                 case PackageDirectory.Build:
-                    return Path.Combine(Constants.BuildDirectory, packageSubdirectory, fileName);
+                    return Path.Combine(Constants.BuildDirectory, targetSubdirectory, fileName);
                 case PackageDirectory.Lib:
-                    return Path.Combine(Constants.LibDirectory, targetFramework, packageSubdirectory, fileName);
+                    return Path.Combine(Constants.LibDirectory, targetFramework, targetSubdirectory, fileName);
                 case PackageDirectory.Tools:
-                    return Path.Combine(Constants.ToolsDirectory, packageSubdirectory, fileName);
+                    return Path.Combine(Constants.ToolsDirectory, targetSubdirectory, fileName);
                 case PackageDirectory.Analyzers:
-                    return Path.Combine(Constants.AnalyzersDirectory, targetFramework, packageSubdirectory, fileName);
+                    return Path.Combine(Constants.AnalyzersDirectory, targetFramework, targetSubdirectory, fileName);
                 default:
                     return fileName;
             }

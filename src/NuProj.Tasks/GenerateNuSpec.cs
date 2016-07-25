@@ -153,6 +153,7 @@ namespace NuProj.Tasks
             manifestMetadata = manifest.Metadata;
 
             manifestMetadata.UpdateMember(x => x.Authors, Authors);
+            manifestMetadata.AddRangeToMember(x => x.ContentFiles, GetManifestContentFiles());
             manifestMetadata.UpdateMember(x => x.Copyright, Copyright);
             manifestMetadata.AddRangeToMember(x => x.DependencySets, GetDependencySets());
             manifestMetadata.UpdateMember(x => x.Description, Description);
@@ -176,6 +177,21 @@ namespace NuProj.Tasks
             manifest.AddRangeToMember(x => x.Files, GetManifestFiles());
 
             return manifest;
+        }
+
+        private List<ManifestContentFiles> GetManifestContentFiles()
+        {
+            return (from f in Files.NullAsEmpty()
+                    where f.GetPackageDirectory() == PackageDirectory.ContentFiles
+                    let source = f.GetMetadata(Metadata.FileSource)
+                    select new ManifestContentFiles
+                    {
+                        Include = GetContentFilesIncludePath(f),
+                        Exclude = f.GetMetadata(Metadata.FileExclude, null),
+                        CopyToOutput = f.GetBoolean(Metadata.ContentFile.CopyToOutput).ToString().ToLower(),
+                        Flatten = f.GetBoolean(Metadata.ContentFile.Flatten).ToString().ToLower(),
+                        BuildAction = f.GetMetadata(Metadata.ContentFile.BuildAction, null),
+                    }).ToList();
         }
 
         private List<ManifestFile> GetManifestFiles()
@@ -247,6 +263,20 @@ namespace NuProj.Tasks
                                           File = reference.File
                                       }).ToList()
                     }).ToList();
+        }
+
+        private string GetContentFilesIncludePath(ITaskItem taskItem)
+        {
+            PackageDirectory packageDirectory;
+            string targetSubdirectory;
+            taskItem.GetTargetPackageDirectory(out packageDirectory, out targetSubdirectory);
+            if (packageDirectory != PackageDirectory.ContentFiles)
+            {
+                Log.LogError($"File '{taskItem.ItemSpec}' has unexpected PackageDirectory metadata. Expected '{PackageDirectory.ContentFiles}', actual '{packageDirectory}'.");
+            }
+
+            var source = taskItem.GetMetadata(Metadata.FileSource);
+            return Path.Combine(targetSubdirectory, Path.GetFileName(source));
         }
 
         private static IVersionSpec AggregateVersions(IVersionSpec aggregate, IVersionSpec next)

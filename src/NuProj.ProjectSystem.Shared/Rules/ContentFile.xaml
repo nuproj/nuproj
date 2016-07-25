@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Rule Name="Content"
+<Rule Name="ContentFile"
       DisplayName="General"
       PageTemplate="generic"
-      Description="Non-build items"
+      Description="Content file items"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.DataSource>
         <DataSource Persistence="ProjectFile"
                     HasConfigurationCondition="False"
-                    ItemType="Content" />
+                    ItemType="ContentFile" />
     </Rule.DataSource>
     <Rule.Categories>
         <Category Name="Advanced"
@@ -47,6 +47,50 @@
                     DisplayName="Custom Tool Namespace"
                     Description="The namespace into which the output of the custom tool is placed." />
     
+    <!-- Content Files category -->
+
+    <EnumProperty Name="PackageBuildAction"
+                  DisplayName="Build Action"
+                  Category="ContentFiles"
+                  Description="How the file relates to the build and deployment processes in project consuming the package. Default is &quot;Compile&quot;."
+                  Default="Compile">
+        <EnumValue Name="None"
+                   DisplayName="None" />
+        <EnumValue Name="Compile"
+                   DisplayName="Compile" />
+        <EnumValue Name="Content"
+                   DisplayName="Content" />
+        <EnumValue Name="EmbeddedResource"
+                   DisplayName="Embedded Resource" />
+        <EnumValue Name="CodeAnalysisDictionary"
+                   DisplayName="CodeAnalysisDictionary" />
+        <EnumValue Name="ApplicationDefinition"
+                   DisplayName="CodeAnalysisDictionaryApplicationDefinition" />
+        <EnumValue Name="Page"
+                   DisplayName="Page" />
+        <EnumValue Name="Resource"
+                   DisplayName="Resource" />
+        <EnumValue Name="SplashScreen"
+                   DisplayName="SplashScreen" />
+        <EnumValue Name="DesignData"
+                   DisplayName="DesignData" />
+        <EnumValue Name="DesignDataWithDesignTimeCreatableTypes"
+                   DisplayName="DesignDataWithDesignTimeCreatableTypes" />
+        <EnumValue Name="EntityDeploy"
+                   DisplayName="EntityDeploy" />
+    </EnumProperty>
+
+    <BoolProperty Name="PackageCopyToOutput"
+                  DisplayName="Copy to Output Directory"
+                  Category="ContentFiles"
+                  Description="Specifies the source file will copied to the output directory in project consuming the package. Default is &quot;False&quot;.">
+    </BoolProperty>
+
+    <BoolProperty Name="PackageFlatten"
+                  DisplayName="Flatten"
+                  Category="ContentFiles"
+                  Description="If False the content items will be copied to the build output folder using the full folder structure from the nupkg. This path will be relative to the TxM folder. Default is &quot;False&quot;." />
+
     <!-- Misc category -->
     
     <StringProperty Name="Identity"
@@ -56,7 +100,7 @@
                     Description="Name of the file or folder.">
         <StringProperty.DataSource>
             <DataSource Persistence="Intrinsic"
-                        ItemType="Content"
+                        ItemType="ContentFile"
                         PersistedName="Identity" />
         </StringProperty.DataSource>
     </StringProperty>
@@ -68,7 +112,7 @@
                     Description="Location of the file.">
         <StringProperty.DataSource>
             <DataSource Persistence="Intrinsic"
-                        ItemType="Content"
+                        ItemType="ContentFile"
                         PersistedName="FullPath" />
         </StringProperty.DataSource>
     </StringProperty>
@@ -80,7 +124,7 @@
                     Visible="false">
         <StringProperty.DataSource>
             <DataSource Persistence="Intrinsic"
-                        ItemType="Content"
+                        ItemType="ContentFile"
                         PersistedName="FullPath" />
         </StringProperty.DataSource>
     </StringProperty>
@@ -94,7 +138,7 @@
                     Visible="False">
         <StringProperty.DataSource>
             <DataSource Persistence="Intrinsic"
-                        ItemType="Content"
+                        ItemType="ContentFile"
                         PersistedName="Extension" />
         </StringProperty.DataSource>
     </StringProperty>
