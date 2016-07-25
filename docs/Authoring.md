@@ -133,11 +133,11 @@ file path in output package must be under `contentFiles` directory.
 ```xml
 <ItemGroup>
   <ContentFile Include="contentFiles\cs\Example.cs">
-	<ContentFileBuildAction>Compile</ContentFileBuildAction>
+    <PackageBuildAction>Compile</PackageBuildAction>
   </ContentFile>
   <ContentFile Include="..\common\icon.png">
     <Link>contentFiles\images\icon.png</Link>
-	<ContentFileBuildAction>EmbeddedResource</ContentFileBuildAction>
+    <PackageBuildAction>EmbeddedResource</PackageBuildAction>
   </ContentFile>
 </ItemGroup>
 ```

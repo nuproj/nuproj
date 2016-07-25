@@ -273,7 +273,6 @@ namespace NuProj.Tasks
             if (packageDirectory != PackageDirectory.ContentFiles)
             {
                 Log.LogError($"File '{taskItem.ItemSpec}' has unexpected PackageDirectory metadata. Expected '{PackageDirectory.ContentFiles}', actual '{packageDirectory}'.");
-
             }
 
             var source = taskItem.GetMetadata(Metadata.FileSource);

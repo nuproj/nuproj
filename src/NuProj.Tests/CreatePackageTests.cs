@@ -31,7 +31,6 @@ namespace NuProj.Tests
         public Task CreatePackage_ContentFilesError()
         {
             return Scenario.RestoreAndFailBuildAsync();
-
         }
 
         [Fact]
