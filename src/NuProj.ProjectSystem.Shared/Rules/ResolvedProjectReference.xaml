@@ -52,9 +52,9 @@
                     DisplayName="Target subdirectory"
                     Category="Advanced"
                     Description="The target subdirectory (usually under Package directory + Target framework) to receive the output of this reference.">
-        <EnumProperty.DataSource>
+        <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
-        </EnumProperty.DataSource>
+        </StringProperty.DataSource>
     </StringProperty>
 
 
