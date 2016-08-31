@@ -953,7 +953,7 @@
 
     
     OUTPUTS:
-        @(ReferencePath) - Paths to resolved primary packages.
+        @(ReferencePath) - Paths to resolved primary project outputs.
 
     =================================================================================================================== -->
   <PropertyGroup>
@@ -966,6 +966,11 @@
   <Target Name="ResolveAssemblyReferences"
           Returns="@(ReferencePath)"
           DependsOnTargets="$(ResolveAssemblyReferencesDependsOn)">
+    <ItemGroup>
+      <ReferencePath Include="@(_ResolvedProjectReferencePaths)">
+        <ProjectReferenceOriginalItemSpec>%(OriginalProjectReferenceItemSpec)</ProjectReferenceOriginalItemSpec>
+      </ReferencePath>
+    </ItemGroup>
   </Target>
 
   
@@ -978,10 +983,9 @@
     what we need to copy to the output directory.
 
     INPUTS
-       @(_NuProjProjectReferenceClosure) - List of project references produced by projects that this project depends on.
+        @(_NuProjProjectReferenceClosure) - List of project references produced by projects that this project depends on.
     
     OUTPUTS:
-        @(ReferencePath) - Paths to resolved primary packages.
         @(ReferenceDependencyPaths) - Paths to resolved dependency packages.
         @(SymbolsPackageReferencePath) - Paths to resolved dependency symbols packages.
         @(SymbolsPackageReferenceDependencyPaths) - Paths to resolved dependency symbols packages.
@@ -997,7 +1001,6 @@
   </PropertyGroup>
 
   <Target Name="ResolvePackageReference"
-          Returns="@(ReferencePath)"
           DependsOnTargets="$(ResolvePackageReferenceDependsOn)">
 
     <MSBuild Projects="@(_NuProjProjectReferenceClosure)"
@@ -1009,25 +1012,26 @@
     </MSBuild>
 
     <ItemGroup>
-      <_ReferencePath Include="@(ReferenceCopyLocalPaths)"
-                      Condition="'%(ReferenceCopyLocalPaths.DependencyKind)' == 'Direct'"/>
+      <_DirectReferencePaths Include="@(ReferenceCopyLocalPaths)"
+                             Condition="'%(ReferenceCopyLocalPaths.DependencyKind)' == 'Direct'"/>
 
-      <_ReferenceDependencyPaths Include="@(ReferenceCopyLocalPaths)"
-                                 Exclude="@(_ReferencePath)" />
+      <_IndirectReferencePaths Include="@(ReferenceCopyLocalPaths)"
+                               Exclude="@(_DirectReferencePaths)" />
 
-      <ReferencePath Include="%(_ReferencePath.Identity)"
-                     Condition="'@(_ReferencePath->EndsWith(&quot;.symbols.nupkg&quot;))' != 'True'" />
+      <_DirectNonSymbolsReferencePath 
+        Include="%(_DirectReferencePaths.Identity)"
+        Condition="'@(_DirectReferencePaths->EndsWith(&quot;.symbols.nupkg&quot;))' != 'True'" />
 
       <ReferenceDependencyPaths
-        Include="%(_ReferenceDependencyPaths.Identity)"
-        Condition="'@(_ReferenceDependencyPaths->EndsWith(&quot;.symbols.nupkg&quot;))' != 'True'" />
+        Include="%(_IndirectReferencePaths.Identity)"
+        Condition="'@(_IndirectReferencePaths->EndsWith(&quot;.symbols.nupkg&quot;))' != 'True'" />
 
-      <SymbolsPackageReferencePath Include="@(_ReferencePath)"
-                                   Exclude="@(ReferencePath)" />
+      <SymbolsPackageReferencePath Include="@(_DirectReferencePaths)"
+                                   Exclude="@(_DirectNonSymbolsReferencePath)" />
 
 
-      <SymbolsPackageReferenceDependencyPaths Include="@(_ReferenceDependencyPaths)"
-                                              Exclude="@(ReferenceDependencyPaths)" />
+      <SymbolsPackageReferenceDependencyPaths Include="@(_IndirectReferencePaths)"
+                                              Exclude="@(ReferenceDependencyPaths)" />    
     </ItemGroup>
   </Target>
 

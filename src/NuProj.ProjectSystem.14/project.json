@@ -1,18 +1,18 @@
 ﻿{
   "dependencies": {
-    "Microsoft.VisualStudio.ProjectSystem": "14.0.50729-pre",
-    "Microsoft.VisualStudio.ProjectSystem.SDK": "14.0.50729-pre",
-    "Microsoft.VisualStudio.SDK.VsixSuppression": "14.1.25",
-    "Microsoft.VisualStudio.Shell.14.0": "14.0.23205",
+    "Microsoft.VisualStudio.ImageCatalog": "14.3.25407",
+    "Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime": "14.3.25407",
+    "Microsoft.VisualStudio.ProjectSystem": "14.1.127-pre",
+    "Microsoft.VisualStudio.ProjectSystem.SDK": "14.1.127-pre",
+    "Microsoft.VisualStudio.SDK.VsixSuppression": "14.1.28",
+    "Microsoft.VisualStudio.Shell.14.0": "14.3.25407",
     "Microsoft.VisualStudio.Shell.Interop.11.0": "11.0.61030",
-    "Microsoft.VisualStudio.ImageCatalog": "14.0.23205",
-    "Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime": "14.0.23205",
     "Nerdbank.GitVersioning": "1.4.41"
   },
   "frameworks": {
-    "net451": { }
+    "net451": {}
   },
   "runtimes": {
-    "win": { }
+    "win": {}
   }
 }
