@@ -75,25 +75,25 @@ namespace NuProj.Tasks
             return result;
         }
 
-        public static void GetTargetPackageDirectory(this ITaskItem taskItem, out PackageDirectory packageDirectory, out string targetSubdirectory)
+        public static void GetTargetPackageDirectory(this ITaskItem taskItem, out PackageDirectory packageDirectory, out string directoryPath)
         {
             var fileTarget = taskItem.GetMetadata(Metadata.FileTarget) ?? string.Empty;
             var fileTargetParts = fileTarget.Split(new[] { '\\', '/' }, 2, StringSplitOptions.RemoveEmptyEntries);
-            if (fileTargetParts.Length < 1)
+            if (fileTargetParts.Length <= 1)
             {
                 packageDirectory = PackageDirectory.Root;
-                targetSubdirectory = fileTarget;
+                directoryPath = fileTarget;
                 return;
             }
 
             Enum.TryParse(fileTargetParts[0], true, out packageDirectory);
             if (packageDirectory == PackageDirectory.Root)
             {
-                targetSubdirectory = fileTarget;
+                directoryPath = fileTarget;
             }
             else
             {
-                targetSubdirectory = fileTargetParts.Length > 1 ? fileTargetParts[1] : string.Empty;
+                directoryPath = fileTargetParts[1];
             }
         }
 

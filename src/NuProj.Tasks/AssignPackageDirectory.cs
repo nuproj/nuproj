@@ -28,8 +28,8 @@ namespace NuProj.Tasks
         private ITaskItem SetPackageDirectory(ITaskItem taskItem)
         {
             PackageDirectory targetPackageDirectory;
-            string targetSubdirectory;
-            taskItem.GetTargetPackageDirectory(out targetPackageDirectory, out targetSubdirectory);
+            string targetDirectoryPath;
+            taskItem.GetTargetPackageDirectory(out targetPackageDirectory, out targetDirectoryPath);
 
             var packageDirectory = taskItem.GetPackageDirectory(targetPackageDirectory);
 
