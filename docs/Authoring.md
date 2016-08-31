@@ -195,6 +195,21 @@ dependency.
 </ItemGroup>
 ```
 
+## Controlling Output of Referenced Projects
+
+NuProj packages direct output of referenced projects and their dependencies 
+using following targets:
+*  `BuiltProjectOutputGroup` - assemblies 
+*  `DebugSymbolsProjectOutputGroup` - debug symbols 
+*  `DocumentationProjectOutputGroup` - XML documentation, 
+*  `SatelliteDllsProjectOutputGroup` - language speciffic resource 
+*  `SGenFilesOutputGroup` XML serialization assembly
+*  `BuiltProjectOutputGroupDependencies` ... `SGenFilesOutputGroupDependencies` - 
+   indirect dependency variant of previously mentioned targets
+
+You can modify this behavior on `ProjectReference` level using `PackageOutputGroups`
+metadata.
+
 ## Controlling Library References
 
 For a given a target platform, NuGet will add references to all the libraries in
