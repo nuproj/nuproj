@@ -268,15 +268,14 @@ namespace NuProj.Tasks
         private string GetContentFilesIncludePath(ITaskItem taskItem)
         {
             PackageDirectory packageDirectory;
-            string targetSubdirectory;
-            taskItem.GetTargetPackageDirectory(out packageDirectory, out targetSubdirectory);
+            string includePath;
+            taskItem.GetTargetPackageDirectory(out packageDirectory, out includePath);
             if (packageDirectory != PackageDirectory.ContentFiles)
             {
                 Log.LogError($"File '{taskItem.ItemSpec}' has unexpected PackageDirectory metadata. Expected '{PackageDirectory.ContentFiles}', actual '{packageDirectory}'.");
             }
 
-            var source = taskItem.GetMetadata(Metadata.FileSource);
-            return Path.Combine(targetSubdirectory, Path.GetFileName(source));
+            return includePath;
         }
 
         private static IVersionSpec AggregateVersions(IVersionSpec aggregate, IVersionSpec next)

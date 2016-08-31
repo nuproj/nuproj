@@ -433,7 +433,7 @@
               ItemName="File"/>
     </CreateItem>
     <CreateItem Include="@(_UnlinkedContentFiles)"
-                AdditionalMetadata="TargetPath=%(RelativeDir)">
+                AdditionalMetadata="TargetPath=%(RelativeDir)%(Filename)%(Extension)">
       <Output TaskParameter="Include"
               ItemName="File"/>
     </CreateItem>

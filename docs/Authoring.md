@@ -115,12 +115,16 @@ Packaging files is done as follows:
 The path of file is relative to NuProj project file. The files must be in 
 project directory or its subdirectory. You can include files outside project 
 directory by using `Link` metadata to specify file path in output package.
+You can use wildcards, but link must always include file name and extension.
 
 ```xml
 <ItemGroup>
   <!-- Package icon.png. -->
   <Content Include="..\common\icon.png">
     <Link>icon.png</Link>
+  </Content>
+  <Content Include="..\content\**\*.*">
+    <Link>content\%(RecursiveDir)%(Filename)%(Extension)</Link>
   </Content>
 </ItemGroup>
 ```
