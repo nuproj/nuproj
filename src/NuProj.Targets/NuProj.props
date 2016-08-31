@@ -11,7 +11,7 @@
   
   <PropertyGroup>
     <NoPackageAnalysis Condition=" '$(NoPackageAnalysis)' == '' ">False</NoPackageAnalysis>
-    <NoDefaultExcludes Condition=" '$(NoDefaultExcludes)' == '' ">False</NoDefaultExcludes>
+    <NoDefaultExcludes Condition=" '$(NoDefaultExcludes)' == '' ">True</NoDefaultExcludes>
     <GenerateSymbolPackage Condition=" '$(GenerateSymbolPackage)' == '' ">True</GenerateSymbolPackage>
     <EmbedSourceFiles Condition=" '$(EmbedSourceFiles)' == '' ">False</EmbedSourceFiles>
     <RequireLicenseAcceptance Condition=" '$(RequireLicenseAcceptance)' == '' ">False</RequireLicenseAcceptance>
