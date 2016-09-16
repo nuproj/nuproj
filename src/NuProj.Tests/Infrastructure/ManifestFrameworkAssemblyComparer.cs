@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using NuGet;
+using System.Linq;
+using NuGet.Frameworks;
+using NuGet.Packaging;
 
 namespace NuProj.Tests.Infrastructure
 {
-    public class ManifestFrameworkAssemblyComparer : IEqualityComparer<ManifestFrameworkAssembly>
+    public class ManifestFrameworkAssemblyComparer : IEqualityComparer<FrameworkAssemblyReference>
     {
         private static ManifestFrameworkAssemblyComparer _instance = new ManifestFrameworkAssemblyComparer(StringComparer.OrdinalIgnoreCase);
 
@@ -29,7 +30,7 @@ namespace NuProj.Tests.Infrastructure
             }
         }
 
-        public bool Equals(ManifestFrameworkAssembly x, ManifestFrameworkAssembly y)
+        public bool Equals(FrameworkAssemblyReference x, FrameworkAssemblyReference y)
         {
             if (x == null && x == null)
             {
@@ -41,11 +42,14 @@ namespace NuProj.Tests.Infrastructure
                 return false;
             }
 
+            var xSupportedFrameworks = new HashSet<NuGetFramework>(x.SupportedFrameworks);
+            var ySupportedFrameworks = new HashSet<NuGetFramework>(y.SupportedFrameworks);
+
             return _stringComparer.Equals(x.AssemblyName, y.AssemblyName)
-                && _stringComparer.Equals(x.TargetFramework, y.TargetFramework);
+                && xSupportedFrameworks.SetEquals(ySupportedFrameworks);
         }
 
-        public int GetHashCode(ManifestFrameworkAssembly obj)
+        public int GetHashCode(FrameworkAssemblyReference obj)
         {
             if (obj == null)
             {
@@ -53,7 +57,7 @@ namespace NuProj.Tests.Infrastructure
             }
 
             return _stringComparer.GetHashCode(obj.AssemblyName ?? "")
-                + _stringComparer.GetHashCode(obj.TargetFramework ?? "");
+                + obj.SupportedFrameworks.Select(x => x.GetHashCode()).Sum();
         }
     }
 }

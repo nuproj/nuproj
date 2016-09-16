@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using NuGet;
+using NuGet.Packaging;
 
 namespace NuProj.Tests.Infrastructure
 {

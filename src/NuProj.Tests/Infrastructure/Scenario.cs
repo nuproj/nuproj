@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using NuGet;
+using NuGet.Packaging.Core;
 using Xunit.Abstractions;
 using static NuProj.Tests.Infrastructure.MSBuild;
 
@@ -39,7 +40,7 @@ namespace NuProj.Tests.Infrastructure
         /// <param name="packageId">The leaf name of the project to be built or rebuilt, and the package ID to return after the build.</param>
         /// <param name="properties">Build properties to pass to MSBuild.</param>
         /// <returns>The single built package, or the package whose ID matches <paramref name="packageId"/>.</returns>
-        public static async Task<IPackage> RestoreAndBuildSinglePackageAsync([CallerMemberName] string scenarioName = null, string packageId = null, IDictionary<string, string> properties = null, ITestOutputHelper testLogger = null)
+        public static async Task<Package> RestoreAndBuildSinglePackageAsync([CallerMemberName] string scenarioName = null, string packageId = null, IDictionary<string, string> properties = null, ITestOutputHelper testLogger = null)
         {
             var packages = await RestoreAndBuildPackagesAsync(scenarioName, packageId, properties, testLogger);
             return packageId == null
@@ -54,7 +55,7 @@ namespace NuProj.Tests.Infrastructure
         /// <param name="projectName">The leaf name of the project to be built or rebuilt.</param>
         /// <param name="properties">Build properties to pass to MSBuild.</param>
         /// <returns>A collection of the built packages.</returns>
-        public static async Task<IReadOnlyCollection<IPackage>> RestoreAndBuildPackagesAsync([CallerMemberName] string scenarioName = null, string projectName = null, IDictionary<string, string> properties = null, ITestOutputHelper testLogger = null)
+        public static async Task<IReadOnlyCollection<Package>> RestoreAndBuildPackagesAsync([CallerMemberName] string scenarioName = null, string projectName = null, IDictionary<string, string> properties = null, ITestOutputHelper testLogger = null)
         {
             var projectFullPath = Assets.GetScenarioSolutionPath(scenarioName);
 
