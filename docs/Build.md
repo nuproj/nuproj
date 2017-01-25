@@ -25,8 +25,7 @@ you need to change the `NuProjPath` property in your .nuproj file:
 
 ```xml
 <PropertyGroup>
-  <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == ''">..\packages\</NuGetPackageRoot>
-  <NuProjPath>$(NuGetPackageRoot)NuProj.0.11.14-beta\tools\</NuProjPath>
+  <NuProjPath>..\packages\NuProj.0.11.14-beta\tools\</NuProjPath>
 </PropertyGroup>
 <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
  ```
