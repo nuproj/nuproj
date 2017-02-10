@@ -42,6 +42,7 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
   </ItemGroup>
   
   <ItemGroup>
+    <Content Include="build\NuProj.props" />
     <Content Include="$(BasePath)raw\Additional\NuProj.props">
       <Link>tools\NuProj.props</Link>
     </Content>
