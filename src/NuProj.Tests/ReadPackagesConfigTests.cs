@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Build.Utilities;
 using NuGet;
+using NuGet.Versioning;
 using NuProj.Tasks;
 using NuProj.Tests.Infrastructure;
 using Xunit;
@@ -18,7 +19,7 @@ namespace NuProj.Tests
             task.Projects = new[] { new TaskItem(projectPath) };
             var result = task.Execute();
 
-            var expectedVersionConstraint = VersionUtility.ParseVersionSpec("[1,2]").ToString();
+            var expectedVersionConstraint = VersionRange.Parse("[1,2]").ToString();
 
             Assert.True(result);
             var fodyItem = new AssertTaskItem(task.PackageReferences, "Fody", items => Assert.Single(items)) {

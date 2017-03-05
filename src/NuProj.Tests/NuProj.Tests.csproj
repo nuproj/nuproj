@@ -62,14 +62,10 @@
     <Compile Include="BasicTests.cs" />
     <Compile Include="Infrastructure\Extensions.cs" />
     <Compile Include="Infrastructure\ManifestContentFilesComparer.cs" />
-    <Compile Include="Infrastructure\ManifestDependencyComparer.cs" />
-    <Compile Include="Infrastructure\ManifestDependencySetComparer.cs" />
     <Compile Include="Infrastructure\ManifestFileComparer.cs" />
     <Compile Include="Infrastructure\ManifestFrameworkAssemblyComparer.cs" />
-    <Compile Include="Infrastructure\ManifestReferenceComparer.cs" />
     <Compile Include="Infrastructure\ManifestReferenceSetComparer.cs" />
-    <Compile Include="Infrastructure\PackageDependencyComparer.cs" />
-    <Compile Include="Infrastructure\PackageDependencySetComparer.cs" />
+    <Compile Include="Infrastructure\Package.cs" />
     <Compile Include="Infrastructure\Scenario.cs" />
     <Compile Include="Infrastructure\AssertTaskItem.cs" />
     <Compile Include="PackageIdentityTests.cs" />

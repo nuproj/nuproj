@@ -6,7 +6,9 @@ using System.Runtime.Versioning;
 using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using NuGet;
+using NuGet.Packaging;
+using NuGet.Packaging.Core;
+using NuGet.Versioning;
 
 namespace NuProj.Tasks
 {
@@ -120,7 +122,10 @@ namespace NuProj.Tasks
             {
                 newManifest.Save(stream);
                 stream.Seek(0, SeekOrigin.Begin);
-                newSource = Encoding.UTF8.GetString(stream.ToArray());
+                var reader = new StreamReader(stream, Encoding.UTF8, true);
+                newSource = reader.ReadToEnd();
+                //newSource = new UTF8Encoding(true).GetString(stream.ToArray());
+                //newSource = Encoding.Default.GetString(stream.ToArray());
             }
 
             return oldSource != newSource;
@@ -136,43 +141,45 @@ namespace NuProj.Tasks
                 {
                     manifest = Manifest.ReadFrom(stream, false);
                 }
+
+                manifestMetadata = manifest.Metadata;
             }
             else
             {
-                manifest = new Manifest()
-                {
-                    Metadata = new ManifestMetadata(),
-                };
+                manifest = new Manifest(new ManifestMetadata());
             }
 
-            if (manifest.Metadata == null)
-            {
-                manifest.Metadata = new ManifestMetadata();
-            }
 
             manifestMetadata = manifest.Metadata;
+            var files = GetManifestFiles();
 
-            manifestMetadata.UpdateMember(x => x.Authors, Authors);
+            if (manifest.Files == null && files.Any())
+            {
+                manifest = new Manifest(manifest.Metadata, new List<ManifestFile>());
+            }
+
+            manifestMetadata.UpdateMember(x => x.Authors, Split(Authors));
             manifestMetadata.AddRangeToMember(x => x.ContentFiles, GetManifestContentFiles());
             manifestMetadata.UpdateMember(x => x.Copyright, Copyright);
-            manifestMetadata.AddRangeToMember(x => x.DependencySets, GetDependencySets());
+            manifestMetadata.AddRangeToMember(x => x.DependencyGroups, GetDependencySets());
             manifestMetadata.UpdateMember(x => x.Description, Description);
             manifestMetadata.DevelopmentDependency |= DevelopmentDependency;
-            manifestMetadata.AddRangeToMember(x => x.FrameworkAssemblies, GetFrameworkAssemblies());
+            manifestMetadata.AddRangeToMember(x => x.FrameworkReferences, GetFrameworkAssemblies());
             manifestMetadata.UpdateMember(x => x.IconUrl, IconUrl);
             manifestMetadata.UpdateMember(x => x.Id, Id);
             manifestMetadata.UpdateMember(x => x.Language, Language);
             manifestMetadata.UpdateMember(x => x.LicenseUrl, LicenseUrl);
             manifestMetadata.UpdateMember(x => x.MinClientVersionString, MinClientVersion);
-            manifestMetadata.UpdateMember(x => x.Owners, Owners);
+            manifestMetadata.UpdateMember(x => x.Owners, Split(Owners));
             manifestMetadata.UpdateMember(x => x.ProjectUrl, ProjectUrl);
-            manifestMetadata.AddRangeToMember(x => x.ReferenceSets, GetReferenceSets());
+            manifestMetadata.AddRangeToMember(x => x.PackageAssemblyReferences, GetReferenceSets());
             manifestMetadata.UpdateMember(x => x.ReleaseNotes, ReleaseNotes);
             manifestMetadata.RequireLicenseAcceptance |= RequireLicenseAcceptance;
             manifestMetadata.UpdateMember(x => x.Summary, Summary);
             manifestMetadata.UpdateMember(x => x.Tags, Tags);
             manifestMetadata.UpdateMember(x => x.Title, Title);
-            manifestMetadata.UpdateMember(x => x.Version, Version);
+            manifestMetadata.UpdateMember(x => x.Version, string.IsNullOrEmpty(Version) ? null : new NuGetVersion(Version));
+
 
             manifest.AddRangeToMember(x => x.Files, GetManifestFiles());
 
@@ -205,20 +212,17 @@ namespace NuProj.Tasks
                     }).ToList();
         }
 
-        private List<ManifestFrameworkAssembly> GetFrameworkAssemblies()
+        private List<FrameworkAssemblyReference> GetFrameworkAssemblies()
         {
             return (from fr in FrameworkReferences.NullAsEmpty()
-                    select new ManifestFrameworkAssembly
-                    {
-                        AssemblyName = fr.ItemSpec,
-                        TargetFramework = fr.GetTargetFramework().GetShortFrameworkName(),
-                    }).ToList();
+                    select new FrameworkAssemblyReference(fr.ItemSpec, new[] { fr.GetTargetFramework() }))
+                    .ToList();
         }
 
-        private List<ManifestDependencySet> GetDependencySets()
+        private List<PackageDependencyGroup> GetDependencySets()
         {
             var dependencies = from d in Dependencies.NullAsEmpty()
-                               select new Dependency
+                               select new
                                {
                                    Id = d.ItemSpec,
                                    Version = d.GetVersion(),
@@ -227,23 +231,16 @@ namespace NuProj.Tasks
 
             return (from dependency in dependencies
                     group dependency by dependency.TargetFramework into dependenciesByFramework
-                    select new ManifestDependencySet
-                    {
-                        TargetFramework = dependenciesByFramework.Key.GetShortFrameworkName(),
-                        Dependencies = (from dependency in dependenciesByFramework
-                                        where dependency.Id != "_._"
-                                        group dependency by dependency.Id into dependenciesById
-                                        select new ManifestDependency
-                                        {
-                                            Id = dependenciesById.Key,
-                                            Version = dependenciesById.Select(x => x.Version)
-                                                .Aggregate(AggregateVersions)
-                                                .ToStringSafe()
-                                        }).ToList()
-                    }).ToList();
+                    let targetFramework = dependenciesByFramework.Key
+                    let packages = (from dependency in dependenciesByFramework
+                                    where dependency.Id != "_._"
+                                    group dependency by dependency.Id into dependenciesById
+                                    select new PackageDependency(dependenciesById.Key, VersionRange.CommonSubSet(dependenciesById.Select(x => x.Version))))
+                    select new PackageDependencyGroup(targetFramework, packages)
+                    ).ToList();
         }
 
-        private List<ManifestReferenceSet> GetReferenceSets()
+        private List<PackageReferenceSet> GetReferenceSets()
         {
             var references = from r in References.NullAsEmpty()
                              select new
@@ -254,15 +251,20 @@ namespace NuProj.Tasks
 
             return (from reference in references
                     group reference by reference.TargetFramework into referencesByFramework
-                    select new ManifestReferenceSet
-                    {
-                        TargetFramework = referencesByFramework.Key.GetShortFrameworkName(),
-                        References = (from reference in referencesByFramework
-                                      select new ManifestReference
-                                      {
-                                          File = reference.File
-                                      }).ToList()
-                    }).ToList();
+                    let targetFramework = referencesByFramework.Key
+                    select new PackageReferenceSet(referencesByFramework.Key, referencesByFramework.Select(x => x.File)))
+                    .ToList();
+        }
+
+        private IEnumerable<string> Split(string field)
+        {
+            var parts = field?.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+            return parts?.Any() == true ? parts : null;
+        }
+
+        private Uri ToUri(string field)
+        {
+            return string.IsNullOrEmpty(field) ? null : new Uri(field);
         }
 
         private string GetContentFilesIncludePath(ITaskItem taskItem)
@@ -276,81 +278,6 @@ namespace NuProj.Tasks
             }
 
             return includePath;
-        }
-
-        private static IVersionSpec AggregateVersions(IVersionSpec aggregate, IVersionSpec next)
-        {
-            var versionSpec = new VersionSpec();
-            SetMinVersion(versionSpec, aggregate);
-            SetMinVersion(versionSpec, next);
-            SetMaxVersion(versionSpec, aggregate);
-            SetMaxVersion(versionSpec, next);
-
-            if (versionSpec.MinVersion == null && versionSpec.MaxVersion == null)
-            {
-                versionSpec = null;
-            }
-
-            return versionSpec;
-        }
-
-        private static void SetMinVersion(VersionSpec target, IVersionSpec source)
-        {
-            if (source == null || source.MinVersion == null)
-            {
-                return;
-            }
-
-            if (target.MinVersion == null)
-            {
-                target.MinVersion = source.MinVersion;
-                target.IsMinInclusive = source.IsMinInclusive;
-            }
-
-            if (target.MinVersion < source.MinVersion)
-            {
-                target.MinVersion = source.MinVersion;
-                target.IsMinInclusive = source.IsMinInclusive;
-            }
-
-            if (target.MinVersion == source.MinVersion)
-            {
-                target.IsMinInclusive = target.IsMinInclusive && source.IsMinInclusive;
-            }
-        }
-
-        private static void SetMaxVersion(VersionSpec target, IVersionSpec source)
-        {
-            if (source == null || source.MaxVersion == null)
-            {
-                return;
-            }
-
-            if (target.MaxVersion == null)
-            {
-                target.MaxVersion = source.MaxVersion;
-                target.IsMaxInclusive = source.IsMaxInclusive;
-            }
-
-            if (target.MaxVersion > source.MaxVersion)
-            {
-                target.MaxVersion = source.MaxVersion;
-                target.IsMaxInclusive = source.IsMaxInclusive;
-            }
-
-            if (target.MaxVersion == source.MaxVersion)
-            {
-                target.IsMaxInclusive = target.IsMaxInclusive && source.IsMaxInclusive;
-            }
-        }
-
-        private class Dependency
-        {
-            public string Id { get; set; }
-
-            public FrameworkName TargetFramework { get; set; }
-
-            public IVersionSpec Version { get; set; }
         }
     }
 }

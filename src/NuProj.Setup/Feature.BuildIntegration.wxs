@@ -61,7 +61,25 @@
         <File Source="$(var.NuProj.Tasks.TargetDir)NuProj.Tasks.dll" />
       </Component>
       <Component Directory="INSTALLDIR">
-        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.Core.dll" />
+        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.Common.dll" />
+      </Component>
+      <Component Directory="INSTALLDIR">
+        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.Frameworks.dll" />
+      </Component>
+      <!--<Component Directory="INSTALLDIR">
+        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.Logging.dll" />
+      </Component>-->
+      <Component Directory="INSTALLDIR">
+        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.Packaging.dll" />
+      </Component>
+      <Component Directory="INSTALLDIR">
+        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.Packaging.Core.dll" />
+      </Component>
+      <Component Directory="INSTALLDIR">
+        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.Packaging.Core.Types.dll" />
+      </Component>
+      <Component Directory="INSTALLDIR">
+        <File Source="$(var.NuProj.Tasks.TargetDir)NuGet.Versioning.dll" />
       </Component>
       <Component Directory="INSTALLDIR">
         <File Source="$(var.NuProj.Tasks.TargetDir)Microsoft.Web.XmlTransform.dll" />

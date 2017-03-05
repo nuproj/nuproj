@@ -7,7 +7,7 @@
     "Microsoft.VisualStudio.SDK.VsixSuppression": "14.1.28",
     "Microsoft.VisualStudio.Shell.14.0": "14.3.25407",
     "Microsoft.VisualStudio.Shell.Interop.11.0": "11.0.61030",
-    "Nerdbank.GitVersioning": "1.4.41"
+    "Nerdbank.GitVersioning": "1.5.46"
   },
   "frameworks": {
     "net451": {}
