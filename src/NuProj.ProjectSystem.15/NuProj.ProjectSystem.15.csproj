@@ -22,6 +22,7 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <DeployExtension>false</DeployExtension>
+    <UseCodebase>true</UseCodebase>
   </PropertyGroup>
   <PropertyGroup>
     <StartAction>Program</StartAction>
@@ -36,6 +37,8 @@
     <DefineConstants>TRACE;DEBUG;Dev15</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CreateVsixContainer>True</CreateVsixContainer>
+    <DeployExtension>False</DeployExtension>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
