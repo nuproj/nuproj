@@ -37,7 +37,7 @@
 
     <ComponentGroup Id="MSBuildIntegration">
       <Component Directory="INSTALLDIR">
-        <File Source="$(env.UserProfile)\.nuget\packages\NuGet.CommandLine\3.4.3\tools\NuGet.exe" />
+        <File Source="$(env.UserProfile)\.nuget\packages\NuGet.CommandLine\3.5.0\tools\NuGet.exe" />
       </Component>
       <Component Directory="INSTALLDIR">
         <File Source="$(var.NuProj.Tasks.TargetDir)Additional\NuProj.targets" />

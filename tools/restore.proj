@@ -33,7 +33,7 @@
   <Target Name="DownloadNuGetExe"
           Condition="!Exists($(NuGetToolPath))">
     <DownloadFile Condition=""
-                  Address="https://dist.nuget.org/win-x86-commandline/v3.4.3/nuget.exe"
+                  Address="https://dist.nuget.org/win-x86-commandline/v3.5.0/nuget.exe"
                   FileName="$(NuGetToolPath)" />
     <Message Importance="High"
              Text="NuGet.exe -> $(NuGetToolPath)" />

@@ -1,5 +1,4 @@
 {
-  "locked": false,
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.6": {
@@ -9627,5 +9626,10 @@
       "NuProj.Common >= 0.10.4-beta"
     ],
     ".NETPlatform,Version=v5.0": []
+  },
+  "tools": {},
+  "projectFileToolGroups": {},
+  "packageFolders": {
+    "C:\\Users\\kovalikp\\.nuget\\packages\\": {}
   }
 }

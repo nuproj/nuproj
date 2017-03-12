@@ -28,7 +28,7 @@ namespace NuProj.Tests.Infrastructure
 
         public static string NuGetToolPath
         {
-            get { return Environment.ExpandEnvironmentVariables(@"%UserProfile%\.nuget\packages\NuGet.CommandLine\3.4.3\tools"); }
+            get { return Environment.ExpandEnvironmentVariables(@"%UserProfile%\.nuget\packages\NuGet.CommandLine\3.5.0\tools"); }
         }
 
         public static string NuGetExePath
@@ -78,14 +78,14 @@ namespace NuProj.Tests.Infrastructure
             // run the tests from the output directory, which means the base directory will
             // look like this:
             //
-            //      <ProjectDir>\bin\raw\
+            //      <ProjectDir>\bin\raw\NuProj.Tests\
             //
             // This means we either have to go up 4 or 2 levels. In order to decide we simply
             // check whether the base directory is "raw"  -- which is a fixed part, even if
             // $(OutDir) is redirected.
 
-            var isBuildOutput = string.Equals(Path.GetFileName(appDomainBase), "raw", StringComparison.OrdinalIgnoreCase);
-            var parentPath = isBuildOutput ? @"..\.." : @"..\..\..\..";
+            var isBuildOutput = string.Equals(Path.GetFileName(appDomainBase), "NuProj.Tests", StringComparison.OrdinalIgnoreCase);
+            var parentPath = isBuildOutput ? @"..\..\.." : @"..\..\..\..";
 
             return Path.GetFullPath(Path.Combine(appDomainBase, parentPath));
         }

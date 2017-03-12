@@ -27,7 +27,6 @@
     <FeatureRef Id="MSBuildIntegration" />
     <FeatureRef Id="VS12Integration" />
     <FeatureRef Id="VS14Integration" />
-    <FeatureRef Id="VS15Integration" />
 
     <Icon Id="NuProjIcon" SourceFile="$(var.SolutionDir)Icons\NuProj.ico" />
 

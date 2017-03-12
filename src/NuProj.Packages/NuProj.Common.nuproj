@@ -33,13 +33,13 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
   </PropertyGroup>
   
   <ItemGroup>
-    <Content Include="$(BasePath)raw\Additional\Microsoft.Common.NuProj.targets">
+    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Microsoft.Common.NuProj.targets">
       <Link>build\NuProj.Common.targets</Link>
     </Content>
-    <Content Include="$(BasePath)raw\Additional\Redirect.targets">
+    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Redirect.targets">
       <Link>build\portable-net+win+wpa+wp+sl+netmf+MonoAndroid+MonoTouch+Xamarin.iOS\NuProj.Common.targets</Link>
     </Content>
-    <Content Include="$(BasePath)raw\Additional\Redirect.targets">
+    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Redirect.targets">
       <Link>build\dotnet\NuProj.Common.targets</Link>
     </Content>
   </ItemGroup>
@@ -50,7 +50,7 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.4.41\build\NerdBank.GitVersioning.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.4.41\build\NerdBank.GitVersioning.targets'))" />
+    <Error Condition="!Exists('$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.5.46\build\NerdBank.GitVersioning.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.5.46\build\NerdBank.GitVersioning.targets'))" />
   </Target>
-  <Import Project="$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.4.41\build\NerdBank.GitVersioning.targets" Condition="Exists('$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.4.41\build\NerdBank.GitVersioning.targets')" />
+  <Import Project="$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.5.46\build\NerdBank.GitVersioning.targets" Condition="Exists('$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.5.46\build\NerdBank.GitVersioning.targets')" />
 </Project>

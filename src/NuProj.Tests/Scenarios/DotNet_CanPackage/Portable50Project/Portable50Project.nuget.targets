@@ -4,6 +4,6 @@
     <NuGetPackageRoot>$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
   </PropertyGroup>
   <ImportGroup>
-    <Import Project="$(NuGetPackageRoot)\NuProj.Common\0.10.4-beta\build\NuProj.Common.targets" Condition="Exists('$(NuGetPackageRoot)\NuProj.Common\0.10.4-beta\build\NuProj.Common.targets')" />
+    <Import Project="$(NuGetPackageRoot)nuproj.common\0.10.4-beta\build\NuProj.Common.targets" Condition="Exists('$(NuGetPackageRoot)nuproj.common\0.10.4-beta\build\NuProj.Common.targets')" />
   </ImportGroup>
 </Project>

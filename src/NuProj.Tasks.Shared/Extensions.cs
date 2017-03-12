@@ -8,7 +8,6 @@ using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
-using NuGet;
 using NuGet.Frameworks;
 using NuGet.Packaging;
 using NuGet.Versioning;

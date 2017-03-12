@@ -10,7 +10,7 @@
       Platform=$(Platform);
       OutDir=$(OutDir)release\;
       BasePath=$(OutDir)raw\;
-      BuildTasksPath=$(OutDir)raw\NuProj.Build.dll
+      BuildTasksPath=$(OutDir)raw\NuProj.Build\NuProj.Build.dll
     </ProjectProperties>
   </PropertyGroup>
 
