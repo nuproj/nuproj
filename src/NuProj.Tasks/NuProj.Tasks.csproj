@@ -48,76 +48,97 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="NuGet">
+      <HintPath>$(NuGetPackageRoot)NuGet.CommandLine\3.5.0\tools\NuGet.exe</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AssignPackageDirectory.cs" />
+    <Compile Include="AssignSourceTargetPaths.cs" />
+    <Compile Include="AssignTargetFramework.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="GenerateNuSpec.cs" />
+    <Compile Include="Metadata.cs" />
+    <Compile Include="NuGetPack.cs" />
+    <Compile Include="PackageDirectory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadPackagesConfig.cs" />
+    <Compile Include="ReadPdbSourceFiles.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\NuProj.Targets\Microsoft.Common.NuProj.targets">
-      <Link>Additional\Microsoft.Common.NuProj.targets</Link>
+    <Content Include="..\NuProj.Targets\Microsoft.Common.NuProj.targets">
+      <Link>Microsoft.Common.NuProj.targets</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.Targets\NuProj.targets">
-      <Link>Additional\NuProj.targets</Link>
+    </Content>
+    <Content Include="..\NuProj.Targets\NuProj.targets">
+      <Link>NuProj.targets</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="..\NuProj.Targets\NuProj.props">
-      <Link>Additional\NuProj.props</Link>
+    </Content>
+    <Content Include="..\NuProj.Targets\NuProj.props">
+      <Link>NuProj.props</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.Targets\Redirect.targets">
-      <Link>Additional\Redirect.targets</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\NuProj.ProjectSystem.Shared\Rules\content.xaml">
-      <Link>Additional\Rules\content.xaml</Link>
+    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\content.xaml">
+      <Link>Rules\content.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.ProjectSystem.Shared\Rules\folder.xaml">
-      <Link>Additional\Rules\folder.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\folder.xaml">
+      <Link>Rules\folder.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.ProjectSystem.Shared\Rules\general.browseobject.xaml">
-      <Link>Additional\Rules\general.browseobject.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\general.browseobject.xaml">
+      <Link>Rules\general.browseobject.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.ProjectSystem.Shared\Rules\general.xaml">
-      <Link>Additional\Rules\general.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\general.xaml">
+      <Link>Rules\general.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.ProjectSystem.Shared\Rules\none.xaml">
-      <Link>Additional\Rules\none.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\none.xaml">
+      <Link>Rules\none.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.ProjectSystem.Shared\Rules\ProjectItemsSchema.xaml">
-      <Link>Additional\Rules\ProjectItemsSchema.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\ProjectItemsSchema.xaml">
+      <Link>Rules\ProjectItemsSchema.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.ProjectSystem.Shared\Rules\ProjectReference.xaml">
-      <Link>Additional\Rules\ProjectReference.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\ProjectReference.xaml">
+      <Link>Rules\ProjectReference.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.ProjectSystem.Shared\Rules\ResolvedProjectReference.xaml">
-      <Link>Additional\Rules\ResolvedProjectReference.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\ResolvedProjectReference.xaml">
+      <Link>Rules\ResolvedProjectReference.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.ProjectSystem.Shared\Rules\scc.xaml">
-      <Link>Additional\Rules\scc.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\scc.xaml">
+      <Link>Rules\scc.xaml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NuProj.ProjectSystem.Shared\Rules\ContentFile.xaml">
-      <Link>Additional\Rules\ContentFile.xaml</Link>
+    </Content>
+    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\ContentFile.xaml">
+      <Link>Rules\ContentFile.xaml</Link>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>  <Import Project="..\NuProj.Tasks.Shared\NuProj.Tasks.Shared.projitems" Label="Shared" />
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\NuProj.Targets\Microsoft.Common.NuProj.targets" />
+  <Target Name="GetDeployableOutputs" DependsOnTargets="ResolveReferences;GetCopyToOutputDirectoryItems;BuiltProjectOutputGroup;BuiltProjectOutputGroupDependencies;SatelliteDllsProjectOutputGroup;SatelliteDllsProjectOutputGroupDependencies" Returns="@(DeployableOutputs)">
+    <ItemGroup>
+      <DeployableOutputs Include="@(BuiltProjectOutputGroupDependency)" Condition=" '%(Extension)' != '.pdb' and '%(Extension)' != '.xml' ">
+        <RequiringProjectFullPath>$(MSBuildProjectFullPath)</RequiringProjectFullPath>
+        <MSBuildSourceTargetName>GetDeployableOutputs</MSBuildSourceTargetName>
+      </DeployableOutputs>
+      <DeployableOutputs Include="&#xD;&#xA;                            @(SatelliteDllsProjectOutputGroupOutput);&#xD;&#xA;                            @(SatelliteDllsProjectOutputGroupDependency);&#xD;&#xA;                            " Condition=" '%(SatelliteDllsProjectOutputGroupOutput.WithCulture)' == 'true' or  '%(SatelliteDllsProjectOutputGroupDependency.WithCulture)' == 'true' ">
+        <RequiringProjectFullPath>$(MSBuildProjectFullPath)</RequiringProjectFullPath>
+        <MSBuildSourceTargetName>GetDeployableOutputs</MSBuildSourceTargetName>
+      </DeployableOutputs>
+    </ItemGroup>
+  </Target>
 </Project>

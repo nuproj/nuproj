@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <OutputPath>$([System.IO.Path]::GetFullPath('$(OutDir)$(OutputName)'))</OutputPath>
-    <BuildTasksPath>$(OutDir)raw\NuProj.Build\NuProj.Build.dll</BuildTasksPath>
+    <BuildTasksPath>$(OutDir)raw\NuProj.Build.dll</BuildTasksPath>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
 

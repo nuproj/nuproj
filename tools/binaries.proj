@@ -12,8 +12,7 @@
     <ProjectProperties>
       Configuration=$(Configuration);
       Platform=$(Platform);
-      OutDir=$(OutDir)raw\;
-      GenerateProjectSpecificOutputFolder=true
+      OutDir=$(OutDir)raw\
     </ProjectProperties>
   </PropertyGroup>
 

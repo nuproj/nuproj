@@ -33,13 +33,13 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
   </PropertyGroup>
   
   <ItemGroup>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Microsoft.Common.NuProj.targets">
+    <Content Include="..\NuProj.Targets\Microsoft.Common.NuProj.targets">
       <Link>build\NuProj.Common.targets</Link>
     </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Redirect.targets">
+    <Content Include="..\NuProj.Targets\Redirect.targets">
       <Link>build\portable-net+win+wpa+wp+sl+netmf+MonoAndroid+MonoTouch+Xamarin.iOS\NuProj.Common.targets</Link>
     </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Redirect.targets">
+    <Content Include="..\NuProj.Targets\Redirect.targets">
       <Link>build\dotnet\NuProj.Common.targets</Link>
     </Content>
   </ItemGroup>

@@ -38,53 +38,12 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
   <ItemGroup>
     <ProjectReference Include="..\NuProj.Tasks\NuProj.Tasks.csproj">
       <PackageDirectory>Tools</PackageDirectory>
+      <PackageOutputGroups>$(PackageOutputGroups);ContentFilesProjectOutputGroup</PackageOutputGroups>
     </ProjectReference>
   </ItemGroup>
   
   <ItemGroup>
     <Content Include="build\NuProj.props" />
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\NuProj.props">
-      <Link>tools\NuProj.props</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\NuProj.targets">
-      <Link>tools\NuProj.targets</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Microsoft.Common.NuProj.targets">
-      <Link>tools\Microsoft.Common.NuProj.targets</Link>
-    </Content>
-    <Content Include="$(UserProfile)\.nuget\packages\NuGet.CommandLine\3.5.0\tools\NuGet.exe">
-      <Link>tools\NuGet.exe</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Rules\content.xaml">
-      <Link>tools\Rules\content.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Rules\ContentFile.xaml">
-      <Link>tools\Rules\ContentFile.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Rules\folder.xaml">
-      <Link>tools\Rules\folder.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Rules\general.browseobject.xaml">
-      <Link>tools\Rules\general.browseobject.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Rules\general.xaml">
-      <Link>tools\Rules\general.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Rules\none.xaml">
-      <Link>tools\Rules\none.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Rules\ProjectItemsSchema.xaml">
-      <Link>tools\Rules\ProjectItemsSchema.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Rules\ProjectReference.xaml">
-      <Link>tools\Rules\ProjectReference.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Rules\ResolvedProjectReference.xaml">
-      <Link>tools\Rules\ResolvedProjectReference.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\NuProj.Tasks\Additional\Rules\scc.xaml">
-      <Link>tools\Rules\scc.xaml</Link>
-    </Content>
   </ItemGroup>
 
   <Import Project="$(NuProjPath)\NuProj.targets" />

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.Tasks", "NuProj.Tasks\NuProj.Tasks.csproj", "{187C3685-1EC7-4DCE-933B-8F7A43D5A481}"
 EndProject
@@ -43,16 +43,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{F1
 		NuProj.Packages\NuProj.nuproj = NuProj.Packages\NuProj.nuproj
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.Tasks.15", "NuProj.Tasks.15\NuProj.Tasks.15.csproj", "{CCF5A9E2-F8FA-4DF0-8939-F0D2EDD69470}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NuProj.Tasks.Shared", "NuProj.Tasks.Shared\NuProj.Tasks.Shared.shproj", "{3BEF57BE-6A9F-4AF6-B391-0DDF46E144C0}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		NuProj.Tasks.Shared\NuProj.Tasks.Shared.projitems*{187c3685-1ec7-4dce-933b-8f7a43d5a481}*SharedItemsImports = 4
-		NuProj.Tasks.Shared\NuProj.Tasks.Shared.projitems*{3bef57be-6a9f-4af6-b391-0ddf46e144c0}*SharedItemsImports = 13
 		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{3c115530-0fb2-47b6-a6d5-9eb33611a394}*SharedItemsImports = 4
-		NuProj.Tasks.Shared\NuProj.Tasks.Shared.projitems*{ccf5a9e2-f8fa-4df0-8939-f0d2edd69470}*SharedItemsImports = 4
 		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{f4f9654a-a6e3-4d7f-9db7-57eb0dddfcc6}*SharedItemsImports = 13
 		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{f75dc9fd-cc16-4f24-a054-bd27dfff885c}*SharedItemsImports = 4
 	EndGlobalSection
@@ -119,14 +112,6 @@ Global
 		{346C4C43-FA23-4A41-9455-2B2B03CBF264}.Release|Any CPU.Build.0 = Release|Any CPU
 		{346C4C43-FA23-4A41-9455-2B2B03CBF264}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{346C4C43-FA23-4A41-9455-2B2B03CBF264}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{CCF5A9E2-F8FA-4DF0-8939-F0D2EDD69470}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCF5A9E2-F8FA-4DF0-8939-F0D2EDD69470}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCF5A9E2-F8FA-4DF0-8939-F0D2EDD69470}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{CCF5A9E2-F8FA-4DF0-8939-F0D2EDD69470}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{CCF5A9E2-F8FA-4DF0-8939-F0D2EDD69470}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCF5A9E2-F8FA-4DF0-8939-F0D2EDD69470}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CCF5A9E2-F8FA-4DF0-8939-F0D2EDD69470}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{CCF5A9E2-F8FA-4DF0-8939-F0D2EDD69470}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

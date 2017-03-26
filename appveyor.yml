@@ -12,7 +12,7 @@ artifacts:
   name: Setup
 - path: bin\release\*.nupkg
   name: Packages
-- path: bin\raw\**\*.vsix
+- path: bin\raw\*.vsix
   name: Extensions
-- path: bin\raw\**\*.msi
+- path: bin\raw\*.msi
   name: Visual Studio installer

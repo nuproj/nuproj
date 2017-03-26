@@ -49,10 +49,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -110,18 +113,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="..\NuProj.Targets\NuProj.props">
-      <Link>NuProj\NuProj.props</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <InstallRoot>MSBuild</InstallRoot>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\NuProj.Targets\NuProj.targets">
-      <Link>NuProj\NuProj.targets</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <InstallRoot>MSBuild</InstallRoot>
-    </Content>
     <Content Include="..\NuProj.Targets\Microsoft.Common.NuProj.targets">
       <Link>15.0\Microsoft.Common.targets\ImportAfter\Microsoft.Common.NuProj.targets</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -168,87 +159,77 @@
       <Link>VSPackage.resx</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\content.xaml">
-      <Link>NuProj\Rules\content.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <InstallRoot>MSBuild</InstallRoot>
-    </Content>
-    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\ContentFile.xaml">
-      <Link>NuProj\Rules\ContentFile.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <InstallRoot>MSBuild</InstallRoot>
-    </Content>
-    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\folder.xaml">
-      <Link>NuProj\Rules\folder.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <InstallRoot>MSBuild</InstallRoot>
-    </Content>
-    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\general.browseobject.xaml">
-      <Link>NuProj\Rules\general.browseobject.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <InstallRoot>MSBuild</InstallRoot>
-    </Content>
-    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\general.xaml">
-      <Link>NuProj\Rules\general.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <InstallRoot>MSBuild</InstallRoot>
-    </Content>
-    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\none.xaml">
-      <Link>NuProj\Rules\none.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <InstallRoot>MSBuild</InstallRoot>
-    </Content>
-    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\ProjectItemsSchema.xaml">
-      <Link>NuProj\Rules\ProjectItemsSchema.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <InstallRoot>MSBuild</InstallRoot>
-    </Content>
-    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\ProjectReference.xaml">
-      <Link>NuProj\Rules\ProjectReference.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <InstallRoot>MSBuild</InstallRoot>
-    </Content>
-    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\ResolvedProjectReference.xaml">
-      <Link>NuProj\Rules\ResolvedProjectReference.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <InstallRoot>MSBuild</InstallRoot>
-    </Content>
-    <Content Include="..\NuProj.ProjectSystem.Shared\Rules\scc.xaml">
-      <Link>NuProj\Rules\scc.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <InstallRoot>MSBuild</InstallRoot>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NuProj.Tasks.15\NuProj.Tasks.15.csproj">
-      <Project>{ccf5a9e2-f8fa-4df0-8939-f0d2edd69470}</Project>
-      <Name>NuProj.Tasks.15</Name>
+    <ProjectReference Include="..\NuProj.Tasks\NuProj.Tasks.csproj">
+      <Project>{187c3685-1ec7-4dce-933b-8f7a43d5a481}</Project>
+      <Name>NuProj.Tasks</Name>
+      <Targets>Build;GetDeployableOutputs</Targets>
       <InstallRoot>MSBuild</InstallRoot>
       <VSIXSubPath>NuProj</VSIXSubPath>
     </ProjectReference>
   </ItemGroup>
+  <!--<ItemGroup>
+    <XamlPropertyRule Include="..\NuProj.ProjectSystem.Shared\Rules\content.xaml">
+      <Link>NuProj\Rules\content.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <InstallRoot>MSBuild</InstallRoot>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="..\NuProj.ProjectSystem.Shared\Rules\ContentFile.xaml">
+      <Link>NuProj\Rules\ContentFile.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <InstallRoot>MSBuild</InstallRoot>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="..\NuProj.ProjectSystem.Shared\Rules\folder.xaml">
+      <Link>NuProj\Rules\folder.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <InstallRoot>MSBuild</InstallRoot>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="..\NuProj.ProjectSystem.Shared\Rules\general.browseobject.xaml">
+      <Link>NuProj\Rules\general.browseobject.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <InstallRoot>MSBuild</InstallRoot>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="..\NuProj.ProjectSystem.Shared\Rules\general.xaml">
+      <Link>NuProj\Rules\general.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <InstallRoot>MSBuild</InstallRoot>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="..\NuProj.ProjectSystem.Shared\Rules\none.xaml">
+      <Link>NuProj\Rules\none.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <InstallRoot>MSBuild</InstallRoot>
+    </XamlPropertyRule>
+    <None Include="..\NuProj.ProjectSystem.Shared\Rules\ProjectItemsSchema.xaml">
+      <Link>NuProj\Rules\ProjectItemsSchema.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <InstallRoot>MSBuild</InstallRoot>
+    </None>
+    <XamlPropertyRule Include="..\NuProj.ProjectSystem.Shared\Rules\ProjectReference.xaml">
+      <Link>NuProj\Rules\ProjectReference.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <InstallRoot>MSBuild</InstallRoot>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="..\NuProj.ProjectSystem.Shared\Rules\ResolvedProjectReference.xaml">
+      <Link>NuProj\Rules\ResolvedProjectReference.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <InstallRoot>MSBuild</InstallRoot>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="..\NuProj.ProjectSystem.Shared\Rules\scc.xaml">
+      <Link>NuProj\Rules\scc.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <InstallRoot>MSBuild</InstallRoot>
+    </XamlPropertyRule>
+  </ItemGroup>-->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

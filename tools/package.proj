@@ -23,8 +23,8 @@
     <ProjectProperties>
       BasePath=$(OutDir);
       OutDir=$(OutDir)release\;
-      NuProjPath=$(OutDir)raw\NuProj.Tasks\Additional\;
-      NuProjTasksPath=$(OutDir)raw\NuProj.Tasks\NuProj.Tasks.dll;
+      NuProjPath=$([System.IO.Path]::GetDirectoryName($(MSBuildProjectDirectory)))\src\NuProj.Targets\;
+      NuProjTasksPath=$(OutDir)raw\NuProj.Tasks.dll;
       NuProjToolPath=$(OutDir)raw\;
       NuGetToolPath=$(UserProfile)\.nuget\packages\NuGet.CommandLine\3.5.0\tools\;
     </ProjectProperties>
@@ -32,8 +32,8 @@
   
   <!-- External Tasks -->
 
-  <UsingTask AssemblyFile="$(OutDir)raw\NuProj.Build\NuProj.Build.dll" TaskName="NuProj.Build.GetFileVersionInfo" />
-  <UsingTask AssemblyFile="$(OutDir)raw\NuProj.Build\NuProj.Build.dll" TaskName="NuProj.Build.GetAssemblyMetadata" />
+  <UsingTask AssemblyFile="$(OutDir)raw\NuProj.Build.dll" TaskName="NuProj.Build.GetFileVersionInfo" />
+  <UsingTask AssemblyFile="$(OutDir)raw\NuProj.Build.dll" TaskName="NuProj.Build.GetAssemblyMetadata" />
 
   <ItemGroup>
     <NuProj Include="$(SourceDir)NuProj.Packages\*.nuproj" />
@@ -41,7 +41,7 @@
 
   <Target Name="GetCommonMetadata">
   	<PropertyGroup>
-  		<_AssemblyWithMetadataPath>$(OutDir)raw\NuProj.Tasks\NuProj.Tasks.dll</_AssemblyWithMetadataPath>
+  		<_AssemblyWithMetadataPath>$(OutDir)raw\NuProj.Tasks.dll</_AssemblyWithMetadataPath>
   	</PropertyGroup>
     <GetFileVersionInfo File="$(_AssemblyWithMetadataPath)">
       <Output TaskParameter="FileMajorPart"
