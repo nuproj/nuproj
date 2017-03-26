@@ -1,5 +1,7 @@
 ﻿{
   "dependencies": {
+    "Microsoft.Build": "15.1.548",
+    "Microsoft.Build.Framework": "15.1.548",
     "Microsoft.VisualStudio.ImageCatalog": "15.0.26201",
     "Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime": "15.0.25726-Preview5",
     "Microsoft.VisualStudio.ProjectSystem": "15.0.743",
