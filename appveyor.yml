@@ -8,8 +8,6 @@ build_script:
 artifacts:
 - path: msbuild.log
   name: MSBuild Log
-- path: bin\release\NuProj_Setup.zip
-  name: Setup
 - path: bin\release\*.nupkg
   name: Packages
 - path: bin\raw\*.vsix
