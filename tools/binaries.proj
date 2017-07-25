@@ -12,7 +12,7 @@
     <ProjectProperties>
       Configuration=$(Configuration);
       Platform=$(Platform);
-      OutDir=$(OutDir)raw\;
+      OutDir=$(OutDir)raw\
     </ProjectProperties>
   </PropertyGroup>
 

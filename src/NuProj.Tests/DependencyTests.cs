@@ -7,6 +7,10 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using NuGet;
+using NuGet.Frameworks;
+using NuGet.Packaging;
+using NuGet.Packaging.Core;
+using NuGet.Versioning;
 using NuProj.Tests.Infrastructure;
 using Xunit;
 
@@ -36,8 +40,7 @@ namespace NuProj.Tests
                 @"content\jquery-2.1.1.js",
                 @"lib\net45\ClassLibrary1.dll"
             };
-            var files = package.GetFiles().Select(f => f.Path);
-            Assert.Equal(expectedFileNames, files);
+            Assert.Equal(expectedFileNames, package.Files);
         }
 
         [Fact]
@@ -52,30 +55,27 @@ namespace NuProj.Tests
                 @"tools\Microsoft.CodeAnalysis.Desktop.dll",
                 @"tools\Microsoft.CodeAnalysis.dll",
             };
-            var files = package.GetFiles().Select(f => f.Path);
-            Assert.Equal(expectedFileNames, files);
+            Assert.Equal(expectedFileNames, package.Files);
         }
 
         [Fact]
         public async Task Dependency_IndirectDependencies_AreNotPackaged()
         {
             var package = await Scenario.RestoreAndBuildSinglePackageAsync(packageId: "A.nuget");
-            var files = package.GetFiles();
 
-            Assert.DoesNotContain(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
-            Assert.DoesNotContain(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
-            Assert.DoesNotContain(files, x => x.Path.Contains("B3.dll"));
+            Assert.DoesNotContain(package.Files, x => x.Contains("Newtonsoft.Json.dll"));
+            Assert.DoesNotContain(package.Files, x => x.Contains("ServiceModel.Composition.dll"));
+            Assert.DoesNotContain(package.Files, x => x.Contains("B3.dll"));
         }
 
         [Fact]
         public async Task Dependency_DirectDependencies_AreNotPackaged()
         {
             var package = await Scenario.RestoreAndBuildSinglePackageAsync(packageId: "A.nuget");
-            var files = package.GetFiles();
 
-            Assert.DoesNotContain(files, x => x.Path.Contains("Newtonsoft.Json.dll"));
-            Assert.DoesNotContain(files, x => x.Path.Contains("ServiceModel.Composition.dll"));
-            Assert.DoesNotContain(files, x => x.Path.Contains("B3.dll"));
+            Assert.DoesNotContain(package.Files, x => x.Contains("Newtonsoft.Json.dll"));
+            Assert.DoesNotContain(package.Files, x => x.Contains("ServiceModel.Composition.dll"));
+            Assert.DoesNotContain(package.Files, x => x.Contains("B3.dll"));
         }
 
         [Fact]
@@ -84,14 +84,14 @@ namespace NuProj.Tests
             var package = await Scenario.RestoreAndBuildSinglePackageAsync();
             var expectedVersions = new[]
             {
-                    "1.1.20-beta",
-                    "1.0.12-alpha",
+                    "[1.1.20-beta, )",
+                    "[1.0.12-alpha, )",
                     "[0.2.0, 1.0.0]",
                     "[0.2.0, 1.0.0]",
             };
             var versionSpecs = package.DependencySets
-                .SelectMany(x => x.Dependencies)
-                .Select(x => x.VersionSpec.ToString());
+                .SelectMany(x => x.Packages)
+                .Select(x => x.VersionRange.ToString());
             Assert.Equal(expectedVersions, versionSpecs);
         }
 
@@ -100,25 +100,17 @@ namespace NuProj.Tests
         {
             var package = await Scenario.RestoreAndBuildSinglePackageAsync(packageId: "Dependent.nuget");
             var dependencySet = new []{
-                new PackageDependencySet(VersionUtility.ParseFrameworkName("net40"), new List<PackageDependency>
+                new PackageDependencyGroup(NuGetFramework.ParseFolder("net40"), new[]
                     {
-                        new PackageDependency("Dependency.nuget", new VersionSpec
-                            {
-                                IsMinInclusive = true,
-                                MinVersion = new SemanticVersion("1.0.0")
-                            })
+                        new PackageDependency("Dependency.nuget", new VersionRange(new NuGetVersion(1, 0, 0)))
                     }),
-                new PackageDependencySet(VersionUtility.ParseFrameworkName("net45"), new List<PackageDependency>
+                new PackageDependencyGroup(NuGetFramework.ParseFolder("net45"), new[]
                     {
-                        new PackageDependency("Dependency.nuget", new VersionSpec
-                            {
-                                IsMinInclusive = true,
-                                MinVersion = new SemanticVersion("1.0.0")
-                            })
+                        new PackageDependency("Dependency.nuget", new VersionRange(new NuGetVersion(1, 0, 0)))
                     }),
             };
 
-            Assert.Equal(dependencySet, package.DependencySets, PackageDependencySetComparer.Instance);
+            Assert.Equal(dependencySet, package.DependencySets);
         }
 
         [Fact]
@@ -129,17 +121,13 @@ namespace NuProj.Tests
             // We verify that one package dependency is present that should be transitive,
             // and that a DevelopmentDependency=true package (StyleCop.Analyzers) is NOT present.
             var dependencySet = new[]{
-                new PackageDependencySet(VersionUtility.ParseFrameworkName("net452"), new List<PackageDependency>
+                new PackageDependencyGroup(NuGetFramework.ParseFolder("net452"), new[]
                     {
-                        new PackageDependency("Microsoft.Tpl.Dataflow", new VersionSpec
-                            {
-                                IsMinInclusive = true,
-                                MinVersion = new SemanticVersion("4.5.24")
-                            }),
+                        new PackageDependency("Microsoft.Tpl.Dataflow", new VersionRange(new NuGetVersion(4, 5, 24)))
                     }),
             };
 
-            Assert.Equal(dependencySet, package.DependencySets, PackageDependencySetComparer.Instance);
+            Assert.Equal(dependencySet, package.DependencySets);
         }
 
         [Theory]

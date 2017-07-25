@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuProj.Tasks", "NuProj.Tasks\NuProj.Tasks.csproj", "{187C3685-1EC7-4DCE-933B-8F7A43D5A481}"
 EndProject
@@ -45,7 +45,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{F1
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{346c4c43-fa23-4a41-9455-2b2b03cbf264}*SharedItemsImports = 4
 		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{3c115530-0fb2-47b6-a6d5-9eb33611a394}*SharedItemsImports = 4
 		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{f4f9654a-a6e3-4d7f-9db7-57eb0dddfcc6}*SharedItemsImports = 13
 		NuProj.ProjectSystem.Shared\NuProj.ProjectSystem.Shared.projitems*{f75dc9fd-cc16-4f24-a054-bd27dfff885c}*SharedItemsImports = 4

@@ -5,7 +5,7 @@
   <UsingTask TaskName="xunit" AssemblyFile="$(NuGetPackageRoot)xunit.runner.msbuild\2.1.0\build\portable-net45+win8+wp8+wpa81\xunit.runner.msbuild.dll" />
 
   <ItemGroup>
-    <TestAssembly Include="$(OutDir)raw\*Tests*.dll" />
+    <TestAssembly Include="$(OutDir)raw\**\*Tests*.dll" />
   </ItemGroup>
 
   <Target Name="Clean">

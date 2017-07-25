@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using NuGet;
+using NuGet.Packaging;
 using NuProj.Tests.Infrastructure;
 using Xunit;
 

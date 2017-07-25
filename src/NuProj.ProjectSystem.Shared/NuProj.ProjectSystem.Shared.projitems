@@ -19,15 +19,25 @@
     <Compile Include="$(MSBuildThisFileDirectory)NuProjValidProjectReferenceChecker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)Rules\content.xaml" />
-    <None Include="$(MSBuildThisFileDirectory)Rules\ContentFile.xaml" />
-    <None Include="$(MSBuildThisFileDirectory)Rules\folder.xaml" />
-    <None Include="$(MSBuildThisFileDirectory)Rules\general.browseobject.xaml" />
-    <None Include="$(MSBuildThisFileDirectory)Rules\general.xaml" />
-    <None Include="$(MSBuildThisFileDirectory)Rules\none.xaml" />
-    <None Include="$(MSBuildThisFileDirectory)Rules\ProjectItemsSchema.xaml" />
-    <None Include="$(MSBuildThisFileDirectory)Rules\ProjectReference.xaml" />
-    <None Include="$(MSBuildThisFileDirectory)Rules\ResolvedProjectReference.xaml" />
-    <None Include="$(MSBuildThisFileDirectory)Rules\scc.xaml" />
+    <None Include="$(MSBuildThisFileDirectory)Rules\content.xaml">
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Rules\ContentFile.xaml">
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Rules\folder.xaml">
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Rules\general.browseobject.xaml">
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Rules\general.xaml">
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Rules\none.xaml">
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Rules\ProjectItemsSchema.xaml">
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Rules\ProjectReference.xaml">
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Rules\ResolvedProjectReference.xaml">
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Rules\scc.xaml">
+    </None>
   </ItemGroup>
 </Project>

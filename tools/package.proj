@@ -23,10 +23,10 @@
     <ProjectProperties>
       BasePath=$(OutDir);
       OutDir=$(OutDir)release\;
-      NuProjPath=$(OutDir)raw\Additional\;
+      NuProjPath=$([System.IO.Path]::GetDirectoryName($(MSBuildProjectDirectory)))\src\NuProj.Targets\;
       NuProjTasksPath=$(OutDir)raw\NuProj.Tasks.dll;
       NuProjToolPath=$(OutDir)raw\;
-      NuGetToolPath=$(UserProfile)\.nuget\packages\NuGet.CommandLine\3.4.3\tools\;
+      NuGetToolPath=$(UserProfile)\.nuget\packages\NuGet.CommandLine\3.5.0\tools\;
     </ProjectProperties>
   </PropertyGroup>
   

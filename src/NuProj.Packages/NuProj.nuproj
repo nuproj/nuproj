@@ -38,53 +38,12 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
   <ItemGroup>
     <ProjectReference Include="..\NuProj.Tasks\NuProj.Tasks.csproj">
       <PackageDirectory>Tools</PackageDirectory>
+      <PackageOutputGroups>$(PackageOutputGroups);ContentFilesProjectOutputGroup</PackageOutputGroups>
     </ProjectReference>
   </ItemGroup>
   
   <ItemGroup>
     <Content Include="build\NuProj.props" />
-    <Content Include="$(BasePath)raw\Additional\NuProj.props">
-      <Link>tools\NuProj.props</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\NuProj.targets">
-      <Link>tools\NuProj.targets</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\Microsoft.Common.NuProj.targets">
-      <Link>tools\Microsoft.Common.NuProj.targets</Link>
-    </Content>
-    <Content Include="$(UserProfile)\.nuget\packages\NuGet.CommandLine\3.4.3\tools\NuGet.exe">
-      <Link>tools\NuGet.exe</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\Rules\content.xaml">
-      <Link>tools\Rules\content.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\Rules\ContentFile.xaml">
-      <Link>tools\Rules\ContentFile.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\Rules\folder.xaml">
-      <Link>tools\Rules\folder.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\Rules\general.browseobject.xaml">
-      <Link>tools\Rules\general.browseobject.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\Rules\general.xaml">
-      <Link>tools\Rules\general.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\Rules\none.xaml">
-      <Link>tools\Rules\none.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\Rules\ProjectItemsSchema.xaml">
-      <Link>tools\Rules\ProjectItemsSchema.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\Rules\ProjectReference.xaml">
-      <Link>tools\Rules\ProjectReference.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\Rules\ResolvedProjectReference.xaml">
-      <Link>tools\Rules\ResolvedProjectReference.xaml</Link>
-    </Content>
-    <Content Include="$(BasePath)raw\Additional\Rules\scc.xaml">
-      <Link>tools\Rules\scc.xaml</Link>
-    </Content>
   </ItemGroup>
 
   <Import Project="$(NuProjPath)\NuProj.targets" />
@@ -93,7 +52,7 @@ There is also a Visual Studio extension which you find under http://bit.ly/NuPro
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.4.41\build\NerdBank.GitVersioning.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.4.41\build\NerdBank.GitVersioning.targets'))" />
+    <Error Condition="!Exists('$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.5.46\build\NerdBank.GitVersioning.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.5.46\build\NerdBank.GitVersioning.targets'))" />
   </Target>
-  <Import Project="$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.4.41\build\NerdBank.GitVersioning.targets" Condition="Exists('$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.4.41\build\NerdBank.GitVersioning.targets')" />
+  <Import Project="$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.5.46\build\NerdBank.GitVersioning.targets" Condition="Exists('$(UserProfile)\.nuget\packages\Nerdbank.GitVersioning\1.5.46\build\NerdBank.GitVersioning.targets')" />
 </Project>

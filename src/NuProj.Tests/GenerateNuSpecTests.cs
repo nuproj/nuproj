@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.Build.Utilities;
 using NuGet;
+using NuGet.Frameworks;
+using NuGet.Packaging;
+using NuGet.Packaging.Core;
+using NuGet.Versioning;
 using NuProj.Tasks;
 using NuProj.Tests.Infrastructure;
 using Xunit;
@@ -18,6 +23,7 @@ namespace NuProj.Tests
             var tempPath = Path.GetTempPath();
             var randomFileName = Path.GetRandomFileName();
             _projectDirectory = Path.Combine(tempPath, randomFileName);
+            Directory.CreateDirectory(_projectDirectory);
         }
 
         public void Dispose()
@@ -68,17 +74,17 @@ namespace NuProj.Tests
             {
                 var manifest = Manifest.ReadFrom(stream, false);
                 Assert.Equal(target.Id, manifest.Metadata.Id);
-                Assert.Equal(target.Version, manifest.Metadata.Version);
+                Assert.Equal(new NuGetVersion(target.Version), manifest.Metadata.Version);
                 Assert.Equal(target.Title, manifest.Metadata.Title);
-                Assert.Equal(target.Authors, manifest.Metadata.Authors);
+                Assert.Equal(new[] { target.Authors }, manifest.Metadata.Authors);
                 Assert.Equal(target.RequireLicenseAcceptance, manifest.Metadata.RequireLicenseAcceptance);
                 Assert.Equal(target.Description, manifest.Metadata.Description);
                 Assert.Equal(target.ReleaseNotes, manifest.Metadata.ReleaseNotes);
                 Assert.Equal(target.Summary, manifest.Metadata.Summary);
                 Assert.Equal(target.Language, manifest.Metadata.Language);
-                Assert.Equal(target.ProjectUrl, manifest.Metadata.ProjectUrl);
-                Assert.Equal(target.IconUrl, manifest.Metadata.IconUrl);
-                Assert.Equal(target.LicenseUrl, manifest.Metadata.LicenseUrl);
+                Assert.Equal(new Uri(target.ProjectUrl), manifest.Metadata.ProjectUrl);
+                Assert.Equal(new Uri(target.IconUrl), manifest.Metadata.IconUrl);
+                Assert.Equal(new Uri(target.LicenseUrl), manifest.Metadata.LicenseUrl);
                 Assert.Equal(target.Copyright, manifest.Metadata.Copyright);
                 Assert.Equal(target.Tags, manifest.Metadata.Tags);
                 Assert.Equal(true, manifest.Metadata.DevelopmentDependency);
@@ -122,53 +128,33 @@ namespace NuProj.Tests
             {
                 var manifest = Manifest.ReadFrom(stream, false);
                 Assert.Equal("NuGetPackage", manifest.Metadata.Id);
-                Assert.Equal("1.0.0", manifest.Metadata.Version);
+                Assert.Equal(new NuGetVersion(1, 0, 0), manifest.Metadata.Version);
                 Assert.Equal("NuGetPackage", manifest.Metadata.Title);
-                Assert.Equal("Immo", manifest.Metadata.Authors);
+                Assert.Equal(new[] { "Immo" }, manifest.Metadata.Authors);
                 Assert.Equal(false, manifest.Metadata.RequireLicenseAcceptance);
                 Assert.Equal("NuGetPackage", manifest.Metadata.Description);
                 Assert.Equal("Released!", manifest.Metadata.ReleaseNotes);
                 Assert.Equal("NuGetPackage", manifest.Metadata.Summary);
                 Assert.Equal("en-us", manifest.Metadata.Language);
-                Assert.Equal("http://nuproj.net/", manifest.Metadata.ProjectUrl);
-                Assert.Equal("http://placekitten.com/g/64/64", manifest.Metadata.IconUrl);
-                Assert.Equal("http://nuproj.net/LICENSE/", manifest.Metadata.LicenseUrl);
+                Assert.Equal(new Uri("http://nuproj.net/"), manifest.Metadata.ProjectUrl);
+                Assert.Equal(new Uri("http://placekitten.com/g/64/64"), manifest.Metadata.IconUrl);
+                Assert.Equal(new Uri("http://nuproj.net/LICENSE/"), manifest.Metadata.LicenseUrl);
                 Assert.Equal("Copyright © Immo", manifest.Metadata.Copyright);
                 Assert.Equal("NuGetPackage", manifest.Metadata.Tags);
                 Assert.Equal(true, manifest.Metadata.DevelopmentDependency);
 
                 var expectedFrameworkAssemblies = new[] {
-                    new ManifestFrameworkAssembly()
-                    {
-                        AssemblyName = "Microsoft.Build.Framework"
-                    }
+                    new FrameworkAssemblyReference("Microsoft.Build.Framework", new[] { NuGetFramework.AnyFramework })
                 };
 
                 var expectedDependencySets = new[] {
-                    new ManifestDependencySet
-                    {
-                        Dependencies = new List<ManifestDependency>
-                        {
-                            new ManifestDependency
-                            {
-                                Id = "NuGet.Core",
-                                Version = "2.8.5"
-                            }
-                        }
-                    }
+                    new PackageDependencyGroup(
+                        NuGetFramework.AnyFramework, 
+                        new[] { new PackageDependency("NuGet.Core", new VersionRange(new NuGetVersion(2, 8, 5))) })
                 };
 
                 var expectedReferenceSets = new[] {
-                    new ManifestReferenceSet
-                    {
-                        References = new List<ManifestReference>
-                        {
-                            new ManifestReference
-                            {
-                                File = "NuGet.Core.dll"
-                            }
-                        }
-                    }
+                    new PackageReferenceSet(new[] {"NuGet.Core.dll"})
                 };
 
                 var expectedFiles = new[] {
@@ -181,15 +167,14 @@ namespace NuProj.Tests
                 };
 
                 Assert.Equal(expectedFrameworkAssemblies,
-                    manifest.Metadata.FrameworkAssemblies,
+                    manifest.Metadata.FrameworkReferences,
                     ManifestFrameworkAssemblyComparer.Instance);
 
                 Assert.Equal(expectedDependencySets,
-                    manifest.Metadata.DependencySets,
-                    ManifestDependencySetComparer.Instance);
+                    manifest.Metadata.DependencyGroups);
 
                 Assert.Equal(expectedReferenceSets,
-                    manifest.Metadata.ReferenceSets,
+                    manifest.Metadata.PackageAssemblyReferences,
                     ManifestReferenceSetComparer.Instance);
 
                 Assert.Equal(expectedFiles,
@@ -224,7 +209,7 @@ namespace NuProj.Tests
             {
                 new TaskItem("APackage", new Dictionary<string, string>
                 {
-                    { Metadata.TargetFramework, "portable-net45+win80" }
+                    { Metadata.TargetFramework, "portable-net45+win8" }
                 }),
 
                 new TaskItem("_._", new Dictionary<string, string>
@@ -240,34 +225,34 @@ namespace NuProj.Tests
             {
                 var manifest = Manifest.ReadFrom(stream, false);
                 Assert.Equal(target.Id, manifest.Metadata.Id);
-                Assert.Equal(target.Version, manifest.Metadata.Version);
+                Assert.Equal(new NuGetVersion(target.Version), manifest.Metadata.Version);
                 Assert.Equal(target.Title, manifest.Metadata.Title);
-                Assert.Equal(target.Authors, manifest.Metadata.Authors);
+                Assert.Equal(new[] { target.Authors }, manifest.Metadata.Authors);
                 Assert.Equal(target.RequireLicenseAcceptance, manifest.Metadata.RequireLicenseAcceptance);
                 Assert.Equal(target.Description, manifest.Metadata.Description);
                 Assert.Equal(target.ReleaseNotes, manifest.Metadata.ReleaseNotes);
                 Assert.Equal(target.Summary, manifest.Metadata.Summary);
                 Assert.Equal(target.Language, manifest.Metadata.Language);
-                Assert.Equal(target.ProjectUrl, manifest.Metadata.ProjectUrl);
-                Assert.Equal(target.IconUrl, manifest.Metadata.IconUrl);
-                Assert.Equal(target.LicenseUrl, manifest.Metadata.LicenseUrl);
+                Assert.Equal(new Uri(target.ProjectUrl), manifest.Metadata.ProjectUrl);
+                Assert.Equal(new Uri(target.IconUrl), manifest.Metadata.IconUrl);
+                Assert.Equal(new Uri(target.LicenseUrl), manifest.Metadata.LicenseUrl);
                 Assert.Equal(target.Copyright, manifest.Metadata.Copyright);
                 Assert.Equal(target.Tags, manifest.Metadata.Tags);
                 Assert.Equal(false, manifest.Metadata.DevelopmentDependency);
 
                 //compare dependencies
-                Assert.Equal(2, manifest.Metadata.DependencySets.Count);
+                Assert.Equal(2, manifest.Metadata.DependencyGroups.Count());
 
-                foreach (var dependencySet in manifest.Metadata.DependencySets)
+                foreach (var dependencySet in manifest.Metadata.DependencyGroups)
                 {
-                    if (dependencySet.TargetFramework == "net45")
+                    if (dependencySet.TargetFramework.GetShortFolderName() == "net45")
                     {
-                        Assert.Equal(0, dependencySet.Dependencies.Count);
+                        Assert.Equal(0, dependencySet.Packages.Count());
                     }
-                    else if (dependencySet.TargetFramework == "portable-net45+win80")
+                    else if (dependencySet.TargetFramework.GetShortFolderName() == "portable-net45+win8")
                     {
-                        Assert.Equal(1, dependencySet.Dependencies.Count);
-                        Assert.Equal("APackage", dependencySet.Dependencies[0].Id);
+                        Assert.Equal(1, dependencySet.Packages.Count());
+                        Assert.Equal("APackage", dependencySet.Packages.First().Id);
                     }
                     else
                     {

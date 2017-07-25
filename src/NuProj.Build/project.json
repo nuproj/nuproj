@@ -1,11 +1,11 @@
 ﻿{
   "dependencies": {
-    "Nerdbank.GitVersioning": "1.4.41"
+    "Nerdbank.GitVersioning": "1.5.46"
   },
   "frameworks": {
-    "net451": { }
+    "net451": {}
   },
   "runtimes": {
-    "win": { }
+    "win": {}
   }
 }

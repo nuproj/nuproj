@@ -8,14 +8,14 @@ using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
-using NuGet;
+using NuGet.Frameworks;
+using NuGet.Packaging;
+using NuGet.Versioning;
 
 namespace NuProj.Tasks
 {
     public static class Extensions
     {
-        private static readonly FrameworkName NullFramework = new FrameworkName("Null,Version=v1.0");
-
         public static bool GetBoolean(this ITaskItem taskItem, string metadataName, bool defaultValue = false)
         {
             bool result = false;
@@ -30,33 +30,34 @@ namespace NuProj.Tasks
             return string.IsNullOrEmpty(metadataValue) ? defaultValue : metadataValue;
         }
 
-        public static FrameworkName GetTargetFramework(this ITaskItem taskItem)
+        public static NuGetFramework GetTargetFramework(this ITaskItem taskItem)
         {
-            FrameworkName result = null;
+            NuGetFramework result = null;
             var metadataValue = taskItem.GetMetadata(Metadata.TargetFramework);
+            
             if (!string.IsNullOrEmpty(metadataValue))
             {
-                result = VersionUtility.ParseFrameworkName(metadataValue);
+                result = NuGetFramework.Parse(metadataValue);
             }
             else
             {
-                result = NullFramework;
+                result = NuGetFramework.AgnosticFramework;
             }
 
             return result;
         }
 
-        public static FrameworkName GetTargetFrameworkMoniker(this ITaskItem taskItem)
+        public static NuGetFramework GetTargetFrameworkMoniker(this ITaskItem taskItem)
         {
-            FrameworkName result = null;
+            NuGetFramework result = null;
             var metadataValue = taskItem.GetMetadata(Metadata.TargetFrameworkMoniker);
             if (!string.IsNullOrEmpty(metadataValue))
             {
-                result = new FrameworkName(metadataValue);
+                result = NuGetFramework.ParseFrameworkName(metadataValue, DefaultFrameworkNameProvider.Instance);
             }
             else
             {
-                result = NullFramework;
+                result = NuGetFramework.AnyFramework;
             }
 
             return result;
@@ -102,13 +103,13 @@ namespace NuProj.Tasks
             return  taskItem.GetMetadata(Metadata.TargetSubdirectory) ?? string.Empty;
         }
 
-        public static IVersionSpec GetVersion(this ITaskItem taskItem)
+        public static VersionRange GetVersion(this ITaskItem taskItem)
         {
-            IVersionSpec result = null;
+            var result = VersionRange.All;
             var metadataValue = taskItem.GetMetadata(Metadata.Version);
             if (!string.IsNullOrEmpty(metadataValue))
             {
-                VersionUtility.TryParseVersionSpec(metadataValue, out result);
+                VersionRange.TryParse(metadataValue, out result);
             }
 
             return result;
@@ -124,24 +125,24 @@ namespace NuProj.Tasks
             return source;
         }
 
-        public static string GetShortFrameworkName(this FrameworkName frameworkName)
+        public static string GetShortFrameworkName(this NuGetFramework frameworkName)
         {
-            if (frameworkName == null || frameworkName == NullFramework)
+            if (frameworkName == null || frameworkName == NuGetFramework.AnyFramework)
             {
                 return null;
             }
 
-            if (frameworkName.Identifier == ".NETPortable" && frameworkName.Version.Major == 5 && frameworkName.Version.Minor == 0)
+            if (frameworkName.Equals(new NuGetFramework(FrameworkConstants.FrameworkIdentifiers.Portable, new Version(5, 0))))
             {
                 // Avoid calling GetShortFrameworkName because NuGet throws ArgumentException
                 // in this case.
                 return "dotnet";
             }
 
-            return VersionUtility.GetShortFrameworkName(frameworkName);
+            return frameworkName.GetShortFolderName();
         }
 
-        public static string GetAnalyzersFrameworkName(this FrameworkName frameworkName)
+        public static string GetAnalyzersFrameworkName(this NuGetFramework frameworkName)
         {
             // At this time there is no host other than Roslyn compiler that can run analyzers. 
             // Therefore, Framework Name and Version should always be specified as 'dotnet' until another host is 
@@ -160,9 +161,32 @@ namespace NuProj.Tasks
             return value.ToString();
         }
 
-        public static void UpdateMember<T>(this T target, Expression<Func<T, string>> memberLamda, string value)
+        public static void UpdateMember<T>(this T target, Expression<Func<T, Uri>> memberLamda, string value)
         {
             if (string.IsNullOrEmpty(value))
+            {
+                return;
+            }
+            var memberSelectorExpression = memberLamda.Body as MemberExpression;
+            if (memberSelectorExpression == null)
+            {
+                throw new InvalidOperationException("Invalid member expression.");
+            }
+
+            var property = memberSelectorExpression.Member as PropertyInfo;
+            if (property == null)
+            {
+                throw new InvalidOperationException("Invalid member expression.");
+            }
+
+            var setter = typeof(T).GetMethod($"Set{property.Name}");
+            setter.Invoke(target, new[] { value });
+
+        }
+
+        public static void UpdateMember<T, TValue>(this T target, Expression<Func<T, TValue>> memberLamda, TValue value)
+        {
+            if (value == null)
             {
                 return;
             }
@@ -182,7 +206,7 @@ namespace NuProj.Tasks
             property.SetValue(target, value, null);
         }
 
-        public static void AddRangeToMember<T, TItem>(this T target, Expression<Func<T, List<TItem>>> memberLamda, IEnumerable<TItem> value)
+        public static void AddRangeToMember<T, TItem>(this T target, Expression<Func<T, IEnumerable<TItem>>> memberLamda, IEnumerable<TItem> value)
         {
             if (value == null || value.Count() == 0)
             {
@@ -201,10 +225,19 @@ namespace NuProj.Tasks
                 throw new InvalidOperationException("Invalid member expression.");
             }
 
-            var list = (List<TItem>)property.GetValue(target) ?? new List<TItem>();
-            list.AddRange(value);
-            
-            property.SetValue(target, list, null);
+            if (property.CanWrite)
+            {
+                var list = (ICollection<TItem>)property.GetValue(target) ?? new List<TItem>();
+                list.AddRange(value);
+
+                property.SetValue(target, list, null);
+            }
+            else
+            {
+                var list = (ICollection<TItem>)property.GetValue(target);
+                list.AddRange(value);
+            }
+
         }
 
         public static string Combine(this PackageDirectory packageDirectory, string targetFramework, string targetSubdirectory, string fileName)
@@ -214,17 +247,17 @@ namespace NuProj.Tasks
                 case PackageDirectory.Root:
                     return Path.Combine(targetSubdirectory, fileName);
                 case PackageDirectory.Content:
-                    return Path.Combine(Constants.ContentDirectory, targetSubdirectory, fileName);
+                    return Path.Combine(PackagingConstants.Folders.Content, targetSubdirectory, fileName);
                 case PackageDirectory.ContentFiles:
-                    return Path.Combine(Constants.ContentFilesDirectory, targetSubdirectory, fileName);
+                    return Path.Combine(PackagingConstants.Folders.ContentFiles, targetSubdirectory, fileName);
                 case PackageDirectory.Build:
-                    return Path.Combine(Constants.BuildDirectory, targetSubdirectory, fileName);
+                    return Path.Combine(PackagingConstants.Folders.Build, targetSubdirectory, fileName);
                 case PackageDirectory.Lib:
-                    return Path.Combine(Constants.LibDirectory, targetFramework, targetSubdirectory, fileName);
+                    return Path.Combine(PackagingConstants.Folders.Lib, targetFramework, targetSubdirectory, fileName);
                 case PackageDirectory.Tools:
-                    return Path.Combine(Constants.ToolsDirectory, targetSubdirectory, fileName);
+                    return Path.Combine(PackagingConstants.Folders.Tools, targetSubdirectory, fileName);
                 case PackageDirectory.Analyzers:
-                    return Path.Combine(Constants.AnalyzersDirectory, targetFramework, targetSubdirectory, fileName);
+                    return Path.Combine(PackagingConstants.Folders.Analyzers, targetFramework, targetSubdirectory, fileName);
                 default:
                     return fileName;
             }

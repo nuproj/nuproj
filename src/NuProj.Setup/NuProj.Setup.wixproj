@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Wix.3.11.0.321-pre\build\wix.props"/>
+  <Import Project="..\packages\Wix.3.11.0.906-pre\build\wix.props" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -23,7 +23,6 @@
     <SuppressSpecificWarnings>1076</SuppressSpecificWarnings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Feature.VS15Integration.wxs" />
     <Compile Include="Feature.VS14Integration.wxs" />
     <Compile Include="Feature.BuildIntegration.wxs" />
     <Compile Include="Feature.VS12Integration.wxs" />

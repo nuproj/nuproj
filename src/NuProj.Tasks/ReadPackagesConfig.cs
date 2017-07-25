@@ -9,7 +9,8 @@ using System.Xml.XPath;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-using NuGet;
+using NuGet.Packaging;
+using NuGet.Versioning;
 
 namespace NuProj.Tasks
 {
@@ -24,8 +25,8 @@ namespace NuProj.Tasks
         public override bool Execute()
         {
             var packageReferences = from project in Projects
-                                    let packageReferenceFile = PackageReferenceFile.CreateFromProject(project.GetMetadata("FullPath"))
-                                    from packageReference in packageReferenceFile.GetPackageReferences()
+                                    let projectPackageReferences = GetInstalledPackageReferences(project.GetMetadata("FullPath"))
+                                    from packageReference in projectPackageReferences
                                     select ConvertPackageElement(project, packageReference);
             PackageReferences = packageReferences.ToArray();
             return true;
@@ -33,12 +34,12 @@ namespace NuProj.Tasks
 
         protected ITaskItem ConvertPackageElement(ITaskItem project, PackageReference packageReference)
         {
-            var id = packageReference.Id;
-            var version = packageReference.Version;
+            var id = packageReference.PackageIdentity.Id;
+            var version = packageReference.PackageIdentity.Version;
             var targetFramework = packageReference.TargetFramework;
             var isDevelopmentDependency = packageReference.IsDevelopmentDependency;
             var requireReinstallation = packageReference.RequireReinstallation;
-            var versionConstraint = packageReference.VersionConstraint;
+            var versionConstraint = packageReference.AllowedVersions;
 
             var item = new TaskItem(id);
             project.CopyMetadataTo(item);
@@ -54,7 +55,7 @@ namespace NuProj.Tasks
                 item.SetMetadata(Metadata.Version, version.ToString());
 
             if (targetFramework != null)
-                item.SetMetadata(Metadata.TargetFramework, targetFramework.GetShortFrameworkName());
+                item.SetMetadata(Metadata.TargetFramework, targetFramework.GetShortFolderName());
 
             if (versionConstraint != null)
                 item.SetMetadata("VersionConstraint", versionConstraint.ToString());
@@ -77,5 +78,39 @@ namespace NuProj.Tasks
 
             return string.Empty;
         }
+
+        private static IEnumerable<PackageReference> GetInstalledPackageReferences(string projectPath)
+        {
+            var projectDirectory = Path.GetDirectoryName(projectPath);
+            var projectName = Path.GetFileNameWithoutExtension(projectPath);
+
+            var projectConfigFilePath = Path.Combine(projectDirectory, $"packages.{projectName}.config");
+            if (File.Exists(projectConfigFilePath))
+            {
+                return GetInstalledPackageReferencesFromConfigFile(projectConfigFilePath, false);
+            }
+
+            projectConfigFilePath = Path.Combine(projectDirectory, "packages.config");
+            if (File.Exists(projectConfigFilePath))
+            {
+                return GetInstalledPackageReferencesFromConfigFile(projectConfigFilePath, false);
+            }
+
+            return Enumerable.Empty<PackageReference>();
+
+        }
+
+        private static IEnumerable<PackageReference> GetInstalledPackageReferencesFromConfigFile(
+            string projectConfigFilePath,
+            bool allowDuplicatePackageIds)
+        {
+            using (var file = File.Open(projectConfigFilePath, FileMode.Open, FileAccess.Read))
+            {
+                var reader = new PackagesConfigReader(file);
+                return reader.GetPackages(allowDuplicatePackageIds);
+
+            }
+        }
+
     }
 }

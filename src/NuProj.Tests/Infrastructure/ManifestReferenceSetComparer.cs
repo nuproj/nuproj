@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using NuGet;
+using NuGet.Packaging;
 
 namespace NuProj.Tests.Infrastructure
 {
-    public class ManifestReferenceSetComparer : IEqualityComparer<ManifestReferenceSet>
+    public class ManifestReferenceSetComparer : IEqualityComparer<PackageReferenceSet>
     {
         private static ManifestReferenceSetComparer _instance = new ManifestReferenceSetComparer(StringComparer.OrdinalIgnoreCase);
 
-        private ManifestReferenceComparer _manifestReferenceComparer;
+        //private ManifestReferenceComparer _manifestReferenceComparer;
 
         private StringComparer _stringComparer;
 
@@ -20,7 +20,7 @@ namespace NuProj.Tests.Infrastructure
             }
 
             _stringComparer = stringComparer;
-            _manifestReferenceComparer = new ManifestReferenceComparer(stringComparer);
+            //_manifestReferenceComparer = new ManifestReferenceComparer(stringComparer);
         }
 
         public static ManifestReferenceSetComparer Instance
@@ -31,7 +31,7 @@ namespace NuProj.Tests.Infrastructure
             }
         }
 
-        public bool Equals(ManifestReferenceSet x, ManifestReferenceSet y)
+        public bool Equals(PackageReferenceSet x, PackageReferenceSet y)
         {
             if (x == null && x == null)
             {
@@ -43,21 +43,21 @@ namespace NuProj.Tests.Infrastructure
                 return false;
             }
 
-            var xReferences = new HashSet<ManifestReference>(x.References.NullAsEmpty(), _manifestReferenceComparer);
-            var yReferences = new HashSet<ManifestReference>(y.References.NullAsEmpty(), _manifestReferenceComparer);
+            var xReferences = new HashSet<string>(x.References.NullAsEmpty());
+            var yReferences = new HashSet<string>(y.References.NullAsEmpty());
 
             return _stringComparer.Equals(x.TargetFramework, y.TargetFramework)
                 && xReferences.SetEquals(yReferences);
         }
 
-        public int GetHashCode(ManifestReferenceSet obj)
+        public int GetHashCode(PackageReferenceSet obj)
         {
             if (obj == null)
             {
                 throw new ArgumentNullException("obj");
             }
 
-            return _stringComparer.GetHashCode(obj.TargetFramework ?? "");
+            return obj.TargetFramework.GetHashCode();
         }
     }
 }
