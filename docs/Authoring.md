@@ -146,6 +146,17 @@ file path in output package must be under `contentFiles` directory.
 </ItemGroup>
 ```
 
+To package an entire directory tree recursively copying its entirety into a nuget
+package, keeping its directory structure intact without flattening:
+
+```xml
+<ItemGroup>
+  <File Include="YOUR_SOURCE_PATH\**">
+    <TargetPath>YOUR_TARGET_PATH\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+  </File>
+</ItemGroup>
+```
+
 ## Using Project References
 
 You can reference other projects to automatically include their output in 
